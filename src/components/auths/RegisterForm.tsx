@@ -114,26 +114,28 @@ export const RegisterForm = () => {
 
                     <FormControl id="confirmPassword" isRequired>
                         <FormLabel fontSize="md">Confirmer le mot de passe</FormLabel>
-                        <Input
-                            type="password"
-                            size="lg"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            placeholder="••••••••"
-                            focusBorderColor="teal.500"
-                            borderRadius="md"
-                        />
-                        <InputRightElement width="4.5rem" mr={1}>
-                            <Button
-                                h="1.75rem"
-                                size="sm"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                variant="ghost"
-                                colorScheme="teal"
-                            >
-                                {showConfirmPassword ? 'Cacher' : 'Afficher'}
-                            </Button>
-                        </InputRightElement>
+                        <InputGroup size="lg">
+                            <Input
+                                type="password"
+                                size="lg"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="••••••••"
+                                focusBorderColor="teal.500"
+                                borderRadius="md"
+                            />
+                            <InputRightElement width="4.5rem" mr={1}>
+                                <Button
+                                    h="1.75rem"
+                                    size="sm"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    variant="ghost"
+                                    colorScheme="teal"
+                                >
+                                    {showConfirmPassword ? 'Cacher' : 'Afficher'}
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
                     </FormControl>
 
                     <Button
