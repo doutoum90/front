@@ -7,7 +7,7 @@ export const AuthNavigationHandler = () => {
   const navigate = useNavigate();
 
   const handleLoginSuccess = useCallback(() => {
-    navigate('/secure/dashboard');
+    navigate('/espace-membre/dashboard');
   }, [navigate]);
 
   const handleLogout = useCallback(() => {

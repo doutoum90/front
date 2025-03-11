@@ -15,8 +15,12 @@ const lazyLoad = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
 
 // Composants publics
 const Home = lazy(() => import('../components/public/Home'));
+const HeroSection = lazy(() => import('../components/common/HeroSection'));
 const About = lazy(() => import('../components/public/About'));
-const Contact = lazy(() => import('../components/public/Contact'));
+const Actions = lazy(() => import('../components/public/Actions'));
+const Formules = lazy(() => import('../components/public/Formules'));
+const Faq = lazy(() => import('../components/public/Faq'));
+
 const LoginForm = lazy(() => import('../components/auths/LoginForm'));
 const PasswordReset = lazy(() => import('../components/auths/PasswordReset'));
 const RegisterForm = lazy(() => import('../components/auths/RegisterForm'));
@@ -34,9 +38,12 @@ export const routes = [
       // Routes publiques
       { path: '', element: lazyLoad(Home) },
       { path: 'about', element: lazyLoad(About) },
-      { path: 'contact', element: lazyLoad(Contact) },
+      { path: 'actions', element: lazyLoad(Actions) },
+      { path: 'formules', element: lazyLoad(Formules) },
+      { path: 'faq', element: lazyLoad(Faq) },
     ],
   },
+  { path: 'hero', element: lazyLoad(HeroSection) },
   {
     path: 'auth',
     element: <AuthLayout><Outlet /></AuthLayout>,
@@ -48,7 +55,7 @@ export const routes = [
   },
   // Routes privées avec layout commun
   {
-    path: 'secure',
+    path: 'espace-membre',
     element: (
       <PrivateRoute>
         <PrivateLayout>

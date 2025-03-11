@@ -83,7 +83,7 @@ export const PrivateHeader = () => {
                             <MenuItem
                                 icon={<Box as="span" className="material-icons">person</Box>}
                                 _hover={{ bg: 'teal.50' }}
-                                onClick={() => navigate('/secure/profile')}
+                                onClick={() => navigate('/espace-membre/profile')}
                             >
                                 Mon Profil
                             </MenuItem>
@@ -91,7 +91,7 @@ export const PrivateHeader = () => {
                             <MenuItem
                                 icon={<Box as="span" className="material-icons">settings</Box>}
                                 _hover={{ bg: 'teal.50' }}
-                                onClick={() => navigate('/secure/settings')}
+                                onClick={() => navigate('/espace-membre/settings')}
                             >
                                 Paramètres
                             </MenuItem>

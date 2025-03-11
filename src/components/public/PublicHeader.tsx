@@ -1,66 +1,88 @@
-import { Flex, Button, Text, Link } from "@chakra-ui/react";
-
-import { useNavigate } from 'react-router-dom';
-
+import { Flex, Button, Text, Box, Heading, HStack, VStack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export const PublicHeader = () => {
-    const navigate = useNavigate();
-    const connect = () => {
-        navigate('/auth/login');
-    }
-    const register = () => {
-        navigate('/auth/register');
-    }
+    const navigate = useNavigate()
+
     return (
-        <Flex
-            as="nav"
-            align="center"
-            justify="space-between"
-            px={{ base: '4', md: '8' }}
-            py="4"
-            bg="white"
-            boxShadow="sm"
-            position="sticky"
-            top="0"
-            zIndex="docked"
-        >
-            <Flex align="center" gap={6}>
-                {/* Logo ou nom de l'application */}
-                <Text fontWeight="bold" color="teal.600">MonApp</Text>
-
-                {/* Menu de navigation */}
-                <Flex gap={4} display={{ base: 'none', md: 'flex' }}>
-                    <Link href="/" color="gray.600" _hover={{ color: 'teal.500' }}>
-                        Accueil
-                    </Link>
-                    <Link href="/about" color="gray.600" _hover={{ color: 'teal.500' }}>
-                        About
-                    </Link>
-                    <Link href="/contact" color="gray.600" _hover={{ color: 'teal.500' }}>
-                        Contact
-                    </Link>
-                </Flex>
-            </Flex>
-
-            {/* Bouton de connexion */}
-            <Flex gap={4} align="center">
-                <Button
-                    colorScheme="teal"
-                    variant="outline"
-                    size="sm"
-                    onClick={connect}
+        <Box maxW="container.xl" mx="auto" px={{ base: 4, md: 8 }} py={12}>
+            <HStack
+                spacing={0} // Supprimer l'espacement entre les blocs
+                mb={16}
+                pl={8}
+                pr={8}
+                borderRadius="xl"
+                width="100%"
+                align="stretch"
+            >
+                {/* Bloc gauche (30%) */}
+                <VStack
+                    width="45%"
+                    alignItems="flex-start"
+                    pr={4} // Espacement interne
                 >
-                    Se connecter
-                </Button>
-                <Button
-                    colorScheme="teal"
-                    size="sm"
-                    onClick={register}
-                >
-                    S'inscrire
-                </Button>
-            </Flex>
-        </Flex>
+                    <Heading as="h1" size="2xl" color="teal.600" fontWeight="bold">
+                        INTELLIGENTSLA
+                    </Heading>
+                    <Text fontSize="xl" color="gray.600">
+                        L'intelligence économique au service de votre activité
+                    </Text>
+                </VStack>
 
+                {/* Bloc droit (70% avec fond bleu) */}
+                <VStack
+                    width="55%"
+                    bg="blue.100" // Couleur de fond
+                    borderRadius="xl"
+                    justifyContent="center"
+                >
+                    <Flex width="100%" justifyContent="flex-end">
+                        <Button
+                            onClick={() => navigate('/auth/login')}
+                            mr={8}
+                            variant="outline"
+                            colorScheme="blue"
+                            color="blue.600"
+                            bg='white'
+                            borderColor="blue.200"
+                            size="lg"
+                            _hover={{
+                                bg: "blue.50",
+                                transform: "scale(1.05)"
+                            }}
+                            _active={{
+                                bg: "blue.100"
+                            }}
+                            transition="all 0.2s"
+                        >
+                            Espace client
+                        </Button>
+                    </Flex>
+                </VStack>
+            </HStack>
+
+            <Flex wrap="wrap" justify="center" gap={8} mt={8}>
+                <Button
+                    variant="ghost"
+                    colorScheme="teal"
+                    onClick={() => navigate('/actions')}
+                >Nos actions</Button>
+                <Button
+                    variant="ghost"
+                    colorScheme="teal"
+                    onClick={() => navigate('/formules')}
+                >Nos formules</Button>
+                <Button
+                    variant="ghost"
+                    colorScheme="teal"
+                    onClick={() => navigate('/faq')}
+                >FAQ</Button>
+                <Button
+                    variant="ghost"
+                    colorScheme="teal"
+                    onClick={() => navigate('/about')}
+                >À propos</Button>
+            </Flex>
+        </Box>
     )
 }
