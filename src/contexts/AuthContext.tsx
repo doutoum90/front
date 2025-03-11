@@ -1,4 +1,3 @@
-// AuthContext.tsx
 import {
   createContext,
   useContext,
@@ -7,7 +6,6 @@ import {
   ReactNode,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 type User = {
   email: string;
   // Ajoutez d'autres propriétés utilisateur au besoin
@@ -20,61 +18,113 @@ type AuthContextType = {
   register: (userData: { email: string; password: string }) => Promise<void>;
   logout: () => void;
   resetPassword: (email: string) => Promise<void>;
+  refreshAccessToken: () => Promise<string>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
   children: ReactNode;
+  onLoginSuccess: () => void;
+  onLogout: () => void;
 };
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     const verifyToken = async () => {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
+      const accessToken = localStorage.getItem('access_token');
+      const refreshToken = localStorage.getItem('refresh_token');
+  
+      // Si aucun token n'est présent
+      if (!accessToken && !refreshToken) {
         setLoading(false);
         return;
       }
-      
+  
       try {
-        const response = await fetch('/api/verify-token', {
-          headers: { Authorization: `Bearer ${token}` }
+        // Vérification initiale du token
+        const verifyResponse = await fetch('/api/auth/verify', {
+          headers: { Authorization: `Bearer ${accessToken}` }
         });
-        if (response.ok) {
-          const userData = await response.json();
+  
+        if (verifyResponse.ok) {
+          const userData = await verifyResponse.json();
           setUser(userData);
+          setLoading(false);
+          return;
         }
       } catch (error) {
-        console.error('Token verification failed:', error);
+        console.error('Token verification error:', error);
       }
+  
+      // Si le token est invalide ou expiré, tenter le rafraîchissement
+      if (refreshToken) {
+        try {
+          const refreshResponse = await fetch('/api/auth/refresh', {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${refreshToken}` 
+            }
+          });
+  
+          if (refreshResponse.ok) {
+            const { access_token } = await refreshResponse.json();
+            
+            // Mettre à jour le token dans le localStorage
+            localStorage.setItem('access_token', access_token);
+            
+            // Relancer la vérification avec le nouveau token
+            const newVerifyResponse = await fetch('/api/auth/verify', {
+              headers: { Authorization: `Bearer ${access_token}` }
+            });
+            
+            if (newVerifyResponse.ok) {
+              const userData = await newVerifyResponse.json();
+              setUser(userData);
+            }
+          } else {
+            // Si le refresh échoue, déconnecter l'utilisateur
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            navigate('/auth/login');
+          }
+        } catch (error) {
+          console.error('Refresh token error:', error);
+          navigate('/auth/login');
+        }
+      } else {
+        navigate('/auth/login');
+      }
+      
       setLoading(false);
     };
-
+  
     verifyToken();
-  }, []);
+  }, []); // Le tableau vide garantit que l'effet ne s'exécute qu'au montage
 
   const login = async (credentials: { email: string; password: string }) => {
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)
       });
 
-      if (!response.ok) throw new Error('Login failed');
-
+      if (!response.ok){
+        const errorData = await response.json();
+         throw new Error(errorData.message || 'Login failed');
+      }
       const { access_token, refresh_token } = await response.json();
-      
+
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
-      
+
       setUser({ email: credentials.email });
-      navigate('/dashboard');
+      onLoginSuccess();
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -82,22 +132,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const register = async (userData: { email: string; password: string }) => {
-    const response = await fetch('/api/register', {
+    const response = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
     }
-    
+
     return await response.json();
   };
 
   const resetPassword = async (email: string) => {
-    const response = await fetch('/api/reset-password', {
+    const response = await fetch('/api/auth/reset-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
@@ -107,14 +157,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const error = await response.json();
       throw new Error(error.message);
     }
-    
+  };
+
+  const refreshAccessToken = async () => {
+    try {
+      const refreshToken = localStorage.getItem('refresh_token');
+      const response = await fetch('/api/auth/refresh', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${refreshToken}`
+        }
+      });
+  
+      const { access_token } = await response.json();
+      localStorage.setItem('access_token', access_token);
+      return access_token;
+    } catch (error) {
+      logout();
+      throw error;
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     setUser(null);
-    navigate('/login');
+    onLogout();
   };
 
   const value = {
@@ -123,7 +192,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     login,
     register,
     logout,
-    resetPassword
+    resetPassword,
+    refreshAccessToken
   };
 
   return (
