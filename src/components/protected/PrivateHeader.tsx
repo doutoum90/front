@@ -40,7 +40,7 @@ export const PrivateHeader = () => {
 
                 {/* Menu Navigation */}
                 <Flex alignItems="center" gap={6}>
-                    <Link to="/dashboard">
+                    <Link to="/espace-membre/dashboard">
                         <Button variant="ghost" colorScheme="teal">
                             Dashboard
                         </Button>

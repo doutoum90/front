@@ -1,84 +1,59 @@
-import { Heading, Text, Button, Container, Stack, SimpleGrid, Card, CardBody, CardHeader, useBreakpointValue, Image, Box } from '@chakra-ui/react';
+import { Heading, Text, Button, Box, HStack, VStack } from '@chakra-ui/react';
 
 const Home = () => {
-  const columnSize = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
   return (
     <>
-      <Container maxW="100%" p={0}>
-        <Stack
-          spacing={{ base: 4, md: 6 }}
-          textAlign="center"
-          mb={{ base: '6', md: '12' }}
-          px={{ base: '4', md: '8' }}
-        >
-          <Heading size="2xl" color="teal.600">
-            Bienvenue sur notre application !
+      <VStack spacing={12} align="stretch">
+        <Box textAlign="center">
+          <Heading as="h2" size="lg" mb={6} color="gray.800">
+            Prenez une longueur d'avance avec l'intelligence Économique
           </Heading>
-          <Text fontSize="lg" color="gray.600">
-            Explorez nos fonctionnalités et commencez votre aventure dès maintenant.
-          </Text>
-          <Button colorScheme="teal" size="lg" mt="4" onClick={() => alert('Explorez maintenant !')}>
-            Commencer
-          </Button>
-        </Stack>
-
-        <SimpleGrid
-          columns={{ base: 1, md: 2, lg: columnSize }}
-          spacing="8"
-          px={{ base: '4', md: '8' }}
-        >
-          <Card width="100%" boxShadow="lg" borderRadius="md">
-            <CardHeader>
-              <Heading size="md" color="teal.500">
-                Une expérience fluide
-              </Heading>
-            </CardHeader>
-            <CardBody>
-              <Text color="gray.600">
-                Profitez d'une interface simple et fluide, conçue pour vous offrir une expérience optimale.
-              </Text>
-            </CardBody>
-          </Card>
-
-          <Card width="100%" boxShadow="lg" borderRadius="md">
-            <CardHeader>
-              <Heading size="md" color="teal.500">
-                Performances incroyables
-              </Heading>
-            </CardHeader>
-            <CardBody>
-              <Text color="gray.600">
-                Nous mettons l'accent sur la rapidité et la performance pour vous offrir la meilleure expérience.
-              </Text>
-            </CardBody>
-          </Card>
-
-          <Card width="100%" boxShadow="lg" borderRadius="md">
-            <CardHeader>
-              <Heading size="md" color="teal.500">
-                Une interface réactive
-              </Heading>
-            </CardHeader>
-            <CardBody>
-              <Text color="gray.600">
-                Votre application sera belle et fonctionnelle sur tous les appareils.
-              </Text>
-            </CardBody>
-          </Card>
-        </SimpleGrid>
-
-        <Box mt="12" display="flex" justifyContent="center" px={{ base: '4', md: '8' }}>
-          <Image
-            src="https://via.placeholder.com/600x400"
-            width="100%"
-            maxW="1200px"
-            alt="Illustration"
-            borderRadius="md"
-            shadow="lg"
-          />
+          <HStack spacing={8} justify="center">
+            <Text>📡Surveillez vos concurrents.</Text>
+            <Text>💡Détectez les opportunités.</Text>
+            <Text>🚀Anticipez le marché.</Text>
+          </HStack>
         </Box>
-      </Container>
+
+        {/* Section Anticipez */}
+        <VStack spacing={6} bg="gray.50" borderRadius="xl">
+          <Heading as="h3" size="md" color="teal.600" textAlign="left" >
+            Anticipez: Décidez. Gagnez.
+          </Heading>
+          <Text textAlign="left" lineHeight="tall" color="gray.600">
+            Dans un monde en constante évolution, chaque décision compte. Intelligentsla vous donne un coup d'avance grâce à
+            l'intelligence économique. Analysez votre marché, surveillez vos concurrents et détectez les opportunités avant
+            les autres. Grâce à notre technologie basée sur l'IA, nous transformons des milliers de données en informations
+            stratégiques exploitables, pour vous permettre de prendre les meilleures décisions, au bon moment.
+          </Text>
+        </VStack>
+
+        {/* Section Veille automatisée */}
+        <VStack spacing={6}>
+          <Heading as="h3" size="md" color="teal.600" textAlign="left">
+            Une veille automatisée, un avantage concurrentiel durable
+          </Heading>
+          <Text textAlign="left" lineHeight="tall" color="gray.600">
+            Finies les recherches interminables et les décisions basées sur l'intuition. Notre plateforme vous alerte en temps
+            réel sur les tendances, les évolutions du marché et les opportunités d'affaires adaptées à votre activité. Que
+            vous soyez une TPE ou un entrepreneur ambitieux, Intelligentsla vous offre les outils pour comprendre, anticiper
+            et dominer votre secteur.
+          </Text>
+        </VStack>
+
+        {/* CTA */}
+        <Button
+          colorScheme="teal"
+          size="lg"
+          mx="auto"
+          px={12}
+          _hover={{ transform: 'scale(1.05)' }}
+          transition="all 0.2s"
+        >
+          Démarrer tout de suite votre essai gratuit
+        </Button>
+      </VStack>
     </>
   );
 };

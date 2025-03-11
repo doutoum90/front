@@ -15,7 +15,6 @@ const lazyLoad = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
 
 // Composants publics
 const Home = lazy(() => import('../components/public/Home'));
-const HeroSection = lazy(() => import('../components/common/HeroSection'));
 const About = lazy(() => import('../components/public/About'));
 const Actions = lazy(() => import('../components/public/Actions'));
 const Formules = lazy(() => import('../components/public/Formules'));
@@ -43,7 +42,6 @@ export const routes = [
       { path: 'faq', element: lazyLoad(Faq) },
     ],
   },
-  { path: 'hero', element: lazyLoad(HeroSection) },
   {
     path: 'auth',
     element: <AuthLayout><Outlet /></AuthLayout>,

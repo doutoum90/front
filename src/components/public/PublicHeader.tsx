@@ -32,7 +32,7 @@ export const PublicHeader = () => {
                 {/* Bloc droit (70% avec fond bleu) */}
                 <VStack
                     width="55%"
-                    bg="blue.100" // Couleur de fond
+                    bg="#3d84a8" // Couleur de fond
                     borderRadius="xl"
                     justifyContent="center"
                 >
