@@ -5,19 +5,16 @@ export const PublicHeader = () => {
     const navigate = useNavigate()
 
     return (
-        <Box maxW="container.xl" mx="auto" px={{ base: 4, md: 8 }} py={12}>
+        <Box maxW="100%" m={0} p={0}>
             <HStack
                 spacing={0} // Supprimer l'espacement entre les blocs
-                mb={16}
-                pl={8}
-                pr={8}
                 borderRadius="xl"
                 width="100%"
                 align="stretch"
             >
                 {/* Bloc gauche (30%) */}
                 <VStack
-                    width="45%"
+                    width="30%"
                     alignItems="flex-start"
                     pr={4} // Espacement interne
                 >
@@ -31,20 +28,21 @@ export const PublicHeader = () => {
 
                 {/* Bloc droit (70% avec fond bleu) */}
                 <VStack
-                    width="55%"
-                    bg="#3d84a8" // Couleur de fond
-                    borderRadius="xl"
+                    width="70%"
+                    bg="#3d84a8"
                     justifyContent="center"
+                    pr={0}
+                    mr={0}
                 >
-                    <Flex width="100%" justifyContent="flex-end">
+                    <Flex width="100%" justifyContent="flex-end" pt={8} pr={8}>
                         <Button
                             onClick={() => navigate('/auth/login')}
                             mr={8}
                             variant="outline"
-                            colorScheme="blue"
-                            color="blue.600"
+                            color="#7cb3cf"
                             bg='white'
                             borderColor="blue.200"
+                            borderRadius="xl"
                             size="lg"
                             _hover={{
                                 bg: "blue.50",
@@ -58,31 +56,40 @@ export const PublicHeader = () => {
                             Espace client
                         </Button>
                     </Flex>
+                    <Flex width="100%" justify="flex-start" pl={8} mb={-8}>
+                        <Button
+                            variant="ghost"
+                            color="white"
+                            bg="#7cb3cf"
+                            size="lg"
+                            onClick={() => navigate('/actions')}
+                        >Nos actions</Button>
+                        <Button
+                            variant="ghost"
+                            size="lg"
+                            color="white"
+                            bg="#7cb3cf"
+                            onClick={() => navigate('/formules')}
+                        >Nos formules</Button>
+                        <Button
+                            variant="ghost"
+                            color="white"
+                            size="lg"
+                            bg="#7cb3cf"
+                            onClick={() => navigate('/faq')}
+                        >FAQ</Button>
+                        <Button
+                            variant="ghost"
+                            color="white"
+                            size="lg"
+                            bg="#7cb3cf"
+                            onClick={() => navigate('/about')}
+                        >À propos</Button>
+                    </Flex>
                 </VStack>
             </HStack>
 
-            <Flex wrap="wrap" justify="center" gap={8} mt={8}>
-                <Button
-                    variant="ghost"
-                    colorScheme="teal"
-                    onClick={() => navigate('/actions')}
-                >Nos actions</Button>
-                <Button
-                    variant="ghost"
-                    colorScheme="teal"
-                    onClick={() => navigate('/formules')}
-                >Nos formules</Button>
-                <Button
-                    variant="ghost"
-                    colorScheme="teal"
-                    onClick={() => navigate('/faq')}
-                >FAQ</Button>
-                <Button
-                    variant="ghost"
-                    colorScheme="teal"
-                    onClick={() => navigate('/about')}
-                >À propos</Button>
-            </Flex>
+
         </Box>
     )
 }

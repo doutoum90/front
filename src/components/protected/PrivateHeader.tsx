@@ -30,7 +30,7 @@ export const PrivateHeader = () => {
             top={0}
             zIndex="sticky"
         >
-            <Flex alignItems="center" justifyContent="space-between" maxW="container.xl" mx="auto">
+            <Flex alignItems="center" justifyContent="space-between" maxW="100%" mx="auto">
                 {/* Logo */}
                 <Link to="/">
                     <Text fontSize="2xl" fontWeight="bold" color="teal.600">

@@ -8,7 +8,7 @@ interface PrivateLayoutProps {
 
 export const PrivateLayout = ({ children }: PrivateLayoutProps) => {
     return (
-        <Box as="section" bg="gray.50" py={{ base: '6', md: '12' }} px={{ base: '4', md: '8' }} maxW="container.xl" marginX="auto" textAlign="center">
+        <Box as="section" bg="gray.50" py={{ base: '6', md: '12' }} px={{ base: '4', md: '8' }} maxW="100%" marginX="auto" textAlign="center">
             <PrivateHeader />
             <Flex direction="column" align="center" justify="center" minH="80vh">
                 {children}

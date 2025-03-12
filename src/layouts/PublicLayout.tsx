@@ -8,9 +8,9 @@ interface PublicLayoutProps {
 
 export const PublicLayout = ({ children }: PublicLayoutProps) => {
   return (
-    <Box as="section" bg="gray.50" py={{ base: '6', md: '12' }} px={{ base: '4', md: '8' }} maxW="container.xl" marginX="auto" textAlign="center">
+    <Box as="section" bg="gray.50" maxW="100%" marginX="0" textAlign="center">
       <PublicHeader />
-      <Flex direction="column" align="center" justify="center" minH="80vh">
+      <Flex direction="column" justify="center" width="100%">
         {children}
       </Flex>
       {/* Vous pouvez ajouter un pied de page ici si nécessaire */}
