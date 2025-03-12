@@ -1,83 +1,8 @@
-import { Heading, Text, Button, VStack, Table, Thead, Tr, Th, Tbody, Td, useColorModeValue, Box } from '@chakra-ui/react';
-import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
-
+import { Heading, Text, Button, VStack, Table, Thead, Tr, Th, Tbody, Td, Box } from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons';
+import { FONCTIONNALITES, FORMULE_TITLES, COMMENTAIRES, SUBSCRIBE_BUTTON, FONCTIONNALITES_HEADER } from '../../constantes';
 
 export const Formules = () => {
-    const FONCTIONNALITES = [
-        {
-            nom: "Veille concurrentielle",
-            essentiel: true,
-            pro: true,
-            expert: true,
-            type: 'check'
-        },
-        {
-            nom: "Cartographie des risques",
-            essentiel: false,
-            pro: true,
-            expert: true,
-            type: 'check'
-        },
-        {
-            nom: "Rapports détaillés",
-            essentiel: false,
-            pro: true,
-            expert: true,
-            type: 'check'
-        },
-        {
-            nom: "Alertes stratégiques",
-            essentiel: true,
-            pro: true,
-            expert: true,
-            type: 'check'
-        },
-        {
-            nom: "Accès API",
-            essentiel: false,
-            pro: false,
-            expert: true,
-            type: 'check'
-        },
-        {
-            nom: "Support dédié",
-            essentiel: 'Email',
-            pro: 'Chat',
-            expert: 'Prioritaire',
-            type: 'text'
-        },
-        {
-            nom: "Prix",
-            essentiel: '29€',
-            pro: '59€',
-            expert: '99€',
-            type: 'text'
-        },
-        {
-            nom: "S'abonner",
-            essentiel: "S'abonner",
-            pro: "S'abonner",
-            expert: "S'abonner",
-            type: 'btn'
-        }
-    ]
-
-    const TITLE = "⭐ Ce qu’ils disent de nous"
-    const COMMENTAIRES = [
-        {
-            nom: " 📢 Claire M. - Dirigeante d’une PME",
-            commentaire: "Grâce à Intelligentsia, nous avons pu anticiper une évolution réglementaire majeure qui aurait pu impacter notre activité. Un vrai game-changer !"
-        },
-        {
-            nom: " 📢 Julien D. - Responsable Stratégie",
-            commentaire: "Les rapports stratégiques sur demande sont précis et ultra-pertinents. Un outil indispensable pour notre expansion à l’international."
-        },
-        {
-            nom: " 📢 Sophie L. - Fondatrice d’une startup tech",
-            commentaire: "La veille concurrentielle automatisée nous permet de rester réactifs et de toujours avoir un coup d’avance sur le marché."
-        }
-    ]
-
     const subscribe = (rowName: string) => {
         console.log('soucription', rowName);
     }
@@ -86,7 +11,7 @@ export const Formules = () => {
         if (row.type === 'btn') {
             return <Td textAlign="center" py={6}>
                 <Button colorScheme="teal" variant="outline" size="lg" onClick={() => subscribe(rowName)}>
-                    S'abonner
+                    {SUBSCRIBE_BUTTON}
                 </Button>
             </Td>
         } else if (row.type === 'text') {
@@ -99,24 +24,23 @@ export const Formules = () => {
         <VStack spacing={12} bg="gray.100" mt={0} pt={12} pl={120} pr={120}>
             <Box>
                 <Text size="xl" color="teal.600" mb={4}>
-                    Choisissez la formule qui accélère votre croissance.
+                    {FORMULE_TITLES.title}
                 </Text>
 
 
                 <Text size="xl" color="teal.600" mb={4}>
-                    Des solutions adaptées à chaque entreprise, de la veille stratégique à l’analyse avancée.
+                    {FORMULE_TITLES.subtitle}
                 </Text>
 
 
                 <Table variant="simple" size="lg">
                     <Thead>
                         <Tr>
-                            <Th bg="gray.200" fontSize="xl" borderRightWidth="1px" borderColor="whiteAlpha.300">
-                                Fonctionnalités
-                            </Th>
-                            <Th bg="gray.200" fontSize="xl" textAlign="center">Essentiel</Th>
-                            <Th bg="gray.200" fontSize="xl" textAlign="center">Pro</Th>
-                            <Th bg="gray.200" fontSize="xl" textAlign="center">Expert</Th>
+                            {FONCTIONNALITES_HEADER.map((header) => (
+                                <Th bg="gray.200" fontSize="xl" borderRightWidth="1px" borderColor="whiteAlpha.300">
+                                    {header}
+                                </Th>
+                            ))}
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -134,7 +58,7 @@ export const Formules = () => {
 
                 <Box>
                     <Heading as="h3" size="md" color="gray.800" mb={4}>
-                        {TITLE}
+                        {FORMULE_TITLES.commentaires}
                     </Heading>
                     {COMMENTAIRES.map((commentaire) => (
                         <Text color="gray.600" lineHeight="tall">
@@ -153,7 +77,7 @@ export const Formules = () => {
                         _hover={{ transform: 'scale(1.05)' }}
                         transition="all 0.2s"
                     >
-                        S'abonner
+                        {SUBSCRIBE_BUTTON}
                     </Button>
                 </Box>
             </Box>

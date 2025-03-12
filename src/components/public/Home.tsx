@@ -1,25 +1,13 @@
 import { Text, Button, Box, HStack, VStack } from '@chakra-ui/react';
+import { TITLES, HOME_PARAGRAPHS as PARAGRAPHS } from '../../constantes';
 
 const Home = () => {
 
-  const TITLES = {
-    "title": "Prenez une longueur d'avance avec l'intelligence Économique",
-    "subtitle1": "📡Surveillez vos concurrents.",
-    "subtitle2": "💡Détectez les opportunités.",
-    "subtitle3": "🚀Anticipez le marché."
-  }
-  const PARAGRAPHS = [{
-    title: " Anticipez: Décidez. Gagnez.",
-    description: "Dans un monde en constante évolution, chaque décision compte. Intelligentsla vous donne un coup d'avance grâce à l'intelligence économique. Analysez votre marché, surveillez vos concurrents et détectez les opportunités avant les autres. Grâce à notre technologie basée sur l'IA, nous transformons des milliers de données en informations stratégiques exploitables, pour vous permettre de prendre les meilleures décisions, au bon moment.",
-  },
-  {
-    title: "Une veille automatisée, un avantage concurrentiel durable",
-    description: "Finies les recherches interminables et les décisions basées sur l'intuition. Notre plateforme vous alerte en temps réel sur les tendances, les évolutions du marché et les opportunités d'affaires adaptées à votre activité. Que vous soyez une TPE ou un entrepreneur ambitieux, Intelligentsla vous offre les outils pour comprendre, anticiper et dominer votre secteur."
-  }]
+
 
   return (
     <>
-      <VStack width="100%" spacing={12} bg="gray.100" mt={0} pt={12}  px={{ base: 4, md: 8 }}>
+      <VStack width="100%" spacing={12} bg="gray.100" mt={0} pt={12} px={{ base: 4, md: 8 }}>
         <Box textAlign="center">
           <Text as="h6" size="lg" mb={6} color="gray.800">
             {TITLES.title}

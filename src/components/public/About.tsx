@@ -1,45 +1,16 @@
 import { Heading, Text, Button, Textarea, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box, VStack, HStack } from '@chakra-ui/react';
 import { useState } from 'react';
+import { PARAGRAPHS, ABOUT_TITLES } from '../../constantes';
 
 export const About = () => {
   const [message, setMessage] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
 
-  const PARAGRAPHS = [{
-    title: "  Présentation de l'Entreprise",
-    sousParagraphs: [{
-      title: "🚀 Qui sommes-nous ?",
-      description: "Intelligentsia est une plateforme d'intelligence économique qui accompagne les entreprises dans leur prise de décision stratégique. Grâce à l'IA et à l'analyse avancée des données, nous aidons les TPE et PME à anticiper les tendances et à optimiser leur compétitivité.",
-    },
-    {
-      title: "🎯 Notre mission",
-      description: "Notre mission est de démocratiser l'intelligence économique en rendant accessible des outils puissants de veille, d'analyse et de reporting. Nous permettons aux entreprises de mieux comprendre leur marché, de détecter les opportunités et de minimiser les risques."
-    }]
-  },
-  {
-    title: "Une veille automatisée, un avantage concurrentiel durable",
-    sousParagraphs: [{
-      title: "💡 Innovation",
-      description: "Nous mettons l'intelligence artificielle au service de la stratégie pour offrir des analyses précises et actionnables."
-    },
-    {
-      title: "🤝 Transparence",
-      description: "Nos données et nos analyses sont claires et fiables, permettant une prise de décision éclairée."
-    },
-    {
-      title: "📊 Performance",
-      description: "Nos outils sont conçus pour offrir des insights pertinents et un réel avantage concurrentiel à nos clients."
-    },
-    {
-      title: "🌍 Vision internationale",
-      description: "Nous accompagnons les entreprises dans leur expansion en leur fournissant une vision globale du marché."
-    }]
-  }]
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('/api/support/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message })
@@ -57,18 +28,27 @@ export const About = () => {
   };
 
   return (
-    <HStack spacing={0} width="100%">
-      <VStack width="80%">
-        <Heading size="2xl" color="teal.600" mb={4}>
-          Intelligentsia, votre allié en intelligence économique
-        </Heading>
+    <HStack
+      spacing={0}
+      width="100%"
+      maxWidth="100vw"
+      pt={120}
+      px={{ base: 4, md: 8 }}
+    >
+      <VStack
+        width="100%"
+        maxWidth="container.xl"
+        marginX="auto"
+      >
+        <Text fontSize="lg" color="gray.600" textAlign="center">
+          {ABOUT_TITLES.title}
+        </Text>
 
-        <Text fontSize="lg" color="gray.600">
-          Nous transformons l'information en décision stratégique pour vous donner un temps d'avance.
+        <Text fontSize="lg" color="gray.600" textAlign="center">
+          {ABOUT_TITLES.subtitle}
         </Text>
 
         <Accordion allowToggle w="100%">
-          {/* Section Présentation */}
           {PARAGRAPHS.map((paragraph) => (
             <AccordionItem border="none" mb={4}>
               <AccordionButton
@@ -98,7 +78,6 @@ export const About = () => {
           ))}
         </Accordion>
 
-        {/* Section Contact */}
         <Box mt={12}>
           <Heading size="xl" color="teal.600" mb={6}>
             Contactez-nous
