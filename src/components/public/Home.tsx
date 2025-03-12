@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <>
-      <VStack width="100%" spacing={12} bg="gray.100" mt={0} pt={12} pl={120} pr={90}>
+      <VStack width="100%" spacing={12} bg="gray.100" mt={0} pt={12}  px={{ base: 4, md: 8 }}>
         <Box textAlign="center">
           <Text as="h6" size="lg" mb={6} color="gray.800">
             {TITLES.title}

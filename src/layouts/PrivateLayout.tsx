@@ -8,12 +8,11 @@ interface PrivateLayoutProps {
 
 export const PrivateLayout = ({ children }: PrivateLayoutProps) => {
     return (
-        <Box as="section" bg="gray.50" py={{ base: '6', md: '12' }} px={{ base: '4', md: '8' }} maxW="100%" marginX="auto" textAlign="center">
+        <Box as="section" bg="gray.50" width="100vw" minHeight="100vh" overflowX="hidden">
             <PrivateHeader />
             <Flex direction="column" align="center" justify="center" minH="80vh">
                 {children}
             </Flex>
-            {/* Vous pouvez ajouter un pied de page ici si nécessaire */}
         </Box>
     );
 };

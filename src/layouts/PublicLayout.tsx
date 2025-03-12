@@ -8,12 +8,11 @@ interface PublicLayoutProps {
 
 export const PublicLayout = ({ children }: PublicLayoutProps) => {
   return (
-    <Box as="section" bg="gray.50" maxW="100%" marginX="0" textAlign="center">
+    <Box as="section" bg="gray.50" width="100vw" minHeight="100vh" overflowX="hidden">
       <PublicHeader />
-      <Flex direction="column" justify="center" width="100%">
+      <Flex direction="column" width="100%" flex={1} px={{ base: 4, md: 8 }}>
         {children}
       </Flex>
-      {/* Vous pouvez ajouter un pied de page ici si nécessaire */}
       <PublicFooter />
     </Box>
   );
