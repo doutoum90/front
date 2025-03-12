@@ -2,12 +2,19 @@ import { Text, Button, Box, HStack, VStack } from '@chakra-ui/react';
 import { TITLES, HOME_PARAGRAPHS as PARAGRAPHS } from '../../constantes';
 
 const Home = () => {
-
-
-
   return (
-    <>
-      <VStack width="100%" spacing={12} bg="gray.100" mt={0} pt={12} px={{ base: 4, md: 8 }}>
+    <HStack
+      spacing={0}
+      width="100%"
+      maxWidth="100vw"
+      pt={12}
+      px={{ base: 4, md: 8 }}
+    >
+      <VStack
+        width="100%"
+        maxWidth="container.xl"
+        marginX="auto"
+      >
         <Box textAlign="center">
           <Text as="h6" size="lg" mb={6} color="gray.800">
             {TITLES.title}
@@ -26,9 +33,9 @@ const Home = () => {
         >
           <VStack width="80%"
             alignItems="flex-start" textAlign="left">
-            {PARAGRAPHS.map((paragraph) => (
+            {PARAGRAPHS.map((paragraph, index) => (
               <>
-                <Text size="md" fontWeight="bold" fontSize="xl">
+                <Text size="md" fontWeight="bold" fontSize="xl" key={index}>
                   {paragraph.title}
                 </Text>
                 <Text lineHeight="tall" color="gray.600" mb={4}>
@@ -59,7 +66,7 @@ const Home = () => {
           </VStack>
         </HStack>
       </VStack>
-    </>
+    </HStack>
   );
 };
 

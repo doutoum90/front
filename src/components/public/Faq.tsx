@@ -35,8 +35,8 @@ export const Faq = () => {
 
         <Accordion allowToggle width="100%">
 
-          {FAQ.map((faq) => (
-            <AccordionItem border="none" mb={4}>
+          {FAQ.map((faq, index) => (
+            <AccordionItem border="none" mb={4} key={index}>
               <AccordionButton
                 _hover={{ bg: 'teal.50' }}
                 py={4}
@@ -50,8 +50,8 @@ export const Faq = () => {
 
               <AccordionPanel pb={4} bg="teal.50" borderRadius="md">
                 <VStack spacing={4} align="stretch">
-                  {faq.questions.map((question) => (
-                    <Box>
+                  {faq.questions.map((question, questionIndex) => (
+                    <Box key={questionIndex}>
                       <Text fontWeight="600" textAlign="left">{question.question}</Text>
                       <Text color="gray.600" textAlign="left">
                         {question.reponse}

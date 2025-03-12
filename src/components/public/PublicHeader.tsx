@@ -1,8 +1,9 @@
 import { Flex, Button, Text, Box, Heading, HStack, VStack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-
+import { MENU } from "../../constantes";
 export const PublicHeader = () => {
-    const navigate = useNavigate()
+
+    const navigate = useNavigate();
 
     return (
         <Box maxW="100%" m={0} p={0}>
@@ -57,34 +58,17 @@ export const PublicHeader = () => {
                         </Button>
                     </Flex>
                     <Flex width="100%" justify="flex-start" pl={8} mb={-8}>
-                        <Button
-                            variant="ghost"
-                            color="white"
-                            bg="#7cb3cf"
-                            size="lg"
-                            onClick={() => navigate('/actions')}
-                        >Nos actions</Button>
-                        <Button
-                            variant="ghost"
-                            size="lg"
-                            color="white"
-                            bg="#7cb3cf"
-                            onClick={() => navigate('/formules')}
-                        >Nos formules</Button>
-                        <Button
-                            variant="ghost"
-                            color="white"
-                            size="lg"
-                            bg="#7cb3cf"
-                            onClick={() => navigate('/faq')}
-                        >FAQ</Button>
-                        <Button
-                            variant="ghost"
-                            color="white"
-                            size="lg"
-                            bg="#7cb3cf"
-                            onClick={() => navigate('/about')}
-                        >À propos</Button>
+                        {MENU.map((btn, index) => (
+                            <Button
+                                key={index}
+                                variant="ghost"
+                                color="white"
+                                bg="#7cb3cf"
+                                size="lg"
+                                onClick={() => navigate(btn.link)}
+                                mr={4}
+                            >{btn.label}</Button>
+                        ))}
                     </Flex>
                 </VStack>
             </HStack>
@@ -93,3 +77,5 @@ export const PublicHeader = () => {
         </Box>
     )
 }
+
+export default PublicHeader;

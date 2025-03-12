@@ -1,3 +1,5 @@
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa"
+
 export const FAQ = [
     {
         title: "Abonnement & Tarification",
@@ -199,3 +201,57 @@ export const ABOUT_TITLES = {
     title: "Intelligentsia, votre allié en intelligence économique",
     subtitle: "Nous transformons l'information en décision stratégique pour vous donner un temps d'avance."
 }
+
+export const MENU = [
+    {
+        label: "Nos actions",
+        link: "/actions"
+    },
+    {
+        label: "Nos formules",
+        link: "/formules"
+    },
+    {
+        label: "FAQ",
+        link: "/faq"
+    },
+    {
+        label: "À propos",
+        link: "/about"
+    }
+];
+
+
+export const MAIL = "contact@intelligentsia.fr";
+export const PHONE = "+33 1 23 45 67 89";
+export const ADDRESS = "12 Rue de l'Innovation, 75000 Paris";
+export const SOCIAL_MEDIA = [
+    {
+        icon: FaFacebook,
+        link: "https://www.facebook.com/intelligentsia",
+    },
+    {
+        icon: FaTwitter,
+        link: "https://www.twitter.com/intelligentsia",
+    },
+    {
+        icon: FaLinkedin,
+        link: "https://www.linkedin.com/intelligentsia",
+    },
+    {
+        icon: FaInstagram,
+        link: "https://www.instagram.com/intelligentsia",
+    },
+];
+export const YEAR = new Date().getFullYear();
+export const COPYRIGHT = `© ${YEAR} Intelligentsia. Tous droits réservés`;
+export const OTHER_LINKS = [
+    {
+        label: "Politique de confidentialité",
+        link: "/privacy",
+    },
+    {
+        label: "Conditions d'utilisation",
+        link: "/terms",
+    },
+];

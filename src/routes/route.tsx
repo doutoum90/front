@@ -19,6 +19,9 @@ const About = lazy(() => import('../components/public/About'));
 const Actions = lazy(() => import('../components/public/Actions'));
 const Formules = lazy(() => import('../components/public/Formules'));
 const Faq = lazy(() => import('../components/public/Faq'));
+const Contact = lazy(() => import('../components/public/Contact'));
+const PrivacyPolicy = lazy(() => import('../components/public/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('../components/public/TermsOfService'));
 
 const LoginForm = lazy(() => import('../components/auths/LoginForm'));
 const PasswordReset = lazy(() => import('../components/auths/PasswordReset'));
@@ -40,6 +43,9 @@ export const routes = [
       { path: 'actions', element: lazyLoad(Actions) },
       { path: 'formules', element: lazyLoad(Formules) },
       { path: 'faq', element: lazyLoad(Faq) },
+      { path: 'contact', element: lazyLoad(Contact) },
+      { path: 'privacy', element: lazyLoad(PrivacyPolicy) },
+      { path: 'terms', element: lazyLoad(TermsOfService) },
     ],
   },
   {
