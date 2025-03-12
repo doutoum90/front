@@ -8,6 +8,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 type User = {
   email: string;
+  name?: string;
+  lastname?: string;
   // Ajoutez d'autres propriétés utilisateur au besoin
 };
 
@@ -37,19 +39,19 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     const verifyToken = async () => {
       const accessToken = localStorage.getItem('access_token');
       const refreshToken = localStorage.getItem('refresh_token');
-  
+
       // Si aucun token n'est présent
       if (!accessToken && !refreshToken) {
         setLoading(false);
         return;
       }
-  
+
       try {
         // Vérification initiale du token
         const verifyResponse = await fetch('/api/auth/verify', {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
-  
+
         if (verifyResponse.ok) {
           const userData = await verifyResponse.json();
           setUser(userData);
@@ -59,29 +61,29 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
       } catch (error) {
         console.error('Token verification error:', error);
       }
-  
+
       // Si le token est invalide ou expiré, tenter le rafraîchissement
       if (refreshToken) {
         try {
           const refreshResponse = await fetch('/api/auth/refresh', {
             method: 'POST',
-            headers: { 
+            headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${refreshToken}` 
+              'Authorization': `Bearer ${refreshToken}`
             }
           });
-  
+
           if (refreshResponse.ok) {
             const { access_token } = await refreshResponse.json();
-            
+
             // Mettre à jour le token dans le localStorage
             localStorage.setItem('access_token', access_token);
-            
+
             // Relancer la vérification avec le nouveau token
             const newVerifyResponse = await fetch('/api/auth/verify', {
               headers: { Authorization: `Bearer ${access_token}` }
             });
-            
+
             if (newVerifyResponse.ok) {
               const userData = await newVerifyResponse.json();
               setUser(userData);
@@ -99,10 +101,10 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
       } else {
         navigate('/auth/login');
       }
-      
+
       setLoading(false);
     };
-  
+
     verifyToken();
   }, []); // Le tableau vide garantit que l'effet ne s'exécute qu'au montage
 
@@ -114,9 +116,9 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
         body: JSON.stringify(credentials)
       });
 
-      if (!response.ok){
+      if (!response.ok) {
         const errorData = await response.json();
-         throw new Error(errorData.message || 'Login failed');
+        throw new Error(errorData.message || 'Login failed');
       }
       const { access_token, refresh_token } = await response.json();
 
@@ -164,12 +166,12 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
       const refreshToken = localStorage.getItem('refresh_token');
       const response = await fetch('/api/auth/refresh', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${refreshToken}`
         }
       });
-  
+
       const { access_token } = await response.json();
       localStorage.setItem('access_token', access_token);
       return access_token;
