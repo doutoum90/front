@@ -25,7 +25,9 @@ const TermsOfService = lazy(() => import('../components/public/TermsOfService'))
 
 const FreeTrialPage = lazy(() => import('../components/public/FreeTrialPage/FreeTrialPage'));
 const TrialConfirmation = lazy(() => import('../components/public/FreeTrialPage/TrialConfirmation'));
+const CompetitorsPage = lazy(() => import('../components/protected/CompetitorsPage'));
 
+const EcranBoard = lazy(() => import('../components/public/FreeTrialPage/EcranBoard'));
 const LoginForm = lazy(() => import('../components/auths/LoginForm'));
 const PasswordReset = lazy(() => import('../components/auths/PasswordReset'));
 const RegisterForm = lazy(() => import('../components/auths/RegisterForm'));
@@ -52,6 +54,8 @@ export const routes = [
       { path: 'subscription', element: lazyLoad(SubscriptionFlow) },
       { path: 'free-trial', element: lazyLoad(FreeTrialPage) },
       { path: 'trial-confirmation', element: lazyLoad(TrialConfirmation) },
+      { path: 'ecran-board', element: lazyLoad(EcranBoard) },
+      { path: 'competitors', element: lazyLoad(CompetitorsPage) }
     ],
   },
   {
@@ -76,7 +80,7 @@ export const routes = [
     children: [
       { path: 'dashboard', element: lazyLoad(Dashboard) },
       { path: 'profile', element: lazyLoad(Profile) },
-      { path: 'settings', element: lazyLoad(Settings) },
+      { path: 'settings', element: lazyLoad(Settings) }
     ],
   },
   // Gestion des erreurs et redirections

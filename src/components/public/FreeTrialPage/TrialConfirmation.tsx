@@ -17,7 +17,7 @@ export const TrialConfirmation = () => {
                     colorScheme="blue"
                     size="lg"
                     as={Link}
-                    href="/espace-membre/dashboard"
+                    href="/ecran-board"
                 >
                     Accéder à mon tableau de bord
                 </Button>
