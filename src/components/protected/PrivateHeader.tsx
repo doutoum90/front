@@ -45,6 +45,11 @@ export const PrivateHeader = () => {
                             Dashboard
                         </Button>
                     </Link>
+                    <Link to="/espace-membre/workflow">
+                        <Button variant="ghost" colorScheme="teal">
+                            Workflow
+                        </Button>
+                    </Link>
 
                     {/* Menu Utilisateur */}
                     <Menu>

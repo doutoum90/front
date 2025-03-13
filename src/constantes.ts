@@ -108,7 +108,9 @@ export const HOME_PARAGRAPHS = [{
 
 export const CONCLUSION = "🚀 Avec Intelligentsia, transformez l'information en décision et prenez une longueur d'avance sur votre marché."
 
-export const FONCTIONNALITES_HEADER = ["Fonctionnalités", "Essentiel", "Pro", "Expert"]
+export const SUBSCRIBE_BUTTON = "S'abonner"
+export const TYPE_ABONNEMENT = ["Essentiel", "Pro", "Expert"]
+export const FONCTIONNALITES_HEADER = ["Fonctionnalités", ...TYPE_ABONNEMENT]
 export const FONCTIONNALITES = [
     {
         nom: "Veille concurrentielle",
@@ -160,10 +162,10 @@ export const FONCTIONNALITES = [
         type: 'text'
     },
     {
-        nom: "S'abonner",
-        essentiel: "S'abonner",
-        pro: "S'abonner",
-        expert: "S'abonner",
+        nom: SUBSCRIBE_BUTTON,
+        essentiel: SUBSCRIBE_BUTTON,
+        pro: SUBSCRIBE_BUTTON,
+        expert: SUBSCRIBE_BUTTON,
         type: 'btn'
     }
 ]
@@ -187,7 +189,6 @@ export const COMMENTAIRES = [
         commentaire: "La veille concurrentielle automatisée nous permet de rester réactifs et de toujours avoir un coup d’avance sur le marché."
     }
 ]
-export const SUBSCRIBE_BUTTON = "S'abonner"
 
 
 

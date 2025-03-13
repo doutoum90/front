@@ -1,10 +1,12 @@
 import { Heading, Text, Button, VStack, Table, Thead, Tr, Th, Tbody, Td, Box, HStack } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { FONCTIONNALITES, FORMULE_TITLES, COMMENTAIRES, SUBSCRIBE_BUTTON, FONCTIONNALITES_HEADER } from '../../constantes';
+import { useNavigate } from 'react-router-dom';
 
 export const Formules = () => {
+    const navigate = useNavigate();
     const subscribe = (rowName: string) => {
-        console.log('soucription', rowName);
+        navigate('/subscription');
     }
 
     const computeRow = (row: any, rowName: string) => {
@@ -84,6 +86,7 @@ export const Formules = () => {
                         py={6}
                         _hover={{ transform: 'scale(1.05)' }}
                         transition="all 0.2s"
+                        onClick={() => navigate('/subscription')}
                     >
                         {SUBSCRIBE_BUTTON}
                     </Button>

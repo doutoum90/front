@@ -133,7 +133,7 @@ export const LoginForm = () => {
                         <Text textAlign="center" mt={4} color="gray.600">
                             Pas de compte ?{' '}
                             <Link
-                                href="/register"
+                                href="/auth/register"
                                 color="teal.600"
                                 fontWeight="semibold"
                                 textDecoration="underline"

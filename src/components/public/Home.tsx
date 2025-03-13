@@ -1,7 +1,9 @@
 import { Text, Button, Box, HStack, VStack } from '@chakra-ui/react';
 import { TITLES, HOME_PARAGRAPHS as PARAGRAPHS } from '../../constantes';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <HStack
       spacing={0}
@@ -60,6 +62,7 @@ const Home = () => {
               borderRadius="2xl"
               _hover={{ transform: 'scale(1.05)' }}
               transition="all 0.2s"
+              onClick={() => navigate('/free-trial')}
             >
               {"Démarrer tout de suite\nvotre essai gratuit"}
             </Button>

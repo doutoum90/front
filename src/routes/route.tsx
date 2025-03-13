@@ -23,14 +23,17 @@ const Contact = lazy(() => import('../components/public/Contact'));
 const PrivacyPolicy = lazy(() => import('../components/public/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('../components/public/TermsOfService'));
 
+const FreeTrialPage = lazy(() => import('../components/public/FreeTrialPage/FreeTrialPage'));
+const TrialConfirmation = lazy(() => import('../components/public/FreeTrialPage/TrialConfirmation'));
+
 const LoginForm = lazy(() => import('../components/auths/LoginForm'));
 const PasswordReset = lazy(() => import('../components/auths/PasswordReset'));
 const RegisterForm = lazy(() => import('../components/auths/RegisterForm'));
-
 // Composants privés
 const Dashboard = lazy(() => import('../components/protected/Dashboard'));
 const Profile = lazy(() => import('../components/protected/Profile'));
 const Settings = lazy(() => import('../components/protected/Setting'));
+const SubscriptionFlow = lazy(() => import('../components/public/SubscriptionFlow'));
 
 export const routes = [
   {
@@ -46,6 +49,9 @@ export const routes = [
       { path: 'contact', element: lazyLoad(Contact) },
       { path: 'privacy', element: lazyLoad(PrivacyPolicy) },
       { path: 'terms', element: lazyLoad(TermsOfService) },
+      { path: 'subscription', element: lazyLoad(SubscriptionFlow) },
+      { path: 'free-trial', element: lazyLoad(FreeTrialPage) },
+      { path: 'trial-confirmation', element: lazyLoad(TrialConfirmation) },
     ],
   },
   {

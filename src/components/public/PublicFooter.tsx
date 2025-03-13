@@ -1,8 +1,11 @@
 import { Flex, Grid, GridItem, Text, Link, Icon, Box, Heading, Input, InputGroup, InputRightElement, Button, FormControl } from '@chakra-ui/react';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import { MENU, ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS } from '../../constantes';
+import { MENU, ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS, SUBSCRIBE_BUTTON } from '../../constantes';
+import { useNavigate } from 'react-router-dom';
+
 export const PublicFooter = () => {
-   
+    const navigate = useNavigate();
+
     return (
         <Box bg="gray.800" color="white" mt={16}>
             <Flex
@@ -88,8 +91,9 @@ export const PublicFooter = () => {
                                         mr={1}
                                         borderRadius="md"
                                         _hover={{ transform: "scale(1.05)" }}
+                                        onClick={() => navigate('/auth/subscription')}
                                     >
-                                        S'abonner
+                                        {SUBSCRIBE_BUTTON}
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>

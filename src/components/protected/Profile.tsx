@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 export const Profile = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const formatedDate = (createdAt?: string) => createdAt ? `Membre depuis ${new Date(createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}` : '';
     return (
         <Flex p={8} bg="gray.50" minH="100vh">
             <Box maxW="800px" w="100%" mx="auto">
@@ -47,47 +48,44 @@ export const Profile = () => {
                             </HStack>
                             <HStack>
                                 <FaCalendarAlt />
-                                <Text>Membre depuis 2022</Text>
+                                <Text> {formatedDate(user?.createdAt)}</Text>
                             </HStack>
                         </VStack>
                     </VStack>
 
                     {/* Main Content */}
                     <Box flex={1} bg="white" p={8} borderRadius="xl" boxShadow="md">
-                        <Heading size="xl" mb={6}>
-                            Jean Dupont
-                            <Badge ml={3} colorScheme="teal" fontSize="lg">
-                                Pro
-                            </Badge>
+                        <Heading size="sm" mb={6}>
+                            {user?.name} {user?.lastname}
                         </Heading>
 
                         <VStack spacing={6} align="stretch">
                             <Box>
                                 <Heading size="md" mb={2}>À propos</Heading>
                                 <Text color="gray.600">
-                                    Responsable marketing digital passionné par l'analyse de données
-                                    et l'optimisation des performances.
+                                    {user?.profession}
                                 </Text>
                             </Box>
 
                             <Box>
                                 <Heading size="md" mb={2}>Compétences</Heading>
                                 <Flex wrap="wrap" gap={2}>
-                                    {['Marketing Digital', 'Analyse de données', 'SEO', 'Google Analytics'].map((skill) => (
+                                    {user?.skills?.map((skill) => (
                                         <Badge key={skill} colorScheme="teal" px={3} py={1}>
-                                            {skill}
+                                            {skill} ejekek
                                         </Badge>
                                     ))}
                                 </Flex>
                             </Box>
-
                             <Box>
-                                <Heading size="md" mb={2}>Dernières activités</Heading>
-                                <VStack spacing={3} align="stretch">
-                                    <Text>• Configuration du tracking analytics (il y a 2h)</Text>
-                                    <Text>• Mise à jour des informations de paiement (il y a 1j)</Text>
-                                    <Text>• Téléchargement du rapport mensuel (il y a 3j)</Text>
-                                </VStack>
+                                <Heading size="md" mb={2}>Type d'abonnement</Heading>
+                                <Flex wrap="wrap" gap={2}>
+                                    {user?.typeAbonnement?.map((type) => (
+                                        <Badge key={type} colorScheme="teal" px={3} py={1}>
+                                            {type}
+                                        </Badge>
+                                    ))}
+                                </Flex>
                             </Box>
                         </VStack>
                     </Box>

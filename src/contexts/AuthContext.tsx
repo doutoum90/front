@@ -7,9 +7,15 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 type User = {
-  email: string;
+  createdAt?: string;
   name?: string;
   lastname?: string;
+  email: string;
+  password?: string;
+  dateOfBirth?: string;
+  profession?: string;
+  skills?: string[];
+  typeAbonnement?: string[];
   // Ajoutez d'autres propriétés utilisateur au besoin
 };
 
@@ -17,7 +23,7 @@ type AuthContextType = {
   user: User | null;
   loading: boolean;
   login: (credentials: { email: string; password: string }) => Promise<void>;
-  register: (userData: { email: string; password: string }) => Promise<void>;
+  register: (userData: User) => Promise<void>;
   logout: () => void;
   resetPassword: (email: string) => Promise<void>;
   refreshAccessToken: () => Promise<string>;
@@ -106,7 +112,7 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     };
 
     verifyToken();
-  }, []); // Le tableau vide garantit que l'effet ne s'exécute qu'au montage
+  }, []);
 
   const login = async (credentials: { email: string; password: string }) => {
     try {
@@ -120,12 +126,12 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
         const errorData = await response.json();
         throw new Error(errorData.message || 'Login failed');
       }
-      const { access_token, refresh_token } = await response.json();
+      const { access_token, refresh_token, user } = await response.json();
 
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
 
-      setUser({ email: credentials.email });
+      setUser(user);
       onLoginSuccess();
     } catch (error) {
       console.error('Login error:', error);
@@ -133,7 +139,7 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     }
   };
 
-  const register = async (userData: { email: string; password: string }) => {
+  const register = async (userData: User) => {
     const response = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
