@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import {
     VStack,
@@ -10,16 +11,41 @@ import {
     Grid,
     GridItem,
     Box,
-    Text
+    Text,
+    Spinner
 } from '@chakra-ui/react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import { UserData, SubscriptionPlan } from '../../types';
-
+import { UserData, SubscriptionPlan } from '../../../types';
+import { useEffect } from 'react';
 interface PaymentFormProps {
     user: UserData;
     plan: SubscriptionPlan;
     onSuccess: () => void;
 }
+
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(
+    import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_51R2VPYQMk6qRSmo1Hyhn24U7qXcHZoWVsDj0N9KejrLAaGjQc1IEIUzWyPla6ieTpztbur8MQfGlhaTFAOPhmf3R00ikVtdpEG'
+);
+
+interface PaymentPageProps {
+    user: UserData;
+    plan: SubscriptionPlan;
+    onSuccess: () => void;
+}
+export const PaymentPage = ({ user, plan, onSuccess }: PaymentPageProps) => {
+    return (
+        <Elements stripe={stripePromise}>
+            <PaymentForm
+                user={user}
+                plan={plan}
+                onSuccess={onSuccess}
+            />
+        </Elements>
+    );
+};
 
 export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
     const stripe = useStripe();
@@ -27,12 +53,34 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
     const toast = useToast();
     const [error, setError] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        if (stripe) {
+            setLoading(false);
+        }
+    }, [stripe]);
+
+
+    if (loading) {
+        return (
+            <Box textAlign="center" p={8}>
+                <Spinner size="xl" />
+                <Text mt={4}>Chargement du système de paiement...</Text>
+            </Box>
+        );
+    }
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!stripe || !elements) {
+            return console.error('Stripe non initialisé');
+        }
 
-        if (!stripe || !elements) return;
+        const cardElement = elements.getElement(CardElement);
 
+        if (!cardElement) {
+            return setError('Les informations de carte sont incomplètes');
+        }
         setIsProcessing(true);
         setError('');
 
@@ -52,14 +100,13 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
         }
 
         try {
-            // Appel à votre backend pour confirmer le paiement
-            const response = await fetch('/api/payment', {
+            const response = await fetch('/api/payments/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     paymentMethodId: paymentMethod.id,
                     planId: plan.id,
-                    amount: plan.price * 100 // Conversion en cents
+                    amount: plan.price * 100
                 })
             });
 

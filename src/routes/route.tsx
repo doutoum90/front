@@ -54,8 +54,6 @@ export const routes = [
       { path: 'subscription', element: lazyLoad(SubscriptionFlow) },
       { path: 'free-trial', element: lazyLoad(FreeTrialPage) },
       { path: 'trial-confirmation', element: lazyLoad(TrialConfirmation) },
-      { path: 'ecran-board', element: lazyLoad(EcranBoard) },
-      { path: 'competitors', element: lazyLoad(CompetitorsPage) }
     ],
   },
   {
@@ -80,7 +78,10 @@ export const routes = [
     children: [
       { path: 'dashboard', element: lazyLoad(Dashboard) },
       { path: 'profile', element: lazyLoad(Profile) },
-      { path: 'settings', element: lazyLoad(Settings) }
+      { path: 'settings', element: lazyLoad(Settings) },
+      { path: 'ecran-board', element: lazyLoad(EcranBoard) },
+      { path: 'competitors', element: lazyLoad(CompetitorsPage) }
+
     ],
   },
   // Gestion des erreurs et redirections

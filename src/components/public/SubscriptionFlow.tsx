@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Box, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, VStack, HStack } from '@chakra-ui/react';
 import { UserData, SubscriptionPlan } from '../../types';
 import { PlanSelection } from './PlanSelection';
-import { PaymentForm } from './PaymentForm';
+import { PaymentPage } from './paiements/PaymentForm';
 import { ConfirmationScreen } from './ConfirmationScreen';
 import { AccountCreationForm } from './AccountCreationForm';
 
@@ -76,7 +76,7 @@ export const SubscriptionFlow = () => {
             )}
 
             {activeStep === SubscriptionSteps.PAYMENT && (
-                <PaymentForm
+                <PaymentPage
                     user={userData!}
                     plan={selectedPlan!}
                     onSuccess={() => setActiveStep(SubscriptionSteps.CONFIRMATION)}

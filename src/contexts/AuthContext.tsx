@@ -71,7 +71,7 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
       // Si le token est invalide ou expiré, tenter le rafraîchissement
       if (refreshToken) {
         try {
-          const refreshResponse = await fetch('/api/auth/refresh', {
+            const refreshResponse = await fetch('/api/auth/refresh', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

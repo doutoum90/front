@@ -45,9 +45,9 @@ export const PrivateHeader = () => {
                             Dashboard
                         </Button>
                     </Link>
-                    <Link to="/espace-membre/workflow">
+                    <Link to="/espace-membre/competitors">
                         <Button variant="ghost" colorScheme="teal">
-                            Workflow
+                                Competitors
                         </Button>
                     </Link>
 

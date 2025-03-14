@@ -8,24 +8,24 @@ import { Competitor } from '../../types';
 export const CompetitorsPage = () => {
     const [competitors, setCompetitors] = useState<Competitor[]>([]);
     const getCompetitors = async () => {
-        return await fetch('http://localhost:3000/competitors').then(res => res.json());
+        return await fetch('/api/veille/competitors').then(res => res.json());
     };
     useEffect(() => {
         const fetchCompetitors = async () => {
             const data = await getCompetitors();
-            setCompetitors(data);
+            setCompetitors(data || []);
         };
         fetchCompetitors();
     }, []);
     const handleAdd = (competitor: Partial<Competitor>) => {
         const addCompetitor = async () => {
-            await fetch('http://localhost:3000/competitors', { method: 'POST', body: JSON.stringify(competitor) });
+            await fetch('/api/veille/competitors', { method: 'POST', body: JSON.stringify(competitor) });
         };
         addCompetitor();
     };
     const onDelete = (id: string) => {
         const deleteCompetitor = async () => {
-            await fetch(`http://localhost:3000/competitors/${id}`, { method: 'DELETE' });
+            await fetch(`/api/veille/competitors/${id}`, { method: 'DELETE' });
         };
         deleteCompetitor();
     };
@@ -35,9 +35,9 @@ export const CompetitorsPage = () => {
             <AddCompetitorForm onAdd={handleAdd} />
 
             <SimpleGrid columns={[1, 2, 3]} spacing={4} mt={4}>
-                {competitors.map((competitor: any) => (
+                {competitors.map((competitor: Competitor) => (
                     <Card key={competitor.id}>
-                        <CardBody>
+                        <CardBody key={competitor.id}>
                             <Text fontSize="xl">{competitor.name}</Text>
                             <Button mt={2} onClick={() => onDelete(competitor.id)}>
                                 Supprimer
