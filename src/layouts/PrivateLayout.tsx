@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { PrivateHeader } from '../components/protected/PrivateHeader';
 import { ReactNode } from 'react';
-
+import { PrivateFooter } from '../components/protected/PrivateFooter';
 interface PrivateLayoutProps {
     children: ReactNode;
 }
@@ -13,6 +13,7 @@ export const PrivateLayout = ({ children }: PrivateLayoutProps) => {
             <Flex direction="column" align="center" justify="center" minH="80vh">
                 {children}
             </Flex>
+            <PrivateFooter />
         </Box>
     );
 };

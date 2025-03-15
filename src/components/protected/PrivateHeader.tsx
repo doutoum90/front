@@ -11,14 +11,45 @@ import {
     Button,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 export const PrivateHeader = () => {
     const { user, logout } = useAuth();
+    const location = useLocation();
     const navigate = useNavigate();
     const menuBg = useColorModeValue('white', 'gray.800');
     const menuBorder = useColorModeValue('gray.200', 'gray.700');
+    const PROTECTED_ROUTES = [
+        {
+            name: 'Dashboard',
+            path: '/espace-membre/dashboard',
+        },
+        {
+            name: 'Veille',
+            path: '/espace-membre/veille',
+        },
+        {
+            name: 'Reports',
+            path: '/espace-membre/reports',
+        },
+        {
+            name: 'Alerts',
+            path: '/espace-membre/alerts',
+        },
+        {
+            name: 'Payments',
+            path: '/espace-membre/payments',
+        },
+        {
+            name: 'Subscription',
+            path: '/espace-membre/subscription',
+        },
+        {
+            name: 'Regulations',
+            path: '/espace-membre/regulations',
+        },
+    ]
 
     return (
         <Box
@@ -31,27 +62,29 @@ export const PrivateHeader = () => {
             zIndex="sticky"
         >
             <Flex alignItems="center" justifyContent="space-between" maxW="100%" mx="auto">
-                {/* Logo */}
+
                 <Link to="/">
                     <Text fontSize="2xl" fontWeight="bold" color="teal.600">
                         MyApp
                     </Text>
                 </Link>
 
-                {/* Menu Navigation */}
                 <Flex alignItems="center" gap={6}>
-                    <Link to="/espace-membre/dashboard">
-                        <Button variant="ghost" colorScheme="teal">
-                            Dashboard
-                        </Button>
-                    </Link>
-                    <Link to="/espace-membre/competitors">
-                        <Button variant="ghost" colorScheme="teal">
-                                Competitors
-                        </Button>
-                    </Link>
 
-                    {/* Menu Utilisateur */}
+                    {PROTECTED_ROUTES.map((item) => (
+                        <Link to={item.path} key={item.path}>
+                            <Button
+                                variant={location.pathname === item.path ? 'solid' : 'ghost'}
+                                colorScheme="teal"
+                                aria-current={location.pathname === item.path ? 'page' : undefined}
+                                borderBottom={location.pathname === item.path ? '2px solid' : 'none'}
+                                borderColor="teal.500"
+                            >
+                                {item.name}
+                            </Button>
+                        </Link>
+                    ))}
+
                     <Menu>
                         <MenuButton
                             as={Button}
@@ -63,7 +96,7 @@ export const PrivateHeader = () => {
                             <Avatar
                                 size="sm"
                                 name={user?.email}
-                                src="https://bit.ly/broken-link" // Remplacez par l'URL de l'avatar utilisateur
+                                src="https://bit.ly/broken-link"
                                 bg="teal.500"
                                 color="white"
                             />

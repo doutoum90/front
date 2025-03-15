@@ -36,6 +36,13 @@ const Dashboard = lazy(() => import('../components/protected/Dashboard'));
 const Profile = lazy(() => import('../components/protected/Profile'));
 const Settings = lazy(() => import('../components/protected/Setting'));
 const SubscriptionFlow = lazy(() => import('../components/public/SubscriptionFlow'));
+const Autres = lazy(() => import('../components/protected/Autres'));
+
+const Veille = lazy(() => import('../components/protected/Veille'));
+const Reports = lazy(() => import('../components/protected/Reports'));
+const Alerts = lazy(() => import('../components/protected/Alerts'));
+const Payments = lazy(() => import('../components/protected/Payments'));
+const Regulations = lazy(() => import('../components/protected/Regulations'));
 
 export const routes = [
   {
@@ -51,7 +58,6 @@ export const routes = [
       { path: 'contact', element: lazyLoad(Contact) },
       { path: 'privacy', element: lazyLoad(PrivacyPolicy) },
       { path: 'terms', element: lazyLoad(TermsOfService) },
-      { path: 'subscription', element: lazyLoad(SubscriptionFlow) },
       { path: 'free-trial', element: lazyLoad(FreeTrialPage) },
       { path: 'trial-confirmation', element: lazyLoad(TrialConfirmation) },
     ],
@@ -80,7 +86,12 @@ export const routes = [
       { path: 'profile', element: lazyLoad(Profile) },
       { path: 'settings', element: lazyLoad(Settings) },
       { path: 'ecran-board', element: lazyLoad(EcranBoard) },
-      { path: 'competitors', element: lazyLoad(CompetitorsPage) }
+      { path: 'veille', element: lazyLoad(Veille) },
+      { path: 'reports', element: lazyLoad(Reports) },
+      { path: 'alerts', element: lazyLoad(Alerts) },
+      { path: 'regulations', element: lazyLoad(Regulations) },
+      { path: 'subscription', element: lazyLoad(SubscriptionFlow) },
+      { path: 'payments', element: lazyLoad(Payments) },
 
     ],
   },

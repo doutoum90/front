@@ -1,9 +1,10 @@
 import { Flex, Button, Text, Box, Heading, HStack, VStack } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { MENU } from "../../constantes";
 export const PublicHeader = () => {
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     return (
         <Box maxW="100%" m={0} p={0}>
@@ -61,13 +62,20 @@ export const PublicHeader = () => {
                         {MENU.map((btn, index) => (
                             <Button
                                 key={index}
-                                variant="ghost"
-                                color="white"
-                                bg="#7cb3cf"
+                                variant={location.pathname === btn.link ? 'solid' : 'ghost'}
+                                color={location.pathname === btn.link ? 'blue.800' : 'white'}
+                                bg={location.pathname === btn.link ? 'gray.200' : '#7cb3cf'}
+                                _hover={{
+                                    bg: location.pathname === btn.link ? 'blue.700' : 'blue.50'
+                                }}
                                 size="lg"
                                 onClick={() => navigate(btn.link)}
                                 mr={4}
-                            >{btn.label}</Button>
+                                borderBottom={location.pathname === btn.link ? '2px solid' : 'none'}
+                                borderColor="white"
+                            >
+                                {btn.label}
+                            </Button>
                         ))}
                     </Flex>
                 </VStack>

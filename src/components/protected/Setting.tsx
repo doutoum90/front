@@ -16,8 +16,29 @@ import {
     Flex
 } from '@chakra-ui/react';
 import { FaUserCog, FaShieldAlt, FaBell } from 'react-icons/fa';
+import axios from 'axios';
+import { useState } from 'react';
+
 
 export const Settings = () => {
+    const [settings, setSettings] = useState({
+        email: '',
+        password: '',
+        region: '',
+        name: '',
+    });
+
+    const saveSettings = async () => {
+        const refreshToken = localStorage.getItem('refresh_token');
+        try {
+            const response = await axios.post('/api/settings', settings, {
+                headers: { Authorization: `Bearer ${refreshToken}` },
+            });
+            console.log(response.data);
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde des paramètres :', error);
+        }
+    };
     return (
         <Box p={8} bg="gray.50" minH="100vh">
             <Heading size="xl" mb={8} color="teal.600">
@@ -44,12 +65,12 @@ export const Settings = () => {
 
                             <FormControl>
                                 <FormLabel>Nom complet</FormLabel>
-                                <Input placeholder="Jean Dupont" />
+                                <Input placeholder="Jean Dupont" onChange={(e) => setSettings({ ...settings, name: e.target.value })} />
                             </FormControl>
 
                             <FormControl>
                                 <FormLabel>Email</FormLabel>
-                                <Input type="email" placeholder="contact@exemple.com" />
+                                <Input type="email" placeholder="contact@exemple.com" onChange={(e) => setSettings({ ...settings, email: e.target.value })} />
                             </FormControl>
 
                             <Button colorScheme="teal" alignSelf="flex-end">
@@ -62,7 +83,7 @@ export const Settings = () => {
                         <VStack spacing={6} maxW="600px">
                             <FormControl>
                                 <FormLabel>Changer le mot de passe</FormLabel>
-                                <Input type="password" placeholder="Nouveau mot de passe" />
+                                <Input type="password" placeholder="Nouveau mot de passe" onChange={(e) => setSettings({ ...settings, password: e.target.value })} />
                             </FormControl>
 
                             <FormControl>
@@ -70,7 +91,7 @@ export const Settings = () => {
                                 <Switch colorScheme="teal" />
                             </FormControl>
 
-                            <Button colorScheme="teal" alignSelf="flex-end">
+                            <Button colorScheme="teal" alignSelf="flex-end" onClick={() => saveSettings()}>
                                 Mettre à jour
                             </Button>
                         </VStack>
