@@ -9,15 +9,15 @@ import {
     StatNumber,
     StatHelpText,
     Icon,
-    Progress,
     Box,
     SimpleGrid,
     VStack
 } from '@chakra-ui/react';
-import { FaChartLine, FaUsers, FaBoxOpen } from 'react-icons/fa';
+import { FaChartLine } from 'react-icons/fa';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion } from 'framer-motion';
-
+import { useNavigate } from 'react-router-dom';
+import { DASHBOARD_DATA } from '../../constantes';
 const MotionBox = motion(Box);
 
 const data = [
@@ -30,6 +30,9 @@ const data = [
 ];
 const recentActivity = [1, 2, 3];
 export const Dashboard = () => {
+    const navigate = useNavigate();
+
+
     return (
         <Flex direction="column" p={8} bg="gray.50" minH="100vh">
             <Heading size="xl" mb={8} color="teal.600">
@@ -37,70 +40,29 @@ export const Dashboard = () => {
             </Heading>
 
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6} mb={8}>
-                <MotionBox
-                    p={6}
-                    bg="white"
-                    borderRadius="xl"
-                    boxShadow="md"
-                    whileHover={{ y: -5 }}
-                >
-                    <Stat>
-                        <StatLabel>CA Mensuel</StatLabel>
-                        <StatNumber>€24,500</StatNumber>
-                        <StatHelpText>
-                            <Icon as={FaChartLine} mr={2} color="green.500" />
-                            12% depuis le mois dernier
-                        </StatHelpText>
-                    </Stat>
-                </MotionBox>
+                {DASHBOARD_DATA.map((item) => (
+                    <MotionBox
+                        key={item.name}
+                        onClick={() => {
+                            navigate(item.path);
+                        }}
+                        p={6}
+                        bg="white"
+                        borderRadius="xl"
+                        boxShadow="md"
+                        whileHover={{ y: -5 }}
+                        cursor="pointer"
+                    >
+                        <Stat>
+                            <StatLabel>{item.name}</StatLabel>
+                            <StatHelpText>
+                                <Icon as={FaChartLine} mr={2} color="green.500" />
+                                {item.text}
+                            </StatHelpText>
+                        </Stat>
+                    </MotionBox>
+                ))}
 
-                <MotionBox
-                    p={6}
-                    bg="white"
-                    borderRadius="xl"
-                    boxShadow="md"
-                    whileHover={{ y: -5 }}
-                >
-                    <Stat>
-                        <StatLabel>Utilisateurs Actifs</StatLabel>
-                        <StatNumber>1,234</StatNumber>
-                        <StatHelpText>
-                            <Icon as={FaUsers} mr={2} color="blue.500" />
-                            5% de croissance
-                        </StatHelpText>
-                    </Stat>
-                </MotionBox>
-
-                <MotionBox
-                    p={6}
-                    bg="white"
-                    borderRadius="xl"
-                    boxShadow="md"
-                    whileHover={{ y: -5 }}
-                >
-                    <Stat>
-                        <StatLabel>Commandes</StatLabel>
-                        <StatNumber>89</StatNumber>
-                        <StatHelpText>
-                            <Icon as={FaBoxOpen} mr={2} color="orange.500" />
-                            3 en attente
-                        </StatHelpText>
-                    </Stat>
-                </MotionBox>
-
-                <MotionBox
-                    p={6}
-                    bg="white"
-                    borderRadius="xl"
-                    boxShadow="md"
-                    whileHover={{ y: -5 }}
-                >
-                    <Stat>
-                        <StatLabel>Objectif Mensuel</StatLabel>
-                        <StatNumber>75%</StatNumber>
-                        <Progress value={75} size="sm" colorScheme="teal" mt={2} />
-                    </Stat>
-                </MotionBox>
             </SimpleGrid>
 
             <Grid templateColumns={{ md: "2fr 1fr" }} gap={6}>

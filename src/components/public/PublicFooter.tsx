@@ -1,6 +1,6 @@
 import { Flex, Grid, GridItem, Text, Link, Icon, Box, Heading, Input, InputGroup, InputRightElement, Button, FormControl } from '@chakra-ui/react';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import { MENU, ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS, SUBSCRIBE_BUTTON } from '../../constantes';
+import { PUBLIC_MENU, ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS, SUBSCRIBE_BUTTON } from '../../constantes';
 import { useNavigate } from 'react-router-dom';
 
 export const PublicFooter = () => {
@@ -37,14 +37,11 @@ export const PublicFooter = () => {
                             Navigation
                         </Heading>
                         <Flex direction="column">
-                            {MENU.map((btn, index) => (
+                            {PUBLIC_MENU.map((btn, index) => (
                                 <Link href={btn.link} _hover={{ color: "teal.400", textDecoration: "underline" }} mb={2} key={index}>
                                     {btn.label}
                                 </Link>
                             ))}
-                            <Link href="/contact" _hover={{ color: "teal.400", textDecoration: "underline" }}>
-                                Contact
-                            </Link>
                         </Flex>
                     </GridItem>
 

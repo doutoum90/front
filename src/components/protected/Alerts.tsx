@@ -64,9 +64,7 @@ import {
     useTheme,
     Badge,
     Box,
-    Flex,
-    Select,
-    Input
+    Flex
 } from '@chakra-ui/react';
 import { FiBell, FiCheckCircle, FiTrash2 } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
@@ -80,7 +78,10 @@ interface Alert {
     date: string;
     source: string;
 }
-
+interface Regulation {
+    id: number;
+    name: string;
+}
 
 const Alerts = () => {
     const ALERTES_MOCK = [
@@ -109,39 +110,47 @@ const Alerts = () => {
             source: 'Infrastructure'
         },
     ];
-
+    const REGULATIONS_MOCK = [
+        { id: 1, name: 'RGPD' },
+        { id: 2, name: 'CCP' },
+        { id: 3, name: 'GDPR' },
+    ];
     const [alerts, setAlerts] = useState<Alert[]>([]);
-    const [newAlertMessage, setNewAlertMessage] = useState('');
-    const [newAlertPriority, setNewAlertPriority] = useState('');
+    const [regulations, setRegulations] = useState<Regulation[]>([]);
 
     useEffect(() => {
         fetchAlerts();
+        fetchRegulations();
     }, []);
 
     const addAlert = async () => {
-        const refreshToken = localStorage.getItem('refresh_token');
-        try {
-            await axios.post('/api/alerts/subscribe', {
-                headers: { Authorization: `Bearer ${refreshToken}` },
-            });
-            fetchAlerts();
-        } catch (error) {
-            console.error('Erreur lors de l\'ajout d\'une alerte :', error);
-        }
+        const refreshToken = localStorage.getItem('refresh_token');;
+        await axios.post('/api/alerts/subscribe', {
+            headers: { Authorization: `Bearer ${refreshToken}` },
+        });
+        fetchAlerts();
     };
 
     const handleDelete = async (id: string) => {
+        const refreshToken = localStorage.getItem('refresh_token');;
+        await axios.delete(`/api/alerts/unsubscribe/${id}`, {
+            headers: { Authorization: `Bearer ${refreshToken}` },
+        });
+        fetchAlerts();
+    };
+    const fetchRegulations = async () => {
         const refreshToken = localStorage.getItem('refresh_token');
         try {
-            await axios.delete(`/api/alerts/unsubscribe/${id}`, {
+            const response = await axios.get('/api/regulations', {
                 headers: { Authorization: `Bearer ${refreshToken}` },
             });
-            fetchAlerts();
+            setRegulations(response.data);
         } catch (error) {
-            console.error('Erreur lors de la suppression d\'une alerte :', error);
+            console.error('Erreur lors de la récupération des réglementations:', error);
+            setRegulations(REGULATIONS_MOCK);
         }
-    };
 
+    };
 
     const fetchAlerts = async () => {
         const refreshToken = localStorage.getItem('refresh_token');
@@ -157,11 +166,8 @@ const Alerts = () => {
     };
     const theme = useTheme();
 
-    // Données fictives d'alertes
-
 
     const handleResolve = (alertId: string) => {
-        // Logique de résolution d'alerte
         console.log(`Résolution alerte ${alertId}`);
     };
 
@@ -181,19 +187,9 @@ const Alerts = () => {
                 <FiBell /> Gestion des Alertes
             </Text>
 
-            <Flex justifyContent="flex-start" mb={4}>
+            <Flex justifyContent="flex-end" mb={4}>
 
-                <Flex direction="column" mt={4}>
-                    <Text fontWeight="bold" mb={2}>Ajouter une nouvelle alerte</Text>
-                    <Input placeholder="Message de l'alerte" value={newAlertMessage} onChange={(e) => setNewAlertMessage(e.target.value)} mb={2} />
-                    <Select placeholder="Sélectionner la priorité" value={newAlertPriority} onChange={(e) => setNewAlertPriority(e.target.value)} mb={2}>
-                        <option value="Critique">Critique</option>
-                        <option value="Haute">Haute</option>
-                        <option value="Moyenne">Moyenne</option>
-                        <option value="Basse">Basse</option>
-                    </Select>
-                    <Button colorScheme="teal" onClick={addAlert}>Ajouter une alerte</Button>
-                </Flex>
+                <Button onClick={addAlert}>Ajouter une alerte</Button>
             </Flex>
 
             <TableContainer
@@ -269,6 +265,27 @@ const Alerts = () => {
                 </Table>
             </TableContainer>
 
+            <TableContainer
+                borderWidth="1px"
+                borderRadius="lg"
+                overflowX="auto"
+                boxShadow="md"
+            >
+                <Table variant="striped" colorScheme="orange">
+                    <Thead bg={theme.colors.orange[500]}>
+                        <Tr>
+                            <Th color="white">Nom</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {regulations.map((regulation) => (
+                            <Tr key={regulation.id}>
+                                <Td>{regulation.name}</Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            </TableContainer>
         </Container>
     );
 };

@@ -1,4 +1,3 @@
-// pages/CompetitorsPage.tsx
 import { SimpleGrid, Card, CardBody, Text, Button } from '@chakra-ui/react';
 import { AddCompetitorForm } from './AddCompetitorForm';
 import { useEffect, useState } from 'react';

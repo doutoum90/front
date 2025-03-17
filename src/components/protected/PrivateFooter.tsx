@@ -1,38 +1,9 @@
 import { Flex, Grid, GridItem, Text, Link, Icon, Box, Heading } from '@chakra-ui/react';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import { ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS } from '../../constantes';
+import { ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS, PROTECTED_MENU } from '../../constantes';
 
 export const PrivateFooter = () => {
-    const PROTECTED_ROUTES = [
-        {
-            name: 'Dashboard',
-            path: '/espace-membre/dashboard',
-        },
-        {
-            name: 'Veille',
-            path: '/espace-membre/veille',
-        },
-        {
-            name: 'Reports',
-            path: '/espace-membre/reports',
-        },
-        {
-            name: 'Alerts',
-            path: '/espace-membre/alerts',
-        },
-        {
-            name: 'Payments',
-            path: '/espace-membre/payments',
-        },
-        {
-            name: 'Subscription',
-            path: '/espace-membre/subscription',
-        },
-        {
-            name: 'Regulations',
-            path: '/espace-membre/regulations',
-        },
-    ]
+
 
     return (
         <Box bg="gray.800" color="white" mt={16}>
@@ -65,7 +36,7 @@ export const PrivateFooter = () => {
                             Navigation
                         </Heading>
                         <Flex direction="column">
-                            {PROTECTED_ROUTES.map((btn, index) => (
+                            {PROTECTED_MENU.map((btn, index) => (
                                 <Link href={btn.path} _hover={{ color: "teal.400", textDecoration: "underline" }} mb={2} key={index}>
                                     {btn.name}
                                 </Link>

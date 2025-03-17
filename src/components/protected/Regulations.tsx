@@ -17,7 +17,7 @@ import {
     TagLabel
 } from '@chakra-ui/react';
 import { FiFileText, FiEdit, FiCalendar } from 'react-icons/fi';
-import { GiWeightScale } from 'react-icons/gi'; // ← Correction ici
+import { GiWeightScale } from 'react-icons/gi';
 interface Regulation {
     id: number;
     title: string;
@@ -30,38 +30,6 @@ interface Regulation {
 
 export const Regulations = () => {
     const theme = useTheme();
-
-    // Données fictives de régulations
-    const REGULATIONS_MOCK = [
-        {
-            id: 1,
-            title: 'RGPD - Protection des données',
-            category: 'Données personnelles',
-            status: 'Active',
-            department: 'Compliance',
-            effectiveDate: '2024-01-01',
-            lastUpdate: '2024-03-01'
-        },
-        {
-            id: 2,
-            title: 'Directive MiCA - Crypto-actifs',
-            category: 'Finance',
-            status: 'En révision',
-            department: 'Finances',
-            effectiveDate: '2025-06-01',
-            lastUpdate: '2024-02-15'
-        },
-        {
-            id: 3,
-            title: 'Normes environnementales ISO 14001',
-            category: 'Environnement',
-            status: 'Expirée',
-            department: 'RSE',
-            effectiveDate: '2020-05-01',
-            lastUpdate: '2023-12-01'
-        },
-    ];
-
 
     const [regulations, setRegulations] = useState<Regulation[]>([]);
     useEffect(() => {
@@ -76,19 +44,16 @@ export const Regulations = () => {
             setRegulations(response.data);
         } catch (error) {
             console.error('Erreur lors de la récupération des réglementations:', error);
-            setRegulations(REGULATIONS_MOCK);
         }
 
     };
 
 
     const handleViewDetails = (regulationId: number) => {
-        // Logique d'affichage des détails
         console.log(`Voir détails régulation ${regulationId}`);
     };
 
     const handleEdit = (regulationId: number) => {
-        // Logique d'édition
         console.log(`Éditer régulation ${regulationId}`);
     };
 

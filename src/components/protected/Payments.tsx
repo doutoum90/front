@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const Payments = () => {
     const [userId, setUserId] = useState('');
-    const [priceId, setPriceId] = useState('price_1Q2222222222222222222222'); // Remplacez par un ID de prix Stripe
+    const [priceId, setPriceId] = useState('price_1Q2222222222222222222222');
     const [status, setStatus] = useState('');
 
     const subscribe = async () => {

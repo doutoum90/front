@@ -1,4 +1,4 @@
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa"
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaHome, FaChartPie, FaBell, FaFileAlt, FaUser } from "react-icons/fa"
 
 export const FAQ = [
     {
@@ -203,7 +203,7 @@ export const ABOUT_TITLES = {
     subtitle: "Nous transformons l'information en décision stratégique pour vous donner un temps d'avance."
 }
 
-export const MENU = [
+export const PUBLIC_MENU = [
     {
         label: "Nos actions",
         link: "/actions"
@@ -219,6 +219,10 @@ export const MENU = [
     {
         label: "À propos",
         link: "/about"
+    },
+    {
+        label: "Contact",
+        link: "/contact"
     }
 ];
 
@@ -256,3 +260,66 @@ export const OTHER_LINKS = [
         link: "/terms",
     },
 ];
+
+export const PROTECTED_MENU = [
+    {
+        name: 'Accueil',
+        path: '/espace-membre/dashboard',
+        icon: FaHome
+    },
+    {
+        name: 'Veille concurentielle',
+        path: '/espace-membre/veille-concurentielle',
+        icon: FaUser
+    },
+    {
+        name: 'Analyse de marché',
+        path: '/espace-membre/analyse-de-marche',
+        icon: FaChartPie
+    },
+    {
+        name: 'Surveillance des \n opportunités et risques',
+        path: '/espace-membre/surveillance-des-opportunites-et-risques',
+        icon: FaBell
+    },
+    {
+        name: 'Rapport sur mesure',
+        path: '/espace-membre/rapport-sur-mesure',
+        icon: FaFileAlt
+    }
+]
+
+
+
+export const DASHBOARD_DATA = [
+    {
+        name: 'Veille concurentielle',
+        uv: 4000,
+        text: 'Surveillez vos concurrents et anticiper leurs mouvements.',
+        path: '/espace-membre/veille-concurentielle',
+    },
+    {
+        name: 'Analyse de marché',
+        uv: 3000,
+        text: 'Obtenez des analyses detaillées sur les tendances.',
+        path: '/espace-membre/analyse-de-marche',
+    },
+    {
+        name: 'Surveillance des opportunités et risques',
+        uv: 5000,
+        text: 'Recevez des alertes en temps réel sur votre secteur et sur les changements législatifs et réglementaires.',
+        path: '/espace-membre/surveillance-des-opportunites-et-risques',
+    },
+    {
+        name: 'Rapport sur mesure',
+        uv: 2780,
+        text: 'Obtenez des données individualisées sur une thématique de marchés ou sur une projections à l\'international.',
+        path: '/espace-membre/rapport-sur-mesure',
+    },
+    {
+        name: 'Paramètres',
+        uv: 1890,
+        text: 'Personnalisez votre experience et vos preferences.',
+        path: '/espace-membre/parametres',
+    },
+]

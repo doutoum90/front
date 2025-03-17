@@ -1,11 +1,6 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 type User = {
   createdAt?: string;
   name?: string;
@@ -16,7 +11,6 @@ type User = {
   profession?: string;
   skills?: string[];
   typeAbonnement?: string[];
-  // Ajoutez d'autres propriétés utilisateur au besoin
 };
 
 type AuthContextType = {
@@ -41,21 +35,20 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   useEffect(() => {
     const verifyToken = async () => {
       const accessToken = localStorage.getItem('access_token');
       const refreshToken = localStorage.getItem('refresh_token');
 
-      // Si aucun token n'est présent
       if (!accessToken && !refreshToken) {
         setLoading(false);
         return;
       }
 
       try {
-        // Vérification initiale du token
         const verifyResponse = await fetch('/api/auth/verify', {
-          headers: { Authorization: `Bearer ${accessToken}` }
+          headers: { Authorization: `Bearer ${accessToken}` },
         });
 
         if (verifyResponse.ok) {
@@ -68,40 +61,36 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
         console.error('Token verification error:', error);
       }
 
-      // Si le token est invalide ou expiré, tenter le rafraîchissement
       if (refreshToken) {
         try {
-            const refreshResponse = await fetch('/api/auth/refresh', {
+          const refreshResponse = await fetch('/api/auth/refresh', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${refreshToken}`
-            }
+              Authorization: `Bearer ${refreshToken}`,
+            },
           });
 
           if (refreshResponse.ok) {
             const { access_token } = await refreshResponse.json();
-
-            // Mettre à jour le token dans le localStorage
             localStorage.setItem('access_token', access_token);
 
-            // Relancer la vérification avec le nouveau token
             const newVerifyResponse = await fetch('/api/auth/verify', {
-              headers: { Authorization: `Bearer ${access_token}` }
+              headers: { Authorization: `Bearer ${access_token}` },
             });
 
             if (newVerifyResponse.ok) {
               const userData = await newVerifyResponse.json();
               setUser(userData);
+            } else {
+              throw new Error('Token verification failed after refresh');
             }
           } else {
-            // Si le refresh échoue, déconnecter l'utilisateur
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            navigate('/auth/login');
+            throw new Error('Refresh token failed');
           }
-        } catch (error) {
-          console.error('Refresh token error:', error);
+        } catch (error: any) {
+          console.error('Token refresh failed:', error.message);
+          logout();
           navigate('/auth/login');
         }
       } else {
@@ -112,25 +101,26 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     };
 
     verifyToken();
-  }, []);
+  }, [navigate]);
 
   const login = async (credentials: { email: string; password: string }) => {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials)
+        body: JSON.stringify(credentials),
       });
+      console.log(response);
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Login failed');
       }
-      const { access_token, refresh_token, user } = await response.json();
 
+      const { access_token, refresh_token, user } = await response.json();
+      console.log('Received access_token:', access_token); // Debug log
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
-
       setUser(user);
       onLoginSuccess();
     } catch (error) {
@@ -143,7 +133,7 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     const response = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData)
+      body: JSON.stringify(userData),
     });
 
     if (!response.ok) {
@@ -158,7 +148,7 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     const response = await fetch('/api/auth/reset-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({ email }),
     });
 
     if (!response.ok) {
@@ -170,6 +160,8 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
   const refreshAccessToken = async () => {
     try {
       const refreshToken = localStorage.getItem('refresh_token');
+      if (!refreshToken) throw new Error('Aucun refresh token disponible');
+
       const response = await fetch('/api/auth/refresh', {
         method: 'POST',
         headers: {
@@ -178,8 +170,17 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
         }
       });
 
-      const { access_token } = await response.json();
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Échec du rafraîchissement');
+      }
+
+      const { access_token, refresh_token: newRefreshToken } = await response.json();
       localStorage.setItem('access_token', access_token);
+      if (newRefreshToken) {
+        localStorage.setItem('refresh_token', newRefreshToken);
+      }
       return access_token;
     } catch (error) {
       logout();
@@ -187,12 +188,47 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     }
   };
 
+
   const logout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     setUser(null);
     onLogout();
   };
+
+  useEffect(() => {
+    const originalFetch = window.fetch;
+
+    const fetchInterceptor = async (url: string, config: RequestInit = {}) => {
+      let newConfig = { ...config };
+
+      try {
+        const response = await originalFetch(url, newConfig);
+
+        if (response.status === 401) {
+          const newToken = await refreshAccessToken();
+          newConfig.headers = {
+            ...newConfig.headers,
+            Authorization: `Bearer ${newToken}`,
+          };
+          return originalFetch(url, newConfig);
+        }
+
+        return response;
+      } catch (error) {
+        console.error('Fetch interceptor error:', error);
+        throw error;
+      }
+    };
+
+    window.fetch = async (...args) => {
+      return fetchInterceptor(args[0] as string, args[1] || {});
+    };
+
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, []);
 
   const value = {
     user,

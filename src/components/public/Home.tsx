@@ -28,7 +28,7 @@ const Home = () => {
           </HStack>
         </Box>
         <HStack
-          spacing={0} // Supprimer l'espacement entre les blocs
+          spacing={0}
           borderRadius="xl"
           width="100%"
           align="stretch"

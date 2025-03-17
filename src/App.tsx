@@ -6,8 +6,8 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <AuthNavigationHandler />, // Layout racine
-      children: routes // Toutes les routes imbriquées
+      element: <AuthNavigationHandler />,
+      children: routes
     }
   ]);
 

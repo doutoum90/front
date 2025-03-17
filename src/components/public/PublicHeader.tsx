@@ -1,6 +1,6 @@
 import { Flex, Button, Text, Box, Heading, HStack, VStack } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { MENU } from "../../constantes";
+import { PUBLIC_MENU } from "../../constantes";
 export const PublicHeader = () => {
 
     const navigate = useNavigate();
@@ -9,16 +9,15 @@ export const PublicHeader = () => {
     return (
         <Box maxW="100%" m={0} p={0}>
             <HStack
-                spacing={0} // Supprimer l'espacement entre les blocs
+                spacing={0}
                 borderRadius="xl"
                 width="100%"
                 align="stretch"
             >
-                {/* Bloc gauche (30%) */}
                 <VStack
                     width="30%"
                     alignItems="flex-start"
-                    pr={4} // Espacement interne
+                    pr={4}
                 >
                     <Heading as="h1" size="2xl" color="teal.600" fontWeight="bold">
                         INTELLIGENTSLA
@@ -27,8 +26,6 @@ export const PublicHeader = () => {
                         L'intelligence économique au service de votre activité
                     </Text>
                 </VStack>
-
-                {/* Bloc droit (70% avec fond bleu) */}
                 <VStack
                     width="70%"
                     bg="#3d84a8"
@@ -59,7 +56,7 @@ export const PublicHeader = () => {
                         </Button>
                     </Flex>
                     <Flex width="100%" justify="flex-start" pl={8} mb={-8}>
-                        {MENU.map((btn, index) => (
+                        {PUBLIC_MENU.map((btn, index) => (
                             <Button
                                 key={index}
                                 variant={location.pathname === btn.link ? 'solid' : 'ghost'}

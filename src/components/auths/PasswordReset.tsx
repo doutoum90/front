@@ -25,7 +25,6 @@ export const PasswordReset = () => {
   const [isFetching, setIsFetching] = useState(false);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Ajouter la logique de réinitialisation ici
     try {
       setIsFetching(true);
       await resetPassword(email);

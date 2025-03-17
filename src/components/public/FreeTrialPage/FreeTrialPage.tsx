@@ -1,16 +1,19 @@
-import { Box, VStack, Heading, Text, Button, List, ListItem, ListIcon, Link } from '@chakra-ui/react';
+import { Box, VStack, Heading, Text, List, ListItem, ListIcon, Link } from '@chakra-ui/react';
 import { AccountCreationForm } from '../AccountCreationForm';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { UserData } from '../../../types';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 export const FreeTrialPage = () => {
     const navigate = useNavigate();
-    const handleTrialSignup = (userData: UserData) => {
-        // Logique d'inscription à l'essai gratuit
+    const handleTrialSignup = async (userData: UserData) => {
         console.log('Inscription essai gratuit:', userData);
-        // Redirection après succès
-        navigate('/trial-confirmation');
+        const response = await axios.post('/api/auth/register', userData);
+        if (response.status === 200) {
+            navigate('/trial-confirmation');
+        } else {
+            console.error('Erreur lors de l\'inscription à l\'essai gratuit:', response);
+        }
     };
 
     return (

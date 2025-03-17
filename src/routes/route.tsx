@@ -6,14 +6,12 @@ import { PublicLayout } from '../layouts/PublicLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { PrivateLayout } from '../layouts/PrivateLayout';
 
-// Chargement paresseux avec gestion de loading
 const lazyLoad = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
   <Suspense fallback={<LoadingSpinner />}>
     <Component />
   </Suspense>
 );
 
-// Composants publics
 const Home = lazy(() => import('../components/public/Home'));
 const About = lazy(() => import('../components/public/About'));
 const Actions = lazy(() => import('../components/public/Actions'));
@@ -38,11 +36,14 @@ const Settings = lazy(() => import('../components/protected/Setting'));
 const SubscriptionFlow = lazy(() => import('../components/public/SubscriptionFlow'));
 const Autres = lazy(() => import('../components/protected/Autres'));
 
-const Veille = lazy(() => import('../components/protected/Veille'));
-const Reports = lazy(() => import('../components/protected/Reports'));
+const VeilleConcurrentielle = lazy(() => import('../components/protected/VeilleConcurrentielle'));
 const Alerts = lazy(() => import('../components/protected/Alerts'));
 const Payments = lazy(() => import('../components/protected/Payments'));
 const Regulations = lazy(() => import('../components/protected/Regulations'));
+
+
+const Opportunites = lazy(() => import('../components/protected/Opportunites'));
+const AnalyseMarche = lazy(() => import('../components/protected/AnalyseMarche'));
 
 export const routes = [
   {
@@ -83,13 +84,13 @@ export const routes = [
     ),
     children: [
       { path: 'dashboard', element: lazyLoad(Dashboard) },
-      { path: 'profile', element: lazyLoad(Profile) },
-      { path: 'settings', element: lazyLoad(Settings) },
+      { path: 'profil', element: lazyLoad(Profile) },
+      { path: 'parametres', element: lazyLoad(Settings) },
       { path: 'ecran-board', element: lazyLoad(EcranBoard) },
-      { path: 'veille', element: lazyLoad(Veille) },
-      { path: 'reports', element: lazyLoad(Reports) },
-      { path: 'alerts', element: lazyLoad(Alerts) },
-      { path: 'regulations', element: lazyLoad(Regulations) },
+      { path: 'veille-concurentielle', element: lazyLoad(VeilleConcurrentielle) },
+      { path: 'analyse-de-marche', element: lazyLoad(AnalyseMarche) },
+      { path: 'surveillance-des-opportunites-et-risques', element: lazyLoad(Opportunites) },
+      { path: 'rapport-sur-mesure', element: lazyLoad(Regulations) },
       { path: 'subscription', element: lazyLoad(SubscriptionFlow) },
       { path: 'payments', element: lazyLoad(Payments) },
 
