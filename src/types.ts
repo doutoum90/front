@@ -96,6 +96,9 @@ export type User = {
     typeAbonnement?: string[];
 };
 
+
+
+
 export type AuthContextType = {
     user: User | null;
     loading: boolean;
@@ -193,4 +196,16 @@ export interface PrivateLayoutProps {
 
 export interface PublicLayoutProps {
     children: ReactNode;
+}
+
+
+
+export interface MarketData {
+    x: string;
+    y: number;
+}
+
+export interface MarketShare {
+    company: string;
+    value: number;
 }

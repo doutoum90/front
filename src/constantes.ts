@@ -1,4 +1,4 @@
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaHome, FaChartPie, FaBell, FaFileAlt, FaUser } from "react-icons/fa"
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaHome, FaChartPie, FaBell, FaFileAlt, FaUser, FaEye, FaCogs, FaGlobeAmericas } from "react-icons/fa"
 
 export const FAQ = [
     {
@@ -289,37 +289,46 @@ export const PROTECTED_MENU = [
     }
 ]
 
-
-
+export const DASHBOARD_TITLE = "Tableau de bord"
 export const DASHBOARD_DATA = [
     {
         name: 'Veille concurentielle',
         uv: 4000,
         text: 'Surveillez vos concurrents et anticiper leurs mouvements.',
         path: '/espace-membre/veille-concurentielle',
+        icon: FaEye,
+        color: 'purple.500'
     },
     {
         name: 'Analyse de marché',
         uv: 3000,
         text: 'Obtenez des analyses detaillées sur les tendances.',
         path: '/espace-membre/analyse-de-marche',
+        icon: FaChartPie,
+        color: 'teal.500'
     },
     {
         name: 'Surveillance des opportunités et risques',
         uv: 5000,
         text: 'Recevez des alertes en temps réel sur votre secteur et sur les changements législatifs et réglementaires.',
         path: '/espace-membre/surveillance-des-opportunites-et-risques',
+        icon: FaGlobeAmericas,
+        color: 'orange.500'
     },
     {
         name: 'Rapport sur mesure',
         uv: 2780,
         text: 'Obtenez des données individualisées sur une thématique de marchés ou sur une projections à l\'international.',
         path: '/espace-membre/rapport-sur-mesure',
+        icon: FaFileAlt,
+        color: 'pink.500'
     },
     {
         name: 'Paramètres',
         uv: 1890,
         text: 'Personnalisez votre experience et vos preferences.',
         path: '/espace-membre/parametres',
+        icon: FaCogs,
+        color: 'blue.500'
     },
 ]

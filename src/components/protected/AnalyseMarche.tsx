@@ -4,7 +4,6 @@ import {
     Text,
     Select,
     VStack,
-    HStack,
     Stat,
     StatLabel,
     StatNumber,
@@ -17,8 +16,8 @@ import {
     TableContainer,
     useColorModeValue,
     Heading,
+    SimpleGrid // Ajout de SimpleGrid
 } from '@chakra-ui/react';
-
 import { useState } from 'react';
 
 const AnalyseMarche = () => {
@@ -32,118 +31,114 @@ const AnalyseMarche = () => {
         { f1: 8, f2: 6, f3: 7, f4: 8, f5: 9 }
     ];
 
-
     return (
-        <Flex minH="100vh">
-            {/*    <Box
-                ml="280px"
-                flex={1}
-                p={8}
-                bg={contentBg}
-                minH="100vh"
+        <Flex minH="100vh" direction="column" p={8}>
+            <Box mb={8}>
+                <Heading size="xl" color="teal.600">
+                    Analyse de Marchés
+                </Heading>
+            </Box>
+
+            <Flex justify="flex-end" mb={8}>
+                <Select
+                    value={selectedPeriod}
+                    onChange={(e) => setSelectedPeriod(e.target.value)}
+                    w="200px"
+                >
+                    <option value="last-month">Dernier mois</option>
+                    <option value="last-week">Semaine dernière</option>
+                    <option value="last-year">Année dernière</option>
+                </Select>
+            </Flex>
+
+            <SimpleGrid 
+                columns={{ base: 1, md: 2 }} 
+                spacing={6}
+                alignItems="stretch"
             >
-                <VStack spacing={8} align="stretch">
-                    <Flex justify="flex-end">
-                        <Select
-                            value={selectedPeriod}
-                            onChange={(e) => setSelectedPeriod(e.target.value)}
-                            w="200px"
-                        >
-                            <option value="last-month">Dernier mois</option>
-                            <option value="last-week">Semaine dernière</option>
-                            <option value="last-year">Année dernière</option>
-                        </Select>
-                    </Flex>
-
+                {/* Bloc Statistiques */}
+                <Box bg={sidebarBg} p={6} borderRadius="xl" boxShadow="md">
                     <VStack spacing={6} align="stretch">
-                        <Text fontSize="2xl" fontWeight="bold">Tendances du marché</Text>
-
-                        <HStack spacing={8}>
-                            <Stat p={6} bg={sidebarBg} borderRadius="lg">
+                        <Text fontSize="xl" fontWeight="bold">Indicateurs clés</Text>
+                        
+                        <SimpleGrid columns={2} spacing={4}>
+                            <Stat p={4} bg={contentBg} borderRadius="lg">
                                 <StatLabel>Parts de marché</StatLabel>
                                 <StatNumber>24.7%</StatNumber>
                                 <Text fontSize="sm" color="green.500">+2.4% vs mois dernier</Text>
                             </Stat>
 
-                            <Stat p={6} bg={sidebarBg} borderRadius="lg">
+                            <Stat p={4} bg={contentBg} borderRadius="lg">
                                 <StatLabel>Évolution des prix</StatLabel>
                                 <StatNumber>+5.8%</StatNumber>
                                 <Text fontSize="sm" color="red.500">Moyenne secteur: +3.2%</Text>
                             </Stat>
-                        </HStack>
+                        </SimpleGrid>
                     </VStack>
+                </Box>
 
-                    <Box mt={8}>
-                        <Text fontSize="xl" fontWeight="bold" mb={4}>Échappé</Text>
-                        <TableContainer
-                            bg={sidebarBg}
-                            borderRadius="lg"
-                            boxShadow="md"
-                        >
-                            <Table variant="simple">
-                                <Thead>
-                                    <Tr>
-                                        {['F1', 'F2', 'F3', 'F4', 'F5'].map((header) => (
-                                            <Th key={header}>{header}</Th>
-                                        ))}
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {tableData.map((row, index) => (
-                                        <Tr
-                                            key={index}
-                                            _hover={tableRowHover}
-                                            transition="background 0.2s"
-                                        >
-                                            <Td>{row.f1}</Td>
-                                            <Td>{row.f2}</Td>
-                                            <Td>{row.f3}</Td>
-                                            <Td>{row.f4}</Td>
-                                            <Td>{row.f5}</Td>
-                                        </Tr>
+                {/* Bloc Tableau */}
+                <Box 
+                    bg={sidebarBg} 
+                    p={6} 
+                    borderRadius="xl" 
+                    boxShadow="md"
+                    mt={{ base: 6, md: 0 }}
+                >
+                    <Text fontSize="xl" fontWeight="bold" mb={4}>Échappé</Text>
+                    <TableContainer>
+                        <Table variant="simple">
+                            <Thead>
+                                <Tr>
+                                    {['F1', 'F2', 'F3', 'F4', 'F5'].map((header) => (
+                                        <Th key={header}>{header}</Th>
                                     ))}
-                                </Tbody>
-                            </Table>
-                        </TableContainer>
-                    </Box>
-                </VStack>
-            </Box> */}
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {tableData.map((row, index) => (
+                                    <Tr
+                                        key={index}
+                                        _hover={tableRowHover}
+                                        transition="background 0.2s"
+                                    >
+                                        <Td>{row.f1}</Td>
+                                        <Td>{row.f2}</Td>
+                                        <Td>{row.f3}</Td>
+                                        <Td>{row.f4}</Td>
+                                        <Td>{row.f5}</Td>
+                                    </Tr>
+                                ))}
+                            </Tbody>
+                        </Table>
+                    </TableContainer>
+                </Box>
+            </SimpleGrid>
 
-            <Box p={8} bg="gray.50" minH="100vh">
-                <Heading size="xl" mb={8} color="teal.600">
-                    Analyse de Marchés
-                </Heading>
-
-                <VStack spacing={8} align="stretch">
-                    {/* Filtre par période */}
-                    <Box bg="white" p={6} borderRadius="xl" boxShadow="md">
-                        <Heading size="md" mb={4}>Filtre par période</Heading>
-                        <Text>Sélectionnez la période d'analyse souhaitée.</Text>
-                        {/* Ajoutez ici un composant de sélection de période */}
+            {/* Section inférieure */}
+            <SimpleGrid 
+                columns={{ base: 1, md: 2 }} 
+                spacing={6} 
+                mt={8}
+            >
+                {[
+                    { title: 'Tendances du marché', content: 'Analyse des tendances actuelles...' },
+                    { title: 'Parts de marché', content: 'Répartition des parts...' },
+                    { title: 'Évolution des prix', content: 'Historique des prix...' },
+                    { title: 'Analyse concurrentielle', content: 'Comparaison des acteurs...' }
+                ].map((item, index) => (
+                    <Box 
+                        key={index}
+                        bg={sidebarBg}
+                        p={6}
+                        borderRadius="xl"
+                        boxShadow="md"
+                    >
+                        <Heading size="md" mb={4}>{item.title}</Heading>
+                        <Text>{item.content}</Text>
                     </Box>
-
-                    {/* Tendances du marché */}
-                    <Box bg="white" p={6} borderRadius="xl" boxShadow="md">
-                        <Heading size="md" mb={4}>Tendances du marché</Heading>
-                        <Text>Analyse des tendances actuelles du marché.</Text>
-                        {/* Ajoutez ici des graphiques ou des données sur les tendances */}
-                    </Box>
-
-                    {/* Parts de marché */}
-                    <Box bg="white" p={6} borderRadius="xl" boxShadow="md">
-                        <Heading size="md" mb={4}>Parts de marché</Heading>
-                        <Text>Répartition des parts de marché entre les différents acteurs.</Text>
-                        {/* Ajoutez ici des graphiques ou des données sur les parts de marché */}
-                    </Box>
-
-                    {/* Évolution des prix */}
-                    <Box bg="white" p={6} borderRadius="xl" boxShadow="md">
-                        <Heading size="md" mb={4}>Évolution des prix</Heading>
-                        <Text>Évolution des prix sur la période sélectionnée.</Text>
-                        {/* Ajoutez ici des graphiques ou des données sur l'évolution des prix */}
-                    </Box>
-                </VStack>
-            </Box>
+                ))}
+            </SimpleGrid>
         </Flex>
     );
 };
