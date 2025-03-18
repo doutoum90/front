@@ -16,6 +16,7 @@ import {
     Td,
     TableContainer,
     useColorModeValue,
+    Heading,
 } from '@chakra-ui/react';
 
 import { useState } from 'react';
@@ -34,7 +35,7 @@ const AnalyseMarche = () => {
 
     return (
         <Flex minH="100vh">
-            <Box
+            {/*    <Box
                 ml="280px"
                 flex={1}
                 p={8}
@@ -42,7 +43,6 @@ const AnalyseMarche = () => {
                 minH="100vh"
             >
                 <VStack spacing={8} align="stretch">
-                    {/* Filter Section */}
                     <Flex justify="flex-end">
                         <Select
                             value={selectedPeriod}
@@ -55,7 +55,6 @@ const AnalyseMarche = () => {
                         </Select>
                     </Flex>
 
-                    {/* Market Trends */}
                     <VStack spacing={6} align="stretch">
                         <Text fontSize="2xl" fontWeight="bold">Tendances du marché</Text>
 
@@ -74,7 +73,6 @@ const AnalyseMarche = () => {
                         </HStack>
                     </VStack>
 
-                    {/* Table Section */}
                     <Box mt={8}>
                         <Text fontSize="xl" fontWeight="bold" mb={4}>Échappé</Text>
                         <TableContainer
@@ -107,6 +105,42 @@ const AnalyseMarche = () => {
                                 </Tbody>
                             </Table>
                         </TableContainer>
+                    </Box>
+                </VStack>
+            </Box> */}
+
+            <Box p={8} bg="gray.50" minH="100vh">
+                <Heading size="xl" mb={8} color="teal.600">
+                    Analyse de Marchés
+                </Heading>
+
+                <VStack spacing={8} align="stretch">
+                    {/* Filtre par période */}
+                    <Box bg="white" p={6} borderRadius="xl" boxShadow="md">
+                        <Heading size="md" mb={4}>Filtre par période</Heading>
+                        <Text>Sélectionnez la période d'analyse souhaitée.</Text>
+                        {/* Ajoutez ici un composant de sélection de période */}
+                    </Box>
+
+                    {/* Tendances du marché */}
+                    <Box bg="white" p={6} borderRadius="xl" boxShadow="md">
+                        <Heading size="md" mb={4}>Tendances du marché</Heading>
+                        <Text>Analyse des tendances actuelles du marché.</Text>
+                        {/* Ajoutez ici des graphiques ou des données sur les tendances */}
+                    </Box>
+
+                    {/* Parts de marché */}
+                    <Box bg="white" p={6} borderRadius="xl" boxShadow="md">
+                        <Heading size="md" mb={4}>Parts de marché</Heading>
+                        <Text>Répartition des parts de marché entre les différents acteurs.</Text>
+                        {/* Ajoutez ici des graphiques ou des données sur les parts de marché */}
+                    </Box>
+
+                    {/* Évolution des prix */}
+                    <Box bg="white" p={6} borderRadius="xl" boxShadow="md">
+                        <Heading size="md" mb={4}>Évolution des prix</Heading>
+                        <Text>Évolution des prix sur la période sélectionnée.</Text>
+                        {/* Ajoutez ici des graphiques ou des données sur l'évolution des prix */}
                     </Box>
                 </VStack>
             </Box>

@@ -19,18 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-
-interface FormData {
-    name: string;
-    lastname: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    dateOfBirth: string;
-    profession: string;
-    skills?: string[];
-    typeAbonnement?: string[];
-}
+import { FormData } from '../../types';
 
 export const RegisterForm = () => {
     const navigate = useNavigate();

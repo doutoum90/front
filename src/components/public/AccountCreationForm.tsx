@@ -14,14 +14,9 @@ import {
   List,
   ListItem
 } from '@chakra-ui/react';
-import { UserData } from '../../types';
+import { AccountCreationFormProps } from '../../types';
 
 
-interface AccountCreationFormProps {
-  onSuccess: (userData: UserData) => void;
-  showPasswordPolicy?: boolean;
-  ctaText?: string;
-}
 
 export const AccountCreationForm = ({ onSuccess,
   showPasswordPolicy = false,

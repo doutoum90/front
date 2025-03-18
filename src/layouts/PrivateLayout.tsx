@@ -2,11 +2,8 @@ import { Box, Flex } from '@chakra-ui/react';
 import { PrivateHeader } from '../components/protected/PrivateHeader';
 import { PrivateFooter } from '../components/protected/PrivateFooter';
 import { SideMenu } from '../components/protected/SideMenu';
-import { ReactNode } from 'react';
+import { PrivateLayoutProps } from '../types';
 
-interface PrivateLayoutProps {
-    children: ReactNode;
-}
 
 export const PrivateLayout = ({ children }: PrivateLayoutProps) => {
     return (

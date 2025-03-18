@@ -5,7 +5,6 @@ import {
     Tr,
     Th,
     Td,
-    Button,
     TableContainer,
     Container,
     Text,
@@ -22,63 +21,37 @@ import {
     IconButton,
     Badge
 } from '@chakra-ui/react';
-import { FiCheckCircle, FiTrash2, FiInfo, FiDownload } from 'react-icons/fi';
+import { FiCheckCircle, FiTrash2, FiInfo } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaChartLine, FaExclamationTriangle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { Opportunity, RegulationShort, Block } from '../../types';
 
 const MotionBox = motion(Box);
 
-interface Opportunity {
-    id: number;
-    message: string;
-    date: string;
-    source: string;
-    status: 'new' | 'in_progress' | 'resolved';
-}
-
-interface Law {
-    id: number;
-    message: string;
-    date?: string;
-}
-interface Block {
-    id: number;
-    message: string;
-    date: string;
-    icon: React.ReactNode;
-}
-
-interface Report {
-    id: number;
-    title: string;
-    author: string;
-    date: string;
-    download: string;
-}
 
 const API_ENDPOINT = '/api/alerts';
 
 const OPPORTUNITES_MOCK: Opportunity[] = [
     {
-        id: 1,
+        id: 'zehzejhe',
         message: 'Accord commercial avec l\'asie	',
         date: '2024-03-25',
         source: 'Système',
         status: 'new'
     },
     {
-        id: 2,
+        id: 'zehzejheerriuere',
         message: 'Nouvelle aide pour les PME',
         date: '2024-03-24',
         source: 'Sécurité',
         status: 'in_progress'
     },
     {
-        id: 3,
+        id: 'zehzejheriuere',
         message: 'Augmentations des investissements étrangers',
         date: '2024-03-23',
         source: 'Infrastructure',
@@ -86,85 +59,47 @@ const OPPORTUNITES_MOCK: Opportunity[] = [
     },
 ];
 
-const LOIS_MOCK: Law[] = [
+const REGULATIONS_MOCK: RegulationShort[] = [
     {
-        id: 1,
+        id: 'zezeezhzejheriuere',
         message: 'Nouveau décret sur la réglementation du e-commerce',
         date: '2025-03-15'
     },
     {
-        id: 2,
+        id: 'reireuizezeezhzejheriuere',
         message: 'Subvention disponible pour les start-ups technologiques',
     },
     {
-        id: 2,
+        id: 'reireuizezeezhzejerheriuere',
         message: 'loi sur la protection des données renforcée'
     }
 ]
 
 const BLOCKS_MOCK: Block[] = [
     {
-        id: 1,
+        id: 'zezeezhzejheriurerere',
         message: 'Tendances des opportunités',
         icon: <FaChartLine />,
         date: '2025-03-15'
     },
     {
-        id: 2,
+        id: 'reireuizezeezhzejerheerrriuere',
         message: 'Evolution des risques',
         icon: <FaExclamationTriangle />,
         date: '2025-03-15'
     }
 ]
 
-const REPORTS_MOCK: Report[] = [
-    { id: 1, title: 'Rapport Financier Q1', author: 'John Doe', date: '2024-03-15', download: '#' },
-    { id: 2, title: 'Analyse Marketing', author: 'Jane Smith', date: '2024-03-18', download: '#' },
-    { id: 3, title: 'Audit Technique', author: 'Bob Wilson', date: '2024-03-20', download: '#' },
-];
+
 
 
 const Opportunites = () => {
     const theme = useTheme();
     const toast = useToast();
     const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
-    const [laws, setLaws] = useState<Law[]>([]);
+    const [regulations, setRegulations] = useState<RegulationShort[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
-    const [reports, setReports] = useState<Report[]>([]);
-
-
-    useEffect(() => {
-        fetchReports();
-    }, []);
-
-    const fetchReports = async () => {
-        const refreshToken = localStorage.getItem('refresh_token');
-        try {
-            const response = await axios.post('/api/reports/request', {
-                headers: { Authorization: `Bearer ${refreshToken}` },
-            });
-            setReports(response.data);
-        } catch (error) {
-            setReports(REPORTS_MOCK);
-            console.error('Erreur lors de la récupération des rapports:', error);
-        }
-    };
-
-
-    const handleDownload = async (reportId: string) => {
-        const refreshToken = localStorage.getItem('refresh_token');
-        try {
-            await axios.post(`/api/reports/${reportId}/download`, {
-                headers: { Authorization: `Bearer ${refreshToken}` },
-            });
-
-            console.log(`Téléchargement du rapport ${reportId}`);
-        } catch (error) {
-            console.error('Erreur lors du téléchargement du rapport :', error);
-        }
-    };
-
 
     const fetchOpportunities = async () => {
         try {
@@ -172,41 +107,39 @@ const Opportunites = () => {
             const response = await axios.get(API_ENDPOINT, {
                 headers: { Authorization: `Bearer ${refreshToken}` },
             });
-            setOpportunities(response.data);
+            setOpportunities(response.data.length > 0 ? response.data : OPPORTUNITES_MOCK);
         } catch (error) {
-            // setError('Erreur de chargement des données');
-            setOpportunities(OPPORTUNITES_MOCK);
-            /* toast({
+            setError('Erreur de chargement des données');
+            toast({
                 title: 'Erreur',
                 description: "Impossible de charger les opportunités",
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
-            }); */
+            });
         } finally {
             setIsLoading(false);
         }
     };
 
-    const fetchLaws = async () => {
+    const fetchRegulations = async () => {
         try {
             const refreshToken = localStorage.getItem('refresh_token');
             const response = await axios.get(API_ENDPOINT, {
                 headers: { Authorization: `Bearer ${refreshToken}` },
             });
-            setLaws(response.data);
+            setRegulations(response.data.length > 0 ? response.data : REGULATIONS_MOCK);
         } catch (error) {
-            // setError('Erreur de chargement des données');
-            setLaws(LOIS_MOCK);
+            setError('Erreur de chargement des données');
         }
     };
 
     useEffect(() => {
         fetchOpportunities();
-        fetchLaws();
+        fetchRegulations();
     }, []);
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (id: string) => {
         try {
             const refreshToken = localStorage.getItem('refresh_token');
             await axios.delete(`${API_ENDPOINT}/${id}`, {
@@ -229,7 +162,7 @@ const Opportunites = () => {
         }
     };
 
-    const handleResolve = (id: number) => {
+    const handleResolve = (id: string) => {
         setOpportunities(prev =>
             prev.map(opp =>
                 opp.id === id ? { ...opp, status: 'resolved' } : opp
@@ -273,9 +206,9 @@ const Opportunites = () => {
                         📢 Alertes en temps réel
                     </Text>
                     <List spacing={3}>
-                        {laws.map((law) => (
+                        {regulations.map((regulation) => (
                             <ListItem
-                                key={law.id}
+                                key={regulation.id}
                                 p={4}
                                 bg="white"
                                 borderRadius="md"
@@ -284,10 +217,10 @@ const Opportunites = () => {
                                 alignItems="center"
                             >
                                 <Box flex={1}>
-                                    <Text fontWeight="medium">{law.message}</Text>
-                                    {law.date && (
+                                    <Text fontWeight="medium">📌{regulation.message}</Text>
+                                    {regulation.date && (
                                         <Text fontSize="sm" color="gray.500">
-                                            {formatDate(law.date)}
+                                            {formatDate(regulation.date)}
                                         </Text>
                                     )}
                                 </Box>
@@ -378,49 +311,6 @@ const Opportunites = () => {
                                         </Tr>
                                     ))
                                 )}
-                            </Tbody>
-                        </Table>
-                    </TableContainer>
-
-                    <Text fontSize="2xl" mb={6} fontWeight="bold" bgGradient="linear(to-l, teal.500, blue.500)"
-                        bgClip="text">
-                        Rapports Disponibles
-                    </Text>
-
-                    <TableContainer
-                        borderWidth="1px"
-                        borderRadius="lg"
-                        overflowX="auto"
-                        boxShadow="md"
-                    >
-                        <Table variant="simple" colorScheme="teal">
-                            <Thead bg={theme.colors.teal[500]}>
-                                <Tr>
-                                    <Th color="white">Titre</Th>
-                                    <Th color="white">Auteur</Th>
-                                    <Th color="white">Date</Th>
-                                    <Th color="white" textAlign="center">Action</Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                {reports.map((report) => (
-                                    <Tr key={report.id} _hover={{ bg: 'gray.50' }}>
-                                        <Td fontWeight="medium">{report.title}</Td>
-                                        <Td>{report.author}</Td>
-                                        <Td>{report.date}</Td>
-                                        <Td textAlign="center">
-                                            <Button
-                                                colorScheme="teal"
-                                                variant="outline"
-                                                leftIcon={<FiDownload />}
-                                                onClick={() => handleDownload(report.id.toString())}
-                                                size="sm"
-                                            >
-                                                Télécharger
-                                            </Button>
-                                        </Td>
-                                    </Tr>
-                                ))}
                             </Tbody>
                         </Table>
                     </TableContainer>

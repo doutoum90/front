@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     VStack,
     FormControl,
@@ -12,16 +11,12 @@ import {
     GridItem,
     Box,
     Text,
-    Spinner
+    Spinner,
+    Heading,
+    Divider
 } from '@chakra-ui/react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import { UserData, SubscriptionPlan } from '../../../types';
-import { useEffect } from 'react';
-interface PaymentFormProps {
-    user: UserData;
-    plan: SubscriptionPlan;
-    onSuccess: () => void;
-}
+import { PaymentPageProps, PaymentFormProps } from '../../../types';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -30,11 +25,6 @@ const stripePromise = loadStripe(
     import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_51R2VPYQMk6qRSmo1Hyhn24U7qXcHZoWVsDj0N9KejrLAaGjQc1IEIUzWyPla6ieTpztbur8MQfGlhaTFAOPhmf3R00ikVtdpEG'
 );
 
-interface PaymentPageProps {
-    user: UserData;
-    plan: SubscriptionPlan;
-    onSuccess: () => void;
-}
 export const PaymentPage = ({ user, plan, onSuccess }: PaymentPageProps) => {
     return (
         <Elements stripe={stripePromise}>
@@ -61,7 +51,6 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
         }
     }, [stripe]);
 
-
     if (loading) {
         return (
             <Box textAlign="center" p={8}>
@@ -70,36 +59,35 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
             </Box>
         );
     }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!stripe || !elements) {
-            return console.error('Stripe non initialisé');
+            return setError('Le système de paiement n\'est pas initialisé');
         }
 
         const cardElement = elements.getElement(CardElement);
-
         if (!cardElement) {
             return setError('Les informations de carte sont incomplètes');
         }
+
         setIsProcessing(true);
         setError('');
 
-        const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
-            type: 'card',
-            card: elements.getElement(CardElement)!,
-            billing_details: {
-                name: `${user.name} ${user.lastname}`,
-                email: user.email
-            }
-        });
-
-        if (stripeError) {
-            setError(stripeError.message || 'Erreur de paiement');
-            setIsProcessing(false);
-            return;
-        }
-
         try {
+            const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
+                type: 'card',
+                card: cardElement,
+                billing_details: {
+                    name: `${user.name} ${user.lastname}`,
+                    email: user.email
+                }
+            });
+
+            if (stripeError) {
+                throw new Error(stripeError.message || 'Erreur de paiement');
+            }
+
             const response = await fetch('/api/payments/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -110,29 +98,52 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
                 })
             });
 
-            if (!response.ok) throw new Error('Échec du paiement');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Échec du paiement');
+            }
 
             toast({
                 title: 'Paiement réussi',
-                description: `Abonnement ${plan.name} activé`,
+                description: `Abonnement ${plan.name} activé avec succès`,
                 status: 'success',
-                duration: 5000
+                duration: 5000,
+                isClosable: true,
             });
 
             onSuccess();
         } catch (err) {
-            setError('Erreur lors du traitement du paiement');
+            setError(err instanceof Error ? err.message : 'Erreur lors du traitement du paiement');
         } finally {
             setIsProcessing(false);
         }
     };
 
     return (
-        <Box maxW="md" mx="auto">
+        <Box maxW="md" mx="auto" p={6} borderWidth="1px" borderRadius="lg">
             <VStack spacing={6} as="form" onSubmit={handleSubmit}>
-                <Text fontSize="2xl" fontWeight="bold">
-                    Total à payer : {plan.price}€ / mois
-                </Text>
+                <Heading size="md">Paiement sécurisé</Heading>
+
+                <Box w="full">
+                    <Text fontSize="lg" fontWeight="bold" mb={2}>
+                        Récapitulatif de la commande
+                    </Text>
+                    <Divider mb={4} />
+                    <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                        <GridItem>
+                            <Text>Plan</Text>
+                        </GridItem>
+                        <GridItem textAlign="right">
+                            <Text fontWeight="bold">{plan.name}</Text>
+                        </GridItem>
+                        <GridItem>
+                            <Text>Prix mensuel</Text>
+                        </GridItem>
+                        <GridItem textAlign="right">
+                            <Text fontWeight="bold">{plan.price}€</Text>
+                        </GridItem>
+                    </Grid>
+                </Box>
 
                 {error && (
                     <Alert status="error" borderRadius="md">
@@ -170,6 +181,7 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
                             w="full"
                             onClick={() => window.history.back()}
                             variant="outline"
+                            isDisabled={isProcessing}
                         >
                             Retour
                         </Button>
@@ -186,6 +198,10 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
                         </Button>
                     </GridItem>
                 </Grid>
+
+                <Text fontSize="sm" color="gray.500" textAlign="center">
+                    Vos informations de paiement sont sécurisées et cryptées
+                </Text>
             </VStack>
         </Box>
     );

@@ -31,10 +31,9 @@ export const Settings = () => {
     const saveSettings = async () => {
         const refreshToken = localStorage.getItem('refresh_token');
         try {
-            const response = await axios.post('/api/settings', settings, {
+            await axios.post('/api/settings', settings, {
                 headers: { Authorization: `Bearer ${refreshToken}` },
             });
-            console.log(response.data);
         } catch (error) {
             console.error('Erreur lors de la sauvegarde des paramètres :', error);
         }

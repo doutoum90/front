@@ -1,11 +1,7 @@
 import { VStack, Heading, Text, Button, List, ListItem, ListIcon } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
-import { UserData, SubscriptionPlan } from '../../types';
+import { ConfirmationProps } from '../../types';
 
-interface ConfirmationProps {
-    user: UserData;
-    plan: SubscriptionPlan;
-}
 
 export const ConfirmationScreen = ({ user, plan }: ConfirmationProps) => {
     return (

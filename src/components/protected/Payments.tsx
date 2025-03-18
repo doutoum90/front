@@ -1,62 +1,120 @@
-import { useState } from 'react';
-import { Button, Input, Text, VStack } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { 
+    VStack, 
+    Button, 
+    Text, 
+    useToast, 
+    Box, 
+    Heading,
+    Spinner,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription
+} from '@chakra-ui/react';
 import axios from 'axios';
 
 export const Payments = () => {
-    const [userId, setUserId] = useState('');
-    const [priceId, setPriceId] = useState('price_1Q2222222222222222222222');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const toast = useToast();
 
-    const subscribe = async () => {
-        const refreshToken = localStorage.getItem('refresh_token');
+    useEffect(() => {
+        checkStatus();
+    }, []);
+
+    const checkStatus = async () => {
+        setLoading(true);
+        setError(null);
         try {
-            const response = await axios.post(
-                '/api/payments/subscribe',
-                { userId, priceId },
-                { headers: { Authorization: `Bearer ${refreshToken}` } }
-            );
-            setStatus('Souscription créée : ' + response.data.status);
+            const refreshToken = localStorage.getItem('refresh_token');
+            const response = await axios.get('/api/payments/status', {
+                headers: { Authorization: `Bearer ${refreshToken}` }
+            });
+            setStatus(response.data.status);
         } catch (error) {
-            console.error('Erreur lors de la souscription :', error);
+            setError('Erreur lors de la vérification du statut');
+            console.error('Erreur lors de la vérification du statut :', error);
+        } finally {
+            setLoading(false);
         }
     };
 
     const cancel = async () => {
-        const refreshToken = localStorage.getItem('refresh_token');
+        setLoading(true);
+        setError(null);
         try {
-            const response = await axios.post(
-                '/api/payments/cancel',
-                { userId },
-                { headers: { Authorization: `Bearer ${refreshToken}` } }
-            );
-            setStatus('Souscription annulée');
+            const refreshToken = localStorage.getItem('refresh_token');
+            await axios.post('/api/payments/cancel', {}, {
+                headers: { Authorization: `Bearer ${refreshToken}` }
+            });
+            toast({
+                title: 'Abonnement annulé',
+                description: 'Votre abonnement a été annulé avec succès',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            });
+            await checkStatus();
         } catch (error) {
+            setError('Erreur lors de l\'annulation de l\'abonnement');
             console.error('Erreur lors de l\'annulation :', error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const checkStatus = async () => {
-        const refreshToken = localStorage.getItem('refresh_token');;
-        try {
-            const response = await axios.post(
-                '/api/payments/status',
-                { userId },
-                { headers: { Authorization: `Bearer ${refreshToken}` } }
-            );
-            setStatus('Statut : ' + response.data.status);
-        } catch (error) {
-            console.error('Erreur lors de la vérification du statut :', error);
-        }
-    };
+    if (loading) {
+        return (
+            <Box textAlign="center" p={8}>
+                <Spinner size="xl" />
+                <Text mt={4}>Chargement...</Text>
+            </Box>
+        );
+    }
 
     return (
-        <VStack spacing={4}>
-            <Input placeholder="User ID" value={userId} onChange={(e) => setUserId(e.target.value)} />
-            <Input placeholder="Price ID" value={priceId} onChange={(e) => setPriceId(e.target.value)} />
-            <Button onClick={subscribe} colorScheme="teal">S'abonner</Button>
-            <Button onClick={cancel} colorScheme="red">Annuler</Button>
-            <Button onClick={checkStatus} colorScheme="blue">Vérifier Statut</Button>
-            <Text>{status}</Text>
+        <VStack spacing={6} p={6} maxW="container.md" mx="auto">
+            <Heading size="lg">Gestion de l'abonnement</Heading>
+
+            {error && (
+                <Alert status="error" borderRadius="md">
+                    <AlertIcon />
+                    <Box>
+                        <AlertTitle>Erreur</AlertTitle>
+                        <AlertDescription>{error}</AlertDescription>
+                    </Box>
+                </Alert>
+            )}
+
+            <Box w="full" p={6} borderWidth="1px" borderRadius="lg">
+                <VStack spacing={4}>
+                    <Text fontSize="xl" fontWeight="bold">
+                        Statut actuel : {status === 'active' ? 'Abonnement actif' : 'Aucun abonnement'}
+                    </Text>
+
+                    {status === 'active' && (
+                        <Button
+                            colorScheme="red"
+                            onClick={cancel}
+                            isLoading={loading}
+                            loadingText="Annulation en cours..."
+                        >
+                            Annuler l'abonnement
+                        </Button>
+                    )}
+
+                    {status !== 'active' && (
+                        <Button
+                            colorScheme="blue"
+                            onClick={() => window.location.href = '/subscription'}
+                        >
+                            Choisir un abonnement
+                        </Button>
+                    )}
+                </VStack>
+            </Box>
         </VStack>
     );
 };

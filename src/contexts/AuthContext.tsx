@@ -1,35 +1,8 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-type User = {
-  createdAt?: string;
-  name?: string;
-  lastname?: string;
-  email: string;
-  password?: string;
-  dateOfBirth?: string;
-  profession?: string;
-  skills?: string[];
-  typeAbonnement?: string[];
-};
-
-type AuthContextType = {
-  user: User | null;
-  loading: boolean;
-  login: (credentials: { email: string; password: string }) => Promise<void>;
-  register: (userData: User) => Promise<void>;
-  logout: () => void;
-  resetPassword: (email: string) => Promise<void>;
-  refreshAccessToken: () => Promise<string>;
-};
+import { AuthContextType, AuthProviderProps, User } from '../types';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-type AuthProviderProps = {
-  children: ReactNode;
-  onLoginSuccess: () => void;
-  onLogout: () => void;
-};
 
 export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
@@ -56,9 +29,13 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
           setUser(userData);
           setLoading(false);
           return;
+        } else {
+          console.log('verifyResponse', verifyResponse.ok);
         }
       } catch (error) {
         console.error('Token verification error:', error);
+        logout();
+        navigate('/auth/login');
       }
 
       if (refreshToken) {
@@ -110,7 +87,6 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
       });
-      console.log(response);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -118,7 +94,6 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
       }
 
       const { access_token, refresh_token, user } = await response.json();
-      console.log('Received access_token:', access_token); // Debug log
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
       setUser(user);

@@ -69,26 +69,15 @@ import {
 import { FiBell, FiCheckCircle, FiTrash2 } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Alert, Regulation } from '../../types';
 
-interface Alert {
-    id: number;
-    message: string;
-    status: string;
-    priority: string;
-    date: string;
-    source: string;
-}
-interface Regulation {
-    id: number;
-    name: string;
-}
 
 const Alerts = () => {
-    const ALERTES_MOCK = [
+    const ALERTES_MOCK: Alert[] = [
         {
             id: 1,
             message: 'Détection anomalie réseau',
-            status: 'Non lue',
+            status: 'new',
             priority: 'Critique',
             date: '2024-03-25',
             source: 'Système'
@@ -96,7 +85,7 @@ const Alerts = () => {
         {
             id: 2,
             message: 'Mise à jour sécurité requise',
-            status: 'En cours',
+            status: 'in_progress',
             priority: 'Haute',
             date: '2024-03-24',
             source: 'Sécurité'
@@ -104,16 +93,11 @@ const Alerts = () => {
         {
             id: 3,
             message: 'Panne serveur DC-01',
-            status: 'Résolue',
+            status: 'resolved',
             priority: 'Urgente',
             date: '2024-03-23',
             source: 'Infrastructure'
         },
-    ];
-    const REGULATIONS_MOCK = [
-        { id: 1, name: 'RGPD' },
-        { id: 2, name: 'CCP' },
-        { id: 3, name: 'GDPR' },
     ];
     const [alerts, setAlerts] = useState<Alert[]>([]);
     const [regulations, setRegulations] = useState<Regulation[]>([]);
@@ -124,7 +108,7 @@ const Alerts = () => {
     }, []);
 
     const addAlert = async () => {
-        const refreshToken = localStorage.getItem('refresh_token');;
+        const refreshToken = localStorage.getItem('refresh_token');
         await axios.post('/api/alerts/subscribe', {
             headers: { Authorization: `Bearer ${refreshToken}` },
         });
@@ -132,7 +116,7 @@ const Alerts = () => {
     };
 
     const handleDelete = async (id: string) => {
-        const refreshToken = localStorage.getItem('refresh_token');;
+        const refreshToken = localStorage.getItem('refresh_token');
         await axios.delete(`/api/alerts/unsubscribe/${id}`, {
             headers: { Authorization: `Bearer ${refreshToken}` },
         });
@@ -147,7 +131,6 @@ const Alerts = () => {
             setRegulations(response.data);
         } catch (error) {
             console.error('Erreur lors de la récupération des réglementations:', error);
-            setRegulations(REGULATIONS_MOCK);
         }
 
     };
@@ -216,8 +199,8 @@ const Alerts = () => {
                                 <Td>
                                     <Badge
                                         colorScheme={
-                                            alert.status === 'Résolue' ? 'green' :
-                                                alert.status === 'En cours' ? 'yellow' : 'red'
+                                            alert.status === 'resolved' ? 'green' :
+                                                alert.status === 'in_progress' ? 'yellow' : 'red'
                                         }
                                         p={1.5}
                                         borderRadius="md"
@@ -278,9 +261,9 @@ const Alerts = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {regulations.map((regulation) => (
+                        {regulations.map((regulation:any) => (
                             <Tr key={regulation.id}>
-                                <Td>{regulation.name}</Td>
+                                <Td>{regulation.title}</Td>
                             </Tr>
                         ))}
                     </Tbody>

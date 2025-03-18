@@ -1,10 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { AuthHeader } from '../components/auths/AuthHeader';
-import { ReactNode } from 'react';
-
-interface AuthLayoutProps {
-  children: ReactNode;
-}
+import { AuthLayoutProps } from '../types';
 
 export const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (

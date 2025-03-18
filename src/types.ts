@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface SubscriptionPlan {
     id: string;
     name: 'ESSENTIEL' | 'PRO' | 'EXPERT';
@@ -43,15 +45,152 @@ export interface Competitor {
     industry: string;
     keywords: string[];
 }
-export interface Alert {
-    id: string;
-    message: string;
-    severity: string;
-}
+
 export interface CompetitorAnalysisModalProps {
     competitor: any;
 }
+
 export interface Analysis {
     seo: SEOAnalysis;
     social: SocialMediaStats;
+}
+
+export interface Alert {
+    id: number;
+    message: string;
+    status: 'new' | 'in_progress' | 'resolved';
+    priority: string;
+    date: string;
+    source: string;
+}
+
+export interface Report {
+    name: string;
+    description: string;
+    date: string;
+    status: 'new' | 'in_progress' | 'resolved';
+    type: string;
+    url: string;
+    image: string;
+    pdf: string;
+}
+
+export interface Regulation {
+    title: string;
+    category: string;
+    status: 'Active' | 'En révision' | 'Expirée';
+    department: string;
+    effectiveDate: string;
+    lastUpdate: string;
+}
+
+export type User = {
+    createdAt?: string;
+    name?: string;
+    lastname?: string;
+    email: string;
+    password?: string;
+    dateOfBirth?: string;
+    profession?: string;
+    skills?: string[];
+    typeAbonnement?: string[];
+};
+
+export type AuthContextType = {
+    user: User | null;
+    loading: boolean;
+    login: (credentials: { email: string; password: string }) => Promise<void>;
+    register: (userData: User) => Promise<void>;
+    logout: () => void;
+    resetPassword: (email: string) => Promise<void>;
+    refreshAccessToken: () => Promise<string>;
+};
+export type AuthProviderProps = {
+    children: ReactNode;
+    onLoginSuccess: () => void;
+    onLogout: () => void;
+};
+
+
+export type PrivateRouteProps = {
+    children: any;
+};
+
+
+export interface FormData {
+    name: string;
+    lastname: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    dateOfBirth: string;
+    profession: string;
+    skills?: string[];
+    typeAbonnement?: string[];
+}
+
+export interface AddCompetitorFormProps {
+    onAdd: (competitor: any) => void;
+}
+
+export interface Opportunity {
+    id: string;
+    message: string;
+    date: string;
+    source: string;
+    status: 'new' | 'in_progress' | 'resolved';
+}
+
+export interface RegulationShort {
+    id: string;
+    message: string;
+    date?: string;
+}
+export interface Block {
+    id: string;
+    message: string;
+    date: string;
+    icon: React.ReactNode;
+}
+
+export interface AccountCreationFormProps {
+    onSuccess: (userData: UserData) => void;
+    showPasswordPolicy?: boolean;
+    ctaText?: string;
+}
+
+
+export interface ConfirmationProps {
+    user: UserData;
+    plan: SubscriptionPlan;
+}
+
+export interface PaymentFormProps {
+    user: UserData;
+    plan: SubscriptionPlan;
+    onSuccess: () => void;
+}
+
+export interface PaymentPageProps {
+    user: UserData;
+    plan: SubscriptionPlan;
+    onSuccess: () => void;
+}
+
+export interface StripePaymentWrapperProps {
+    plan: SubscriptionPlan;
+    user: UserData;
+    onSuccess: () => void;
+}
+
+export interface AuthLayoutProps {
+    children: ReactNode;
+}
+
+export interface PrivateLayoutProps {
+    children: ReactNode;
+}
+
+export interface PublicLayoutProps {
+    children: ReactNode;
 }
