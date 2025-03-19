@@ -178,6 +178,16 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     onLogout();
   };
 
+  const refreshUser = async () => {
+    const accessToken = localStorage.getItem('access_token');
+    const res = await fetch('/api/auth/verify', { headers: { Authorization: `Bearer ${accessToken}` } });
+    if (res.ok) {
+      const userData = await res.json();
+      setUser(userData);
+    }
+  };
+
+
   useEffect(() => {
     const originalFetch = window.fetch;
 
@@ -195,7 +205,7 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
             navigate('/auth/login');
             throw new Error('Session expirée, veuillez vous reconnecter');
           }
-  
+
           const newToken = await refreshAccessToken();
           newConfig.headers = {
             ...newConfig.headers,
@@ -253,6 +263,7 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     register,
     resetPassword,
     refreshAccessToken,
+    refreshUser,
   };
 
   return (

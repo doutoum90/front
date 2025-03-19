@@ -332,3 +332,9 @@ export const DASHBOARD_DATA = [
         color: 'blue.500'
     },
 ]
+
+export const PRICE_MAP = {
+    'essentiel': import.meta.env.VITE_ESSENTIEL_PRICE_ID || 'price_1R4NK1QMk6qRSmo1egY1hfsD',
+    'pro': import.meta.env.VITE_PRO_PRICE_ID || 'price_1R4NJCQMk6qRSmo112OpuuEU',
+    'expert': import.meta.env.VITE_EXPERT_PRICE_ID || 'price_1R4NKMQMk6qRSmo1CObfbfsU',
+};

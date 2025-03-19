@@ -84,6 +84,7 @@ export type AuthContextType = {
     getTrialStatus: () => Promise<{ isActive: boolean; daysLeft: number }>;
     resetPassword: (email: string) => Promise<void>;
     refreshAccessToken: () => Promise<string>;
+    refreshUser: () => Promise<void>;
 };
 
 export type AuthProviderProps = {

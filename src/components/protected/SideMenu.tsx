@@ -115,6 +115,13 @@ export const SideMenu = () => {
                             >
                                 Paramètres
                             </MenuItem>
+                            <MenuItem
+                                icon={<Box as="span" className="material-icons">settings</Box>}
+                                _hover={{ bg: 'teal.50' }}
+                                onClick={() => navigate('/espace-membre/suivi-payment')}
+                            >
+                                Suivi Paiement
+                            </MenuItem>
                             <MenuDivider />
                             <MenuItem
                                 icon={<Box as="span" className="material-icons">logout</Box>}

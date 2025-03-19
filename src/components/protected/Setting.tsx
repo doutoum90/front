@@ -13,31 +13,83 @@ import {
     Avatar,
     Box,
     Heading,
-    Flex
+    Flex,
+    useToast,
 } from '@chakra-ui/react';
 import { FaUserCog, FaShieldAlt, FaBell } from 'react-icons/fa';
-import axios from 'axios';
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 
 export const Settings = () => {
+    const { user, refreshUser } = useAuth();
+    const toast = useToast();
     const [settings, setSettings] = useState({
         email: '',
         password: '',
-        region: '',
         name: '',
+        emailNotifications: true,
+        pushNotifications: false,
+        twoFactorAuth: false,
     });
+    const [loading, setLoading] = useState(false);
+
+    // Charger les données utilisateur au montage
+    useEffect(() => {
+        if (user) {
+            setSettings({
+                email: user.email || '',
+                name: user.name || '',
+                password: '',
+                emailNotifications: true, // Valeur par défaut ou récupérée
+                pushNotifications: false, // Valeur par défaut ou récupérée
+                twoFactorAuth: false, // À implémenter côté backend si nécessaire
+            });
+        }
+    }, [user]);
 
     const saveSettings = async () => {
-        const refreshToken = localStorage.getItem('refresh_token');
+        setLoading(true);
+        const accessToken = localStorage.getItem('access_token'); // Utiliser access_token, pas refresh_token
         try {
-            await axios.post('/api/settings', settings, {
-                headers: { Authorization: `Bearer ${refreshToken}` },
+            const response = await fetch('/api/settings', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({
+                    email: settings.email,
+                    name: settings.name,
+                    password: settings.password || undefined, // Ne pas envoyer si vide
+                }),
             });
-        } catch (error) {
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Erreur lors de la mise à jour');
+            }
+
+            await refreshUser(); // Rafraîchir les données utilisateur dans AuthContext
+            toast({
+                title: 'Paramètres mis à jour',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            });
+        } catch (error: any) {
             console.error('Erreur lors de la sauvegarde des paramètres :', error);
+            toast({
+                title: 'Erreur',
+                description: error.message || 'Échec de la mise à jour',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+        } finally {
+            setLoading(false);
         }
     };
+
     return (
         <Box p={8} bg="gray.50" minH="100vh">
             <Heading size="xl" mb={8} color="teal.600">
@@ -46,69 +98,117 @@ export const Settings = () => {
 
             <Tabs variant="enclosed">
                 <TabList>
-                    <Tab><FaUserCog />&nbsp;Profil</Tab>
-                    <Tab><FaShieldAlt />&nbsp;Sécurité</Tab>
-                    <Tab><FaBell />&nbsp;Notifications</Tab>
+                    <Tab>
+                        <FaUserCog /> Profil
+                    </Tab>
+                    <Tab>
+                        <FaShieldAlt /> Sécurité
+                    </Tab>
+                    <Tab>
+                        <FaBell /> Notifications
+                    </Tab>
                 </TabList>
 
                 <TabPanels mt={6}>
+                    {/* Onglet Profil */}
                     <TabPanel>
                         <VStack spacing={6} maxW="600px">
                             <FormControl>
                                 <FormLabel>Photo de profil</FormLabel>
                                 <Flex align="center">
-                                    <Avatar size="xl" mr={4} />
-                                    <Button variant="outline">Changer</Button>
+                                    <Avatar size="xl" name={settings.name} mr={4} />
+                                    <Button variant="outline" isDisabled>
+                                        Changer (non implémenté)
+                                    </Button>
                                 </Flex>
                             </FormControl>
 
                             <FormControl>
                                 <FormLabel>Nom complet</FormLabel>
-                                <Input placeholder="Jean Dupont" onChange={(e) => setSettings({ ...settings, name: e.target.value })} />
+                                <Input
+                                    value={settings.name}
+                                    onChange={(e) => setSettings({ ...settings, name: e.target.value })}
+                                    placeholder="Jean Dupont"
+                                />
                             </FormControl>
 
                             <FormControl>
                                 <FormLabel>Email</FormLabel>
-                                <Input type="email" placeholder="contact@exemple.com" onChange={(e) => setSettings({ ...settings, email: e.target.value })} />
+                                <Input
+                                    type="email"
+                                    value={settings.email}
+                                    onChange={(e) => setSettings({ ...settings, email: e.target.value })}
+                                    placeholder="contact@exemple.com"
+                                />
                             </FormControl>
 
-                            <Button colorScheme="teal" alignSelf="flex-end">
+                            <Button
+                                colorScheme="teal"
+                                alignSelf="flex-end"
+                                onClick={saveSettings}
+                                isLoading={loading}
+                            >
                                 Enregistrer
                             </Button>
                         </VStack>
                     </TabPanel>
 
+                    {/* Onglet Sécurité */}
                     <TabPanel>
                         <VStack spacing={6} maxW="600px">
                             <FormControl>
                                 <FormLabel>Changer le mot de passe</FormLabel>
-                                <Input type="password" placeholder="Nouveau mot de passe" onChange={(e) => setSettings({ ...settings, password: e.target.value })} />
+                                <Input
+                                    type="password"
+                                    value={settings.password}
+                                    onChange={(e) => setSettings({ ...settings, password: e.target.value })}
+                                    placeholder="Nouveau mot de passe"
+                                />
                             </FormControl>
 
-                            <FormControl>
-                                <FormLabel>Authentification à 2 facteurs</FormLabel>
-                                <Switch colorScheme="teal" />
+                            <FormControl display="flex" alignItems="center">
+                                <FormLabel mb="0">Authentification à 2 facteurs</FormLabel>
+                                <Switch
+                                    colorScheme="teal"
+                                    isChecked={settings.twoFactorAuth}
+                                    onChange={(e) => setSettings({ ...settings, twoFactorAuth: e.target.checked })}
+                                    isDisabled // À activer avec une implémentation backend
+                                />
                             </FormControl>
 
-                            <Button colorScheme="teal" alignSelf="flex-end" onClick={() => saveSettings()}>
+                            <Button
+                                colorScheme="teal"
+                                alignSelf="flex-end"
+                                onClick={saveSettings}
+                                isLoading={loading}
+                            >
                                 Mettre à jour
                             </Button>
                         </VStack>
                     </TabPanel>
 
+                    {/* Onglet Notifications */}
                     <TabPanel>
                         <VStack spacing={6} maxW="600px">
-                            <FormControl>
-                                <FormLabel>Notifications Email</FormLabel>
-                                <Switch colorScheme="teal" defaultChecked />
+                            <FormControl display="flex" alignItems="center">
+                                <FormLabel mb="0">Notifications Email</FormLabel>
+                                <Switch
+                                    colorScheme="teal"
+                                    isChecked={settings.emailNotifications}
+                                    onChange={(e) => setSettings({ ...settings, emailNotifications: e.target.checked })}
+                                />
                             </FormControl>
 
-                            <FormControl>
-                                <FormLabel>Notifications Push</FormLabel>
-                                <Switch colorScheme="teal" />
+                            <FormControl display="flex" alignItems="center">
+                                <FormLabel mb="0">Notifications Push</FormLabel>
+                                <Switch
+                                    colorScheme="teal"
+                                    isChecked={settings.pushNotifications}
+                                    onChange={(e) => setSettings({ ...settings, pushNotifications: e.target.checked })}
+                                />
                             </FormControl>
 
-                            <Button colorScheme="teal" alignSelf="flex-end">
+                            <Button colorScheme="teal" alignSelf="flex-end" isLoading={loading}>
                                 Enregistrer
                             </Button>
                         </VStack>
