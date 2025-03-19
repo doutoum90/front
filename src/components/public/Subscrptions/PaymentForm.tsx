@@ -17,6 +17,12 @@ import {
 } from '@chakra-ui/react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { PaymentFormProps } from '../../../types';
+// priceIds Stripe à créer et à récupérer dans le dashboard Stripe
+const priceMap = {
+    'essentiel': import.meta.env.VITE_ESSENTIEL_PRICE_ID || 'price_1R4NK1QMk6qRSmo1egY1hfsD',
+    'pro': import.meta.env.VITE_PRO_PRICE_ID || 'price_1R4NJCQMk6qRSmo112OpuuEU',
+    'expert': import.meta.env.VITE_EXPERT_PRICE_ID || 'price_1R4NKMQMk6qRSmo1CObfbfsU',
+};
 
 export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
     const stripe = useStripe();
@@ -61,6 +67,7 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
                 body: JSON.stringify({
                     paymentMethodId: paymentMethod.id,
                     planId: plan.id,
+                    priceID: priceMap[plan.id as keyof typeof priceMap],
                     amount: plan.price * 100,
                     email: user.email,
                 }),

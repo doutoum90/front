@@ -124,7 +124,6 @@ export const AuthProvider = ({ children, onLoginSuccess, onLogout }: AuthProvide
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('refresh_token', refresh_token);
     setUser(user);
-    onLoginSuccess();
   };
 
   const resetPassword = async (email: string) => {

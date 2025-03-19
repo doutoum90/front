@@ -41,19 +41,17 @@ export const SubscriptionFlow = () => {
                 trialActive,
                 typeAbonnement: plan.name,
             });
-            // Vérifier que les tokens sont bien stockés
-            const accessToken = localStorage.getItem('access_token');
-            const refreshToken = localStorage.getItem('refresh_token');
-            if (!accessToken || !refreshToken) {
-                throw new Error('Tokens non générés après inscription');
-            }
-            setStepData({ ...stepData, selectedPlan: plan, trialActive: true });
-            setActiveStep(SubscriptionSteps.CONFIRMATION);
+            setStepData({ ...stepData, trialActive, selectedPlan: plan });
+            setActiveStep(SubscriptionSteps.PAYMENT);
         } catch (error) {
             console.error('Erreur lors du démarrage de l\'essai:', error);
             // Ajouter une alerte utilisateur ici si nécessaire
         }
     };
+    const handlePaymentSuccess = () => {
+        setStepData({ ...stepData, trialActive: false });
+        setActiveStep(SubscriptionSteps.CONFIRMATION);
+    }
 
     return (
         <HStack spacing={0} width="100%" maxWidth="100vw" pt={12} px={{ base: 4, md: 8 }}>
@@ -95,17 +93,17 @@ export const SubscriptionFlow = () => {
                             <PaymentPage
                                 user={stepData.userData}
                                 plan={stepData.selectedPlan}
-                                onSuccess={() => setActiveStep(SubscriptionSteps.CONFIRMATION)}
+                                onSuccess={handlePaymentSuccess}
                             />
                             <Button mt={4} onClick={handleBack} variant="outline">Retour</Button>
                         </>
                     )}
 
-                    {activeStep === SubscriptionSteps.CONFIRMATION && stepData.userData && stepData.selectedPlan && stepData.trialActive && (
+                    {activeStep === SubscriptionSteps.CONFIRMATION && stepData.userData && stepData.selectedPlan && (
                         <ConfirmationScreen
                             user={stepData.userData}
                             plan={stepData.selectedPlan}
-                            trialActive={stepData.trialActive}
+                            trialActive={stepData.trialActive!}
                         />
                     )}
                 </Box>
