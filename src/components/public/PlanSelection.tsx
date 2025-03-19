@@ -1,4 +1,4 @@
-import { SimpleGrid, Box, Heading, Text, Button, VStack, useToast } from '@chakra-ui/react';
+import { SimpleGrid, Box, Heading, Text, Button, VStack } from '@chakra-ui/react';
 import { SubscriptionPlan } from '../../types';
 
 export const PlanSelection = ({ onSelectPlan }: { onSelectPlan: (plan: SubscriptionPlan) => void }) => {

@@ -1,4 +1,4 @@
-import { Flex, Button, Text, Box, Heading, HStack, VStack } from "@chakra-ui/react";
+import { Flex, Button, Box, HStack, VStack, Image } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PUBLIC_MENU } from "../../constantes";
 export const PublicHeader = () => {
@@ -19,12 +19,7 @@ export const PublicHeader = () => {
                     alignItems="flex-start"
                     pr={4}
                 >
-                    <Heading as="h1" size="2xl" color="teal.600" fontWeight="bold">
-                        INTELLIGENTSLA
-                    </Heading>
-                    <Text fontSize="xl" color="gray.600">
-                        L'intelligence économique au service de votre activité
-                    </Text>
+                    <Image src="/logo-sm.jpg" alt="logo" />
                 </VStack>
                 <VStack
                     width="70%"

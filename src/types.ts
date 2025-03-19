@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-
+import { IconType } from 'react-icons/lib';
 export interface SubscriptionPlan {
     id: string;
     name: 'ESSENTIEL' | 'PRO' | 'EXPERT';
@@ -208,4 +208,46 @@ export interface MarketData {
 export interface MarketShare {
     company: string;
     value: number;
+}
+
+// src/types/subscription.ts
+export enum SubscriptionPlanEnum {
+    ESSENTIEL = 'ESSENTIEL',
+    PRO = 'PRO',
+    EXPERT = 'EXPERT'
+}
+
+export type FeatureAccess = {
+    analytics: boolean;
+    exportData: boolean;
+    apiAccess: boolean;
+    premiumSupport: boolean;
+};
+
+export const PLAN_FEATURES: Record<SubscriptionPlanEnum, FeatureAccess> = {
+    [SubscriptionPlanEnum.ESSENTIEL]: {
+        analytics: true,
+        exportData: false,
+        apiAccess: false,
+        premiumSupport: false
+    },
+    [SubscriptionPlanEnum.PRO]: {
+        analytics: true,
+        exportData: true,
+        apiAccess: true,
+        premiumSupport: false
+    },
+    [SubscriptionPlanEnum.EXPERT]: {
+        analytics: true,
+        exportData: true,
+        apiAccess: true,
+        premiumSupport: true
+    }
+};
+
+
+export interface Section {
+    title: string;
+    icon: IconType;
+    content: React.ReactNode;
 }

@@ -1,10 +1,8 @@
-import { Flex, Grid, GridItem, Text, Link, Icon, Box, Heading, Input, InputGroup, InputRightElement, Button, FormControl } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Text, Link, Icon, Box, Heading } from '@chakra-ui/react';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import { PUBLIC_MENU, ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS, SUBSCRIBE_BUTTON } from '../../constantes';
-import { useNavigate } from 'react-router-dom';
+import { PUBLIC_MENU, ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS } from '../../constantes';
 
 export const PublicFooter = () => {
-    const navigate = useNavigate();
 
     return (
         <Box bg="gray.800" color="white" mt={16}>
@@ -70,31 +68,6 @@ export const PublicFooter = () => {
 
                     {/* Newsletter */}
                     <GridItem>
-                        <Heading size="md" mb={4} color="teal.300">
-                            Newsletter
-                        </Heading>
-                        <FormControl>
-                            <InputGroup>
-                                <Input
-                                    placeholder="Votre email"
-                                    _placeholder={{ color: "gray.400" }}
-                                    borderColor="gray.600"
-                                    _focus={{ borderColor: "teal.400" }}
-                                />
-                                <InputRightElement width="fit-content">
-                                    <Button
-                                        colorScheme="teal"
-                                        size="sm"
-                                        mr={1}
-                                        borderRadius="md"
-                                        _hover={{ transform: "scale(1.05)" }}
-                                        onClick={() => navigate('/auth/subscription')}
-                                    >
-                                        {SUBSCRIBE_BUTTON}
-                                    </Button>
-                                </InputRightElement>
-                            </InputGroup>
-                        </FormControl>
 
                         {/* Social Media */}
                         <Flex mt={6} gap={4}>

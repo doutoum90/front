@@ -25,7 +25,6 @@ const FreeTrialPage = lazy(() => import('../components/public/FreeTrialPage/Free
 const TrialConfirmation = lazy(() => import('../components/public/FreeTrialPage/TrialConfirmation'));
 const CompetitorsPage = lazy(() => import('../components/protected/CompetitorsPage'));
 
-const EcranBoard = lazy(() => import('../components/public/FreeTrialPage/EcranBoard'));
 const LoginForm = lazy(() => import('../components/auths/LoginForm'));
 const PasswordReset = lazy(() => import('../components/auths/PasswordReset'));
 const RegisterForm = lazy(() => import('../components/auths/RegisterForm'));
@@ -86,7 +85,6 @@ export const routes = [
       { path: 'dashboard', element: lazyLoad(Dashboard) },
       { path: 'profil', element: lazyLoad(Profile) },
       { path: 'parametres', element: lazyLoad(Settings) },
-      { path: 'ecran-board', element: lazyLoad(EcranBoard) },
       { path: 'veille-concurentielle', element: lazyLoad(VeilleConcurrentielle) },
       { path: 'analyse-de-marche', element: lazyLoad(AnalyseMarche) },
       { path: 'surveillance-des-opportunites-et-risques', element: lazyLoad(Opportunites) },
