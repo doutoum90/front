@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { IconType } from 'react-icons/lib';
 export interface SubscriptionPlan {
     id: string;
-    name: 'ESSENTIEL' | 'PRO' | 'EXPERT';
+    name: 'Essentiel' | 'PRO' | 'Expert'
     price: number;
     features: string[];
     recommended?: boolean;
@@ -16,26 +16,13 @@ export interface UserData {
     confirmPassword?: string;
     dateOfBirth?: string;
     profession?: string;
-    skills?: string[];
-    typeAbonnement?: string[];
+    typeAbonnement?: 'Essentiel' | 'PRO' | 'Expert';
 }
 
-export interface CompetitorAnalysis {
-    seo: any;
-    social: any;
-}
-export interface SEOAnalysis {
-    traffic: any;
-    engagement: any;
-    growth: any;
-    avgRanking: number;
-    top10Keywords: number;
-    estimatedTraffic: number;
-}
-export interface SocialMediaStats {
-    sentiment: any;
-    engagement: any;
-    mentions: any;
+export interface SubscriptionStepsData {
+    userData?: UserData;
+    selectedPlan?: SubscriptionPlan;
+    trialActive?: boolean;
 }
 
 export interface Competitor {
@@ -44,15 +31,6 @@ export interface Competitor {
     domain: string;
     industry: string;
     keywords: string[];
-}
-
-export interface CompetitorAnalysisModalProps {
-    competitor: any;
-}
-
-export interface Analysis {
-    seo: SEOAnalysis;
-    social: SocialMediaStats;
 }
 
 export interface Alert {
@@ -92,22 +70,22 @@ export type User = {
     password?: string;
     dateOfBirth?: string;
     profession?: string;
-    skills?: string[];
-    typeAbonnement?: string[];
+    typeAbonnement: 'Essentiel' | 'PRO' | 'Expert';
+    trialActive: boolean;
 };
-
-
-
 
 export type AuthContextType = {
     user: User | null;
     loading: boolean;
     login: (credentials: { email: string; password: string }) => Promise<void>;
-    register: (userData: User) => Promise<void>;
     logout: () => void;
+    register: (userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert', trialActive: boolean }) => Promise<void>;
+    updateSubscription: (typeAbonnement: 'Essentiel' | 'PRO' | 'Expert') => Promise<void>;
+    getTrialStatus: () => Promise<{ isActive: boolean; daysLeft: number }>;
     resetPassword: (email: string) => Promise<void>;
     refreshAccessToken: () => Promise<string>;
 };
+
 export type AuthProviderProps = {
     children: ReactNode;
     onLoginSuccess: () => void;
@@ -166,6 +144,7 @@ export interface AccountCreationFormProps {
 export interface ConfirmationProps {
     user: UserData;
     plan: SubscriptionPlan;
+    trialActive: boolean;
 }
 
 export interface PaymentFormProps {
@@ -198,8 +177,6 @@ export interface PublicLayoutProps {
     children: ReactNode;
 }
 
-
-
 export interface MarketData {
     x: string;
     y: number;
@@ -210,41 +187,12 @@ export interface MarketShare {
     value: number;
 }
 
-// src/types/subscription.ts
-export enum SubscriptionPlanEnum {
-    ESSENTIEL = 'ESSENTIEL',
-    PRO = 'PRO',
-    EXPERT = 'EXPERT'
-}
-
 export type FeatureAccess = {
     analytics: boolean;
     exportData: boolean;
     apiAccess: boolean;
     premiumSupport: boolean;
 };
-
-export const PLAN_FEATURES: Record<SubscriptionPlanEnum, FeatureAccess> = {
-    [SubscriptionPlanEnum.ESSENTIEL]: {
-        analytics: true,
-        exportData: false,
-        apiAccess: false,
-        premiumSupport: false
-    },
-    [SubscriptionPlanEnum.PRO]: {
-        analytics: true,
-        exportData: true,
-        apiAccess: true,
-        premiumSupport: false
-    },
-    [SubscriptionPlanEnum.EXPERT]: {
-        analytics: true,
-        exportData: true,
-        apiAccess: true,
-        premiumSupport: true
-    }
-};
-
 
 export interface Section {
     title: string;

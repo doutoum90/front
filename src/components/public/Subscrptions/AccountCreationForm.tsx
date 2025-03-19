@@ -1,34 +1,11 @@
+// src/components/Subscriptions/AccountCreationForm.tsx
 import { useState } from 'react';
-import {
-  VStack,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  Alert,
-  AlertIcon,
-  InputGroup,
-  InputRightElement,
-  Box,
-  Text,
-  List,
-  ListItem
-} from '@chakra-ui/react';
-import { AccountCreationFormProps } from '../../types';
+import { VStack, FormControl, FormLabel, Input, Button, Alert, AlertIcon, InputGroup, InputRightElement, Box, Text, List, ListItem } from '@chakra-ui/react';
+import { AccountCreationFormProps } from '../../../types';
 
-
-
-export const AccountCreationForm = ({ onSuccess,
-  showPasswordPolicy = false,
-  ctaText = 'Créer mon compte'
-}: AccountCreationFormProps) => {
+export const AccountCreationForm = ({ onSuccess, showPasswordPolicy = true, ctaText = 'Créer mon compte' }: AccountCreationFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    lastname: '',
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ name: '', lastname: '', email: '', password: '' });
   const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -39,21 +16,17 @@ export const AccountCreationForm = ({ onSuccess,
       return;
     }
 
-    if (formData.password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères');
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      setError('Le mot de passe doit contenir au moins 8 caractères, 1 chiffre et 1 caractère spécial');
       return;
     }
 
-    onSuccess({
-      name: formData.name,
-      lastname: formData.lastname,
-      email: formData.email,
-      password: formData.password
-    });
+    onSuccess(formData);
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit}>
+    <Box as="form" onSubmit={handleSubmit} maxW="md" mx="auto">
       <VStack spacing={4}>
         {error && (
           <Alert status="error" borderRadius="md">
@@ -64,30 +37,17 @@ export const AccountCreationForm = ({ onSuccess,
 
         <FormControl isRequired>
           <FormLabel>Prénom</FormLabel>
-          <Input
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Jean"
-          />
+          <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Jean" />
         </FormControl>
 
         <FormControl isRequired>
           <FormLabel>Nom</FormLabel>
-          <Input
-            value={formData.lastname}
-            onChange={(e) => setFormData({ ...formData, lastname: e.target.value })}
-            placeholder="Dupont"
-          />
+          <Input value={formData.lastname} onChange={(e) => setFormData({ ...formData, lastname: e.target.value })} placeholder="Dupont" />
         </FormControl>
 
         <FormControl isRequired>
           <FormLabel>Email</FormLabel>
-          <Input
-            type="email"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            placeholder="jean.dupont@email.com"
-          />
+          <Input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="jean.dupont@email.com" />
         </FormControl>
 
         <FormControl isRequired>
@@ -100,17 +60,13 @@ export const AccountCreationForm = ({ onSuccess,
               placeholder="••••••••"
             />
             <InputRightElement width="4.5rem">
-              <Button
-                h="1.75rem"
-                size="sm"
-                onClick={() => setShowPassword(!showPassword)}
-                variant="ghost"
-              >
+              <Button h="1.75rem" size="sm" onClick={() => setShowPassword(!showPassword)} variant="ghost">
                 {showPassword ? 'Cacher' : 'Afficher'}
               </Button>
             </InputRightElement>
           </InputGroup>
         </FormControl>
+
         {showPasswordPolicy && (
           <Box textAlign="left" w="full" fontSize="sm" color="gray.600">
             <Text>Le mot de passe doit contenir :</Text>
@@ -122,13 +78,7 @@ export const AccountCreationForm = ({ onSuccess,
           </Box>
         )}
 
-        <Button
-          type="submit"
-          colorScheme="blue"
-          size="lg"
-          width="full"
-          mt={4}
-        >
+        <Button type="submit" colorScheme="blue" size="lg" width="full" mt={4}>
           {ctaText}
         </Button>
       </VStack>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
-import { PaymentForm } from './PaymentForm';
+import { PaymentForm } from '../Subscrptions/PaymentForm';
 import { StripePaymentWrapperProps } from '../../../types';
 import { Spinner } from '@chakra-ui/react';
 

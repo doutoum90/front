@@ -11,7 +11,7 @@ const lazyLoad = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
     <Component />
   </Suspense>
 );
-
+// Composants publics
 const Home = lazy(() => import('../components/public/Home'));
 const About = lazy(() => import('../components/public/About'));
 const Actions = lazy(() => import('../components/public/Actions'));
@@ -21,9 +21,6 @@ const Contact = lazy(() => import('../components/public/Contact'));
 const PrivacyPolicy = lazy(() => import('../components/public/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('../components/public/TermsOfService'));
 
-const FreeTrialPage = lazy(() => import('../components/public/FreeTrialPage/FreeTrialPage'));
-const TrialConfirmation = lazy(() => import('../components/public/FreeTrialPage/TrialConfirmation'));
-const CompetitorsPage = lazy(() => import('../components/protected/CompetitorsPage'));
 
 const LoginForm = lazy(() => import('../components/auths/LoginForm'));
 const PasswordReset = lazy(() => import('../components/auths/PasswordReset'));
@@ -32,7 +29,7 @@ const RegisterForm = lazy(() => import('../components/auths/RegisterForm'));
 const Dashboard = lazy(() => import('../components/protected/Dashboard'));
 const Profile = lazy(() => import('../components/protected/Profile'));
 const Settings = lazy(() => import('../components/protected/Setting'));
-const SubscriptionFlow = lazy(() => import('../components/public/SubscriptionFlow'));
+const SubscriptionFlow = lazy(() => import('../components/public/Subscrptions/SubscriptionFlow'));
 const Autres = lazy(() => import('../components/protected/Autres'));
 
 const VeilleConcurrentielle = lazy(() => import('../components/protected/VeilleConcurrentielle'));
@@ -43,6 +40,7 @@ const Regulations = lazy(() => import('../components/protected/Regulations'));
 
 const Opportunites = lazy(() => import('../components/protected/Opportunites'));
 const AnalyseMarche = lazy(() => import('../components/protected/AnalyseMarche'));
+
 
 export const routes = [
   {
@@ -58,8 +56,7 @@ export const routes = [
       { path: 'contact', element: lazyLoad(Contact) },
       { path: 'privacy', element: lazyLoad(PrivacyPolicy) },
       { path: 'terms', element: lazyLoad(TermsOfService) },
-      { path: 'free-trial', element: lazyLoad(FreeTrialPage) },
-      { path: 'trial-confirmation', element: lazyLoad(TrialConfirmation) },
+      { path: 'subscription', element: lazyLoad(SubscriptionFlow) },
     ],
   },
   {
@@ -89,7 +86,7 @@ export const routes = [
       { path: 'analyse-de-marche', element: lazyLoad(AnalyseMarche) },
       { path: 'surveillance-des-opportunites-et-risques', element: lazyLoad(Opportunites) },
       { path: 'rapport-sur-mesure', element: lazyLoad(Regulations) },
-      { path: 'subscription', element: lazyLoad(SubscriptionFlow) },
+
       { path: 'payments', element: lazyLoad(Payments) },
 
     ],

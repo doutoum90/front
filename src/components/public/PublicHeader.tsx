@@ -19,7 +19,7 @@ export const PublicHeader = () => {
                     alignItems="flex-start"
                     pr={4}
                 >
-                    <Image src="/logo-sm.jpg" alt="logo" />
+                    <Image src="/logo-sm.jpg" alt="logo" cursor="pointer" onClick={() => navigate('/')} />
                 </VStack>
                 <VStack
                     width="70%"

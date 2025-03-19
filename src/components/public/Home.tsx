@@ -36,14 +36,14 @@ const Home = () => {
           <VStack width="80%"
             alignItems="flex-start" textAlign="left">
             {PARAGRAPHS.map((paragraph, index) => (
-              <>
-                <Text size="md" fontWeight="bold" fontSize="xl" key={index}>
+              <Box key={index}>
+                <Text size="md" fontWeight="bold" fontSize="xl">
                   {paragraph.title}
                 </Text>
-                <Text lineHeight="tall" color="gray.600" mb={4}>
+                <Text fontSize="lg" lineHeight="tall" color="gray.600" mb={4}>
                   {paragraph.description}
                 </Text>
-              </>
+              </Box>
             ))}
           </VStack>
           <VStack
@@ -62,7 +62,7 @@ const Home = () => {
               borderRadius="2xl"
               _hover={{ transform: 'scale(1.05)' }}
               transition="all 0.2s"
-              onClick={() => navigate('/free-trial')}
+              onClick={() => navigate('/subscription')}
             >
               {"Démarrer tout de suite\nvotre essai gratuit"}
             </Button>
