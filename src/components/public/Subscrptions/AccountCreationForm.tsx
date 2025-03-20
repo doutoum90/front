@@ -1,4 +1,3 @@
-// src/components/Subscriptions/AccountCreationForm.tsx
 import { useState } from 'react';
 import { VStack, FormControl, FormLabel, Input, Button, Alert, AlertIcon, InputGroup, InputRightElement, Box, Text, List, ListItem } from '@chakra-ui/react';
 import { AccountCreationFormProps } from '../../../types';

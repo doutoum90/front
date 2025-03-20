@@ -1,4 +1,3 @@
-// src/components/Subscriptions/SubscriptionFlow.tsx
 import { useState } from 'react';
 import { Box, Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator, VStack, HStack, Button } from '@chakra-ui/react';
 import { useAuth } from '../../../contexts/AuthContext';

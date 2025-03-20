@@ -11,7 +11,6 @@ import {
     TableContainer,
     Container,
     Text,
-    useTheme,
     Box,
     FormControl,
     FormLabel,
@@ -24,11 +23,16 @@ import {
 import { FiDownload, FiFileText, FiEdit, FiCalendar } from 'react-icons/fi';
 import { GiWeightScale } from 'react-icons/gi';
 import { Regulation, Report } from '../../types';
+import { useColorModeValue } from '@chakra-ui/react';
 
 
 export const Regulations = () => {
-    const theme = useTheme();
-
+    const bgColor = useColorModeValue('white', 'gray.800');
+    const textColor = useColorModeValue('gray.800', 'white');
+    const borderColor = useColorModeValue('gray.200', 'gray.600');
+    const hoverBg = useColorModeValue('gray.50', 'gray.700');
+    const purpleHeaderBg = useColorModeValue('purple.500', 'purple.200');
+    const headerTextColor = useColorModeValue('white', 'gray.800');
     const [regulations, setRegulations] = useState<Regulation[]>([]);
     const [report, setReport] = useState<Report>({
         name: '',
@@ -106,10 +110,10 @@ export const Regulations = () => {
 
     const getStatusColor = (status: string) => {
         switch (status) {
-            case 'Active': return 'green';
-            case 'En révision': return 'yellow';
-            case 'Expirée': return 'red';
-            default: return 'gray';
+            case 'Active': return useColorModeValue('green', 'green.200');
+            case 'En révision': return useColorModeValue('yellow', 'yellow.200');
+            case 'Expirée': return useColorModeValue('red', 'red.200');
+            default: return useColorModeValue('gray', 'gray.200');
         }
     };
 
@@ -119,22 +123,32 @@ export const Regulations = () => {
     };
 
     return (
-        <Container maxW="container.xl" py={8}>
+        <Container maxW="container.xl" py={8} bg={useColorModeValue('gray.50', 'gray.900')}>
 
-            <Box mb={6} p={4} borderWidth="1px" borderRadius="lg" boxShadow="md">
-                <Text fontSize="xl" fontWeight="bold" mb={4}>Demande de Rapport Personnalisé</Text>
+            <Box
+                mb={6}
+                p={4}
+                borderWidth="1px"
+                borderRadius="lg"
+                boxShadow="md"
+                bg={bgColor}
+                borderColor={borderColor}
+            >
+                <Text fontSize="xl" fontWeight="bold" mb={4} color={textColor}>
+                    Demande de Rapport Personnalisé
+                </Text>
                 <form onSubmit={handleSubmit}>
                     <FormControl id="reportName" isRequired>
-                        <FormLabel>Nom du Rapport</FormLabel>
+                        <FormLabel color={textColor}>Nom du Rapport</FormLabel>
                         <Input type="text" value={report.name} onChange={(e) => setReport({ ...report, name: e.target.value })} />
                     </FormControl>
                     <FormControl id="reportDescription" isRequired mt={4}>
-                        <FormLabel>Description</FormLabel>
+                        <FormLabel color={textColor}>Description</FormLabel>
                         <Textarea value={report.description} onChange={(e) => setReport({ ...report, description: e.target.value })} />
                     </FormControl>
 
                     <FormControl id="reportPdf" isRequired mt={4}>
-                        <FormLabel>PDF</FormLabel>
+                        <FormLabel color={textColor}>PDF</FormLabel>
                         <Input type="text" value={report.pdf} onChange={(e) => setReport({ ...report, pdf: e.target.value })} />
                     </FormControl>
 
@@ -148,7 +162,10 @@ export const Regulations = () => {
                 fontSize="2xl"
                 mb={6}
                 fontWeight="bold"
-                bgGradient="linear(to-r, purple.500, blue.500)"
+                bgGradient={useColorModeValue(
+                    "linear(to-r, purple.500, blue.500)",
+                    "linear(to-r, purple.300, blue.300)"
+                )}
                 bgClip="text"
                 display="flex"
                 alignItems="center"
@@ -162,29 +179,37 @@ export const Regulations = () => {
                 borderRadius="lg"
                 overflowX="auto"
                 boxShadow="md"
+                bg={bgColor}
+                borderColor={borderColor}
             >
-                <Table variant="striped" colorScheme="purple">
-                    <Thead bg={theme.colors.purple[500]}>
+                <Table variant="striped" colorScheme={useColorModeValue('purple', 'gray')}>
+                    <Thead bg={purpleHeaderBg}>
                         <Tr>
-                            <Th color="white">Titre</Th>
-                            <Th color="white">Catégorie</Th>
-                            <Th color="white">Statut</Th>
-                            <Th color="white">Département</Th>
-                            <Th color="white">Date d'effet</Th>
-                            <Th color="white" textAlign="center">Actions</Th>
+                            <Th color="headerTextColor">Titre</Th>
+                            <Th color="headerTextColor">Catégorie</Th>
+                            <Th color="headerTextColor">Statut</Th>
+                            <Th color="headerTextColor">Département</Th>
+                            <Th color="headerTextColor">Date d'effet</Th>
+                            <Th color="headerTextColor" textAlign="center">Actions</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {regulations.map((regulation) => (
-                            <Tr key={regulation.title} _hover={{ bg: 'gray.50' }}>
+                            <Tr key={regulation.title} _hover={{ bg: hoverBg }}>
                                 <Td fontWeight="medium">
-                                    <Tag variant="subtle" colorScheme="blue" mr={2}>
+                                    <Tag
+                                        variant="subtle"
+                                        color={useColorModeValue('blue', 'blue.200')}
+                                        mr={2}
+                                    >
                                         <FiFileText />
                                     </Tag>
                                     {regulation.title}
                                 </Td>
                                 <Td>
-                                    <Tag colorScheme="cyan" borderRadius="full">
+                                    <Tag colorScheme="cyan"
+                                        borderRadius="full"
+                                    >
                                         <TagLabel>{regulation.category}</TagLabel>
                                     </Tag>
                                 </Td>
@@ -245,13 +270,13 @@ export const Regulations = () => {
                 boxShadow="md"
             >
                 <Table variant="simple" colorScheme="teal">
-                    <Thead bg={theme.colors.teal[500]}>
+                    <Thead bg={purpleHeaderBg}>
                         <Tr>
-                            <Th color="white">Titre</Th>
-                            <Th color="white">Auteur</Th>
-                            <Th color="white">Date</Th>
-                            <Th color="white">Statut</Th>
-                            <Th color="white" textAlign="center">Action</Th>
+                            <Th color={headerTextColor}>Titre</Th>
+                            <Th color={headerTextColor}>Auteur</Th>
+                            <Th color={headerTextColor}>Date</Th>
+                            <Th color={headerTextColor}>Statut</Th>
+                            <Th color={headerTextColor} textAlign="center">Action</Th>
                         </Tr>
                     </Thead>
                     <Tbody>

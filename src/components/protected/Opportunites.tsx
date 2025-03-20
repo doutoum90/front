@@ -8,7 +8,6 @@ import {
     TableContainer,
     Container,
     Text,
-    useTheme,
     Box,
     Stack,
     List,
@@ -19,7 +18,8 @@ import {
     Skeleton,
     useToast,
     IconButton,
-    Badge
+    Badge,
+    useColorModeValue
 } from '@chakra-ui/react';
 import { FiCheckCircle, FiTrash2, FiInfo } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
@@ -94,12 +94,19 @@ const BLOCKS_MOCK: Block[] = [
 
 
 const Opportunites = () => {
-    const theme = useTheme();
     const toast = useToast();
     const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
     const [regulations, setRegulations] = useState<RegulationShort[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
+
+    const bgColor = useColorModeValue('white', 'gray.800');
+    const textColor = useColorModeValue('gray.800', 'white');
+    const mutedTextColor = useColorModeValue('gray.500', 'gray.400');
+    const tableHeaderBg = useColorModeValue('blue.600', 'blue.200');
+    const tableHeaderColor = useColorModeValue('white', 'gray.800');
+    const statBg = useColorModeValue('white', 'gray.700');
+    const borderColor = useColorModeValue('gray.200', 'gray.600');
 
     const fetchOpportunities = async () => {
         try {
@@ -202,7 +209,7 @@ const Opportunites = () => {
             <Stack spacing={8}>
                 {/* Section Alertes */}
                 <Box>
-                    <Text fontSize="xl" fontWeight="semibold" mb={4}>
+                    <Text fontSize="xl" fontWeight="semibold" mb={4} color={textColor}>
                         📢 Alertes en temps réel
                     </Text>
                     <List spacing={3}>
@@ -210,16 +217,20 @@ const Opportunites = () => {
                             <ListItem
                                 key={regulation.id}
                                 p={4}
-                                bg="white"
+                                bg={bgColor}
                                 borderRadius="md"
                                 boxShadow="sm"
                                 display="flex"
                                 alignItems="center"
+                                borderWidth="1px"
+                                borderColor={borderColor}
                             >
                                 <Box flex={1}>
-                                    <Text fontWeight="medium">📌{regulation.message}</Text>
+                                    <Text fontWeight="medium" color={textColor}>
+                                        📌{regulation.message}
+                                    </Text>
                                     {regulation.date && (
-                                        <Text fontSize="sm" color="gray.500">
+                                        <Text fontSize="sm" color={mutedTextColor}>
                                             {formatDate(regulation.date)}
                                         </Text>
                                     )}
@@ -235,17 +246,19 @@ const Opportunites = () => {
                         <MotionBox
                             key={block.id}
                             p={6}
-                            bg="white"
+                            bg={statBg}
                             borderRadius="xl"
                             boxShadow="md"
                             flex={1}
                             whileHover={{ y: -5 }}
+                            borderWidth="1px"
+                            borderColor={borderColor}
                         >
                             <Stat>
-
-                                <StatLabel fontSize="md"> {block.icon} {block.message}</StatLabel>
-                                <StatHelpText color="green.500">
-
+                                <StatLabel fontSize="md" color={textColor}>
+                                    {block.icon} {block.message}
+                                </StatLabel>
+                                <StatHelpText color={useColorModeValue('green.500', 'green.200')}>
                                     +15% ce mois-ci
                                 </StatHelpText>
                             </Stat>
@@ -255,24 +268,25 @@ const Opportunites = () => {
 
                 {/* Tableau des opportunités */}
                 <Box>
-                    <Text fontSize="xl" fontWeight="semibold" mb={4}>
+                    <Text fontSize="xl" fontWeight="semibold" mb={4} color={textColor}>
                         🚀 Nouvelles opportunités
                     </Text>
                     <TableContainer
                         borderWidth="1px"
                         borderRadius="lg"
                         overflowX="auto"
-                        bg="white"
+                        bg={bgColor}
                         boxShadow="sm"
+                        borderColor={borderColor}
                     >
-                        <Table variant="striped" colorScheme="blue">
-                            <Thead bg={theme.colors.blue[600]}>
+                        <Table variant="striped" colorScheme={useColorModeValue('blue', 'gray')}>
+                            <Thead bg={tableHeaderBg}>
                                 <Tr>
-                                    <Th color="white">Statut</Th>
-                                    <Th color="white">Opportunité</Th>
-                                    <Th color="white">Date</Th>
-                                    <Th color="white">Source</Th>
-                                    <Th color="white" textAlign="center">Actions</Th>
+                                    <Th color={tableHeaderColor}>Statut</Th>
+                                    <Th color={tableHeaderColor}>Opportunité</Th>
+                                    <Th color={tableHeaderColor}>Date</Th>
+                                    <Th color={tableHeaderColor}>Source</Th>
+                                    <Th color={tableHeaderColor} textAlign="center">Actions</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
@@ -288,9 +302,9 @@ const Opportunites = () => {
                                             <Td>
                                                 <StatusBadge status={opportunity.status} />
                                             </Td>
-                                            <Td fontWeight="medium">{opportunity.message}</Td>
-                                            <Td>{formatDate(opportunity.date)}</Td>
-                                            <Td>{opportunity.source}</Td>
+                                            <Td fontWeight="medium" color={textColor}>{opportunity.message}</Td>
+                                            <Td color={textColor}>{formatDate(opportunity.date)}</Td>
+                                            <Td color={textColor}>{opportunity.source}</Td>
                                             <Td textAlign="center">
                                                 <IconButton
                                                     aria-label="Résoudre"

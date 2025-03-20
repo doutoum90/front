@@ -17,6 +17,8 @@ export const SideMenu = () => {
     const activeBg = useColorModeValue('teal.50', 'teal.700');
     const activeColor = useColorModeValue('teal.600', 'teal.200');
     const { colorMode, toggleColorMode } = useColorMode();
+    const textColor = useColorModeValue('gray.600', 'gray.200');
+    const menuItemColor = useColorModeValue('gray.700', 'gray.200');
     const menuBg = useColorModeValue('white', 'gray.800');
     const menuBorder = useColorModeValue('gray.200', 'gray.700');
 
@@ -76,7 +78,7 @@ export const SideMenu = () => {
                 />
                 <Divider mt={4} />
 
-                <Menu >
+                <Menu>
                     <Center>
                         <MenuButton
                             as={Button}
@@ -93,11 +95,22 @@ export const SideMenu = () => {
                                 color="white"
                             />
                         </MenuButton>
-                        <MenuList bg={menuBg} borderColor={menuBorder} py={2} minW="200px">
-                            <MenuItem _hover={{ bg: 'teal.50' }} _focus={{ bg: 'teal.50' }}>
+                        <MenuList
+                            bg={menuBg}
+                            borderColor={menuBorder}
+                            py={2} minW="200px"
+                            color={textColor}
+                        >
+                            <MenuItem
+                                _hover={{ bg: 'teal.50' }}
+                                _focus={{ bg: 'teal.50' }}
+                                color={menuItemColor}
+                            >
                                 <Flex direction="column" px={2}>
                                     <Text fontWeight="semibold">{user?.email}</Text>
-                                    <Text fontSize="sm" color="gray.500">Profil</Text>
+                                    <Text fontSize="sm" color={useColorModeValue('gray.500', 'gray.400')}>
+                                        Profil
+                                    </Text>
                                 </Flex>
                             </MenuItem>
                             <MenuDivider />

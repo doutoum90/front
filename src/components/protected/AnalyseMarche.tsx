@@ -16,7 +16,7 @@ import {
     TableContainer,
     useColorModeValue,
     Heading,
-    SimpleGrid // Ajout de SimpleGrid
+    SimpleGrid
 } from '@chakra-ui/react';
 import { useState } from 'react';
 

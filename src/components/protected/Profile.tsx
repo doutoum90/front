@@ -68,23 +68,11 @@ export const Profile = () => {
                             </Box>
 
                             <Box>
-                                <Heading size="md" mb={2}>Compétences</Heading>
-                                <Flex wrap="wrap" gap={2}>
-                                    {user?.skills?.map((skill) => (
-                                        <Badge key={skill} colorScheme="teal" px={3} py={1}>
-                                            {skill} ejekek
-                                        </Badge>
-                                    ))}
-                                </Flex>
-                            </Box>
-                            <Box>
                                 <Heading size="md" mb={2}>Type d'abonnement</Heading>
                                 <Flex wrap="wrap" gap={2}>
-                                    {user?.typeAbonnement?.map((type) => (
-                                        <Badge key={type} colorScheme="teal" px={3} py={1}>
-                                            {type}
-                                        </Badge>
-                                    ))}
+                                    <Badge key={user?.typeAbonnement} colorScheme="teal" px={3} py={1}>
+                                        {user?.typeAbonnement}
+                                    </Badge>
                                 </Flex>
                             </Box>
                         </VStack>

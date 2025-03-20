@@ -15,6 +15,7 @@ import {
     Heading,
     Flex,
     useToast,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { FaUserCog, FaShieldAlt, FaBell } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
@@ -23,6 +24,8 @@ import { useAuth } from '../../contexts/AuthContext';
 export const Settings = () => {
     const { user, refreshUser } = useAuth();
     const toast = useToast();
+    const bgColor = useColorModeValue('gray.50', 'gray.900');
+    const headingColor = useColorModeValue('teal.600', 'teal.200');
     const [settings, setSettings] = useState({
         email: '',
         password: '',
@@ -91,14 +94,19 @@ export const Settings = () => {
     };
 
     return (
-        <Box p={8} bg="gray.50" minH="100vh">
-            <Heading size="xl" mb={8} color="teal.600">
+        <Box p={8} bg={bgColor} minH="100vh">
+            <Heading size="xl" mb={8} color={headingColor}>
                 Paramètres du Compte
             </Heading>
 
-            <Tabs variant="enclosed">
-                <TabList>
-                    <Tab>
+            <Tabs variant="enclosed" colorScheme='teal' isFitted>
+                <TabList borderColor={useColorModeValue('gray.200', 'gray.600')}>
+                    <Tab
+                        _selected={{
+                            color: headingColor,
+                            borderColor: 'currentColor'
+                        }}
+                    >
                         <FaUserCog /> Profil
                     </Tab>
                     <Tab>
@@ -126,6 +134,9 @@ export const Settings = () => {
                             <FormControl>
                                 <FormLabel>Nom complet</FormLabel>
                                 <Input
+                                    bg={useColorModeValue('white', 'gray.700')}
+                                    color={useColorModeValue('gray.800', 'white')}
+                                    borderColor={useColorModeValue('gray.300', 'gray.600')}
                                     value={settings.name}
                                     onChange={(e) => setSettings({ ...settings, name: e.target.value })}
                                     placeholder="Jean Dupont"
@@ -135,6 +146,9 @@ export const Settings = () => {
                             <FormControl>
                                 <FormLabel>Email</FormLabel>
                                 <Input
+                                    bg={useColorModeValue('white', 'gray.700')}
+                                    color={useColorModeValue('gray.800', 'white')}
+                                    borderColor={useColorModeValue('gray.300', 'gray.600')}
                                     type="email"
                                     value={settings.email}
                                     onChange={(e) => setSettings({ ...settings, email: e.target.value })}
@@ -159,6 +173,9 @@ export const Settings = () => {
                             <FormControl>
                                 <FormLabel>Changer le mot de passe</FormLabel>
                                 <Input
+                                    bg={useColorModeValue('white', 'gray.700')}
+                                    color={useColorModeValue('gray.800', 'white')}
+                                    borderColor={useColorModeValue('gray.300', 'gray.600')}
                                     type="password"
                                     value={settings.password}
                                     onChange={(e) => setSettings({ ...settings, password: e.target.value })}
