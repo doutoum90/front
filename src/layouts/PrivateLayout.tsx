@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { PrivateHeader } from '../components/protected/PrivateHeader';
-import { PrivateFooter } from '../components/protected/PrivateFooter';
-import { SideMenu } from '../components/protected/SideMenu';
+import { PrivateHeader } from '../components/protected/commons/PrivateHeader';
+import { PrivateFooter } from '../components/protected/commons/PrivateFooter';
+import { SideMenu } from '../components/protected/commons/SideMenu';
 import { PrivateLayoutProps } from '../types';
 
 

@@ -72,18 +72,19 @@ export type User = {
     profession?: string;
     typeAbonnement: 'Essentiel' | 'PRO' | 'Expert';
     trialActive: boolean;
+    avatar?: string;
 };
 
-export type AuthContextType = {
-    user: User | null;
-    loading: boolean;
+export interface AuthContextType {
+    user: User | null | undefined;
+    isLoading: boolean;
     login: (credentials: { email: string; password: string }) => Promise<void>;
     logout: () => void;
-    register: (userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert', trialActive: boolean }) => Promise<void>;
     updateSubscription: (typeAbonnement: 'Essentiel' | 'PRO' | 'Expert') => Promise<void>;
-    getTrialStatus: () => Promise<{ isActive: boolean; daysLeft: number }>;
+    getTrialStatus: () => Promise<any>;
+    register: (userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert' }) => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
-    refreshAccessToken: () => Promise<string>;
+    refreshAccessToken: (refreshToken: string) => Promise<string>; // Doit retourner une Promise<string>
     refreshUser: () => Promise<void>;
 };
 
@@ -179,8 +180,8 @@ export interface PublicLayoutProps {
 }
 
 export interface MarketData {
-    x: string;
-    y: number;
+    date: string | number;
+    value: number;
 }
 
 export interface MarketShare {

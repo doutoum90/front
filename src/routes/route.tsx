@@ -24,7 +24,6 @@ const TermsOfService = lazy(() => import('../components/public/TermsOfService'))
 
 const LoginForm = lazy(() => import('../components/auths/LoginForm'));
 const PasswordReset = lazy(() => import('../components/auths/PasswordReset'));
-const RegisterForm = lazy(() => import('../components/auths/RegisterForm'));
 // Composants privés
 const Dashboard = lazy(() => import('../components/protected/Dashboard'));
 const Profile = lazy(() => import('../components/protected/Profile'));
@@ -60,7 +59,6 @@ export const routes = [
     element: <AuthLayout><Outlet /></AuthLayout>,
     children: [
       { path: 'login', element: lazyLoad(LoginForm) },
-      { path: 'register', element: lazyLoad(RegisterForm) },
       { path: 'password-reset', element: lazyLoad(PasswordReset) },
     ],
   },

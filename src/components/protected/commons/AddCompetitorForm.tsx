@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FormControl, FormLabel, Input, Button, VStack } from '@chakra-ui/react';
-import { AddCompetitorFormProps } from '../../types';
+import { AddCompetitorFormProps } from '../../../types';
 
 
 export const AddCompetitorForm = ({ onAdd }: AddCompetitorFormProps) => {

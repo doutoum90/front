@@ -338,3 +338,14 @@ export const PRICE_MAP = {
     'pro': import.meta.env.VITE_PRO_PRICE_ID || 'price_1R4NJCQMk6qRSmo112OpuuEU',
     'expert': import.meta.env.VITE_EXPERT_PRICE_ID || 'price_1R4NKMQMk6qRSmo1CObfbfsU',
 };
+
+export const AUTH_FORM_COLORS = {
+    formBgLight: 'app.formBg.light',
+    formBgDark: 'app.formBg.dark',
+    heading: 'app.heading',
+    text: 'app.text',
+    link: 'app.link',
+    focusBorder: 'app.focusBorder',
+    spinner: 'app.spinner',
+    buttonHover: { transform: 'translateY(-2px)' },
+};

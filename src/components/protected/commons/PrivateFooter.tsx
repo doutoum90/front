@@ -1,6 +1,6 @@
 import { Flex, Grid, GridItem, Text, Link, Icon, Box, Heading } from '@chakra-ui/react';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import { ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS, PROTECTED_MENU } from '../../constantes';
+import { ADDRESS, PHONE, MAIL, SOCIAL_MEDIA, COPYRIGHT, OTHER_LINKS, PROTECTED_MENU } from '../../../constantes';
 
 export const PrivateFooter = () => {
 
@@ -14,13 +14,11 @@ export const PrivateFooter = () => {
                 px={{ base: 4, md: 8 }}
                 py={12}
             >
-                {/* Main Footer Content */}
                 <Grid
                     templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
                     gap={8}
                     mb={12}
                 >
-                    {/* Company Info */}
                     <GridItem>
                         <Heading size="lg" mb={4} color="teal.300">
                             Intelligentsia
@@ -30,7 +28,6 @@ export const PrivateFooter = () => {
                         </Text>
                     </GridItem>
 
-                    {/* Quick Links */}
                     <GridItem>
                         <Heading size="md" mb={4} color="teal.300">
                             Navigation
@@ -44,7 +41,6 @@ export const PrivateFooter = () => {
                         </Flex>
                     </GridItem>
 
-                    {/* Contact Info */}
                     <GridItem>
                         <Heading size="md" mb={4} color="teal.300">
                             Contact
@@ -81,7 +77,6 @@ export const PrivateFooter = () => {
                     </GridItem>
                 </Grid>
 
-                {/* Copyright & Legal */}
                 <Flex
                     borderTop="1px solid"
                     borderColor="gray.700"

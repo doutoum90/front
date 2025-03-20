@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { PrivateHeader } from '../components/protected/PrivateHeader';
+import { PrivateHeader } from '../components/protected/commons/PrivateHeader';
 
 export const MainLayout = () => (
   <div className="min-h-screen flex flex-col">

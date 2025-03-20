@@ -9,70 +9,89 @@ import {
     Badge,
     Progress,
     Box,
-    Divider
+    Divider,
 } from '@chakra-ui/react';
 import { FaEdit, FaLock, FaEnvelope, FaCalendarAlt } from 'react-icons/fa';
-import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useProfile } from '../../hooks/useProfile';
+import { useProfileStyles } from '../../hooks/useProfileStyles';
 
 export const Profile = () => {
-    const { user } = useAuth();
-    const navigate = useNavigate();
-    const formatedDate = (createdAt?: string) => createdAt ? `Membre depuis ${new Date(createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}` : '';
+    const { user, formatDate, handleEditProfile } = useProfile();
+    const styles = useProfileStyles();
+
     return (
-        <Flex p={8} bg="gray.50" minH="100vh">
+        <Flex p={8} bg={styles.pageBg} minH="100vh">
             <Box maxW="800px" w="100%" mx="auto">
-                <Flex direction={{ base: "column", md: "row" }} gap={8}>
-                    {/* Sidebar */}
-                    <VStack spacing={6} align="stretch" w={{ md: "250px" }}>
+                <Flex direction={{ base: 'column', md: 'row' }} gap={8}>
+                    <VStack spacing={6} align="stretch" w={{ md: '250px' }}>
                         <Avatar size="2xl" alignSelf="center" />
-                        <Button leftIcon={<FaEdit />} colorScheme="teal" onClick={() => navigate('/espace-membre/settings')}>
+                        <Button
+                            leftIcon={<FaEdit />}
+                            colorScheme={styles.buttonColorScheme}
+                            onClick={handleEditProfile}
+                        >
                             Modifier le profil
                         </Button>
 
                         <VStack align="stretch" spacing={4}>
-                            <Text fontWeight="bold">Profil complété à 80%</Text>
-                            <Progress value={80} size="sm" colorScheme="teal" />
+                            <Text fontWeight="bold" color={styles.textPrimary}>
+                                Profil complété à 80%
+                            </Text>
+                            <Progress value={80} size="sm" colorScheme={styles.progressColorScheme} />
                         </VStack>
 
                         <Divider />
 
                         <VStack align="stretch" spacing={3}>
                             <HStack>
-                                <FaEnvelope />
-                                <Text>{user?.email}</Text>
+                                <FaEnvelope color={styles.textSecondary} />
+                                <Text color={styles.textSecondary}>{user?.email}</Text>
                             </HStack>
                             <HStack>
-                                <FaLock />
-                                <Text>••••••••</Text>
+                                <FaLock color={styles.textSecondary} />
+                                <Text color={styles.textSecondary}>••••••••</Text>
                             </HStack>
                             <HStack>
-                                <FaCalendarAlt />
-                                <Text> {formatedDate(user?.createdAt)}</Text>
+                                <FaCalendarAlt color={styles.textSecondary} />
+                                <Text color={styles.textSecondary}>{formatDate(user?.createdAt)}</Text>
                             </HStack>
                         </VStack>
                     </VStack>
 
-                    {/* Main Content */}
-                    <Box flex={1} bg="white" p={8} borderRadius="xl" boxShadow="md">
-                        <Heading size="sm" mb={6}>
+                    <Box
+                        flex={1}
+                        bg={styles.cardBg}
+                        p={8}
+                        borderRadius={styles.borderRadius}
+                        boxShadow={styles.boxShadow}
+                    >
+                        <Heading size="sm" mb={6} color={styles.textPrimary}>
                             {user?.name} {user?.lastname}
                         </Heading>
 
                         <VStack spacing={6} align="stretch">
                             <Box>
-                                <Heading size="md" mb={2}>À propos</Heading>
-                                <Text color="gray.600">
-                                    {user?.profession}
-                                </Text>
+                                <Heading size="md" mb={2} color={styles.textPrimary}>
+                                    À propos
+                                </Heading>
+                                <Text color={styles.textSecondary}>{user?.profession}</Text>
                             </Box>
 
                             <Box>
-                                <Heading size="md" mb={2}>Type d'abonnement</Heading>
+                                <Heading size="md" mb={2} color={styles.textPrimary}>
+                                    Type d'abonnement
+                                </Heading>
                                 <Flex wrap="wrap" gap={2}>
-                                    <Badge key={user?.typeAbonnement} colorScheme="teal" px={3} py={1}>
-                                        {user?.typeAbonnement}
-                                    </Badge>
+                                    {user?.typeAbonnement && (
+                                        <Badge
+                                            key={user.typeAbonnement}
+                                            colorScheme={styles.badgeColorScheme}
+                                            px={3}
+                                            py={1}
+                                        >
+                                            {user.typeAbonnement}
+                                        </Badge>
+                                    )}
                                 </Flex>
                             </Box>
                         </VStack>

@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { MarketData, MarketShare } from '../types';
+import { apiFetch } from './api';
 
 const REACT_APP_API_URL = 'http://localhost:3000';
 
@@ -23,5 +25,5 @@ export const VeilleService = {
             headers: { Authorization: `Bearer ${VeilleService.refreshToken}` },
         });
         return response.data;
-    }
+    },
 }

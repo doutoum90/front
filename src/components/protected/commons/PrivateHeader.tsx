@@ -12,8 +12,8 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { PROTECTED_MENU } from '../../constantes';
+import { useAuth } from '../../../contexts/AuthContext';
+import { PROTECTED_MENU } from '../../../constantes';
 
 export const PrivateHeader = () => {
     const { user, logout } = useAuth();

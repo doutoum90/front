@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
 import {
     Box,
     Button,
@@ -14,109 +13,91 @@ import {
     VStack,
     Alert,
     AlertIcon,
+    Spinner,
     useColorModeValue,
-    Spinner
 } from '@chakra-ui/react';
+import { useLogin } from '../../hooks/useLogin';
+import { AUTH_FORM_COLORS as COLORS } from '../../constantes';
 
 export const LoginForm = () => {
-    const { login } = useAuth();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const { email, setEmail, password, setPassword, error, isFetching, handleSubmit } = useLogin();
     const [showPassword, setShowPassword] = useState(false);
-    const [isFetching, setIsFetching] = useState(false);
-    const formBg = useColorModeValue('white', 'gray.700');
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            setIsFetching(true);
-            await login({ email, password });
-            setIsFetching(false);
-        } catch (err) {
-            setError('Identifiants incorrects ou problème de connexion');
-            setIsFetching(false);
-        }
-    };
+    const formBg = useColorModeValue(COLORS.formBgLight, COLORS.formBgDark);
 
     return (
-        <>
+        <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minH="100vh"
+            width="100vw"
+            p={4}
+        >
             <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minH="100vh"
-                width="100vw"
-                p={4}
+                as="form"
+                onSubmit={handleSubmit}
+                bg={formBg}
+                p={8}
+                borderRadius="xl"
+                boxShadow="2xl"
+                width="100%"
+                maxW="md"
+                textAlign="center"
             >
-                <Box
-                    as="form"
-                    onSubmit={handleSubmit}
-                    bg={formBg}
-                    p={8}
-                    borderRadius="xl"
-                    boxShadow="2xl"
-                    width="100%"
-                    maxW="md"
-                    textAlign="center"
-                >
-                    <VStack spacing={6}>
-                        <Heading
-                            size="xl"
-                            color="teal.600"
-                            fontWeight="extrabold"
-                            mb={6}
-                        >
-                            Connectez-vous
-                        </Heading>
+                <VStack spacing={6}>
+                    <Heading size="xl" color={COLORS.heading} fontWeight="extrabold" mb={6}>
+                        Connectez-vous
+                    </Heading>
 
-                        {error && (
-                            <Alert status="error" borderRadius="md" variant="subtle">
-                                <AlertIcon />
-                                {error}
-                            </Alert>
-                        )}
+                    {error && (
+                        <Alert status="error" borderRadius="md" variant="subtle">
+                            <AlertIcon />
+                            {error}
+                        </Alert>
+                    )}
 
-                        <FormControl id="email" isRequired>
-                            <FormLabel fontSize="md">Email</FormLabel>
+                    <FormControl id="email" isRequired>
+                        <FormLabel fontSize="md">Email</FormLabel>
+                        <Input
+                            type="email"
+                            size="lg"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="votre@email.com"
+                            focusBorderColor={COLORS.focusBorder}
+                            borderRadius="md"
+                        />
+                    </FormControl>
+
+                    <FormControl id="password" isRequired>
+                        <FormLabel fontSize="md">Mot de passe</FormLabel>
+                        <InputGroup size="lg">
                             <Input
-                                type="email"
-                                size="lg"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="votre@email.com"
-                                focusBorderColor="teal.500"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                focusBorderColor={COLORS.focusBorder}
                                 borderRadius="md"
                             />
-                        </FormControl>
+                            <InputRightElement width="4.5rem" mr={1}>
+                                <Button
+                                    h="1.75rem"
+                                    size="sm"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    variant="ghost"
+                                    colorScheme="teal"
+                                >
+                                    {showPassword ? 'Cacher' : 'Afficher'}
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
+                    </FormControl>
 
-                        <FormControl id="password" isRequired>
-                            <FormLabel fontSize="md">Mot de passe</FormLabel>
-                            <InputGroup size="lg">
-                                <Input
-                                    type={showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="••••••••"
-                                    focusBorderColor="teal.500"
-                                    borderRadius="md"
-                                />
-                                <InputRightElement width="4.5rem" mr={1}>
-                                    <Button
-                                        h="1.75rem"
-                                        size="sm"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        variant="ghost"
-                                        colorScheme="teal"
-                                    >
-                                        {showPassword ? 'Cacher' : 'Afficher'}
-                                    </Button>
-                                </InputRightElement>
-                            </InputGroup>
-                        </FormControl>
-
-
-                        {isFetching ? <Spinner size="xl" color="blue.500" /> : <Button
+                    {isFetching ? (
+                        <Spinner size="xl" color={COLORS.spinner} />
+                    ) : (
+                        <Button
                             type="submit"
                             colorScheme="teal"
                             width="full"
@@ -124,29 +105,22 @@ export const LoginForm = () => {
                             mt={4}
                             borderRadius="md"
                             fontWeight="bold"
-                            _hover={{ transform: 'translateY(-2px)' }}
+                            _hover={COLORS.buttonHover}
                             transition="all 0.2s"
                         >
                             Connexion
-                        </Button>}
+                        </Button>
+                    )}
 
-                        <Text textAlign="center" mt={4} color="gray.600">
-                            Pas de compte ?{' '}
-                            <Link
-                                href="/auth/register"
-                                color="teal.600"
-                                fontWeight="semibold"
-                                textDecoration="underline"
-                            >
-                                Créer un compte
-                            </Link>
-                        </Text>
-
-
-                    </VStack>
-                </Box>
+                    <Text textAlign="center" mt={4} color={COLORS.text}>
+                        Pas de compte ?{' '}
+                        <Link href="/auth/register" color={COLORS.link} fontWeight="semibold" textDecoration="underline">
+                            Créer un compte
+                        </Link>
+                    </Text>
+                </VStack>
             </Box>
-        </>
+        </Box>
     );
 };
 
