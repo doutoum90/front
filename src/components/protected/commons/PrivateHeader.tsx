@@ -26,6 +26,10 @@ export const PrivateHeader = () => {
     const menuBg = useColorModeValue('white', 'gray.800');
     const menuBorder = useColorModeValue('gray.200', 'gray.700');
 
+    const handleLogout = () => {
+        logout()
+        navigate('/auth/login')
+    }
     return (
         <Box bg={bg} px={4} py={3} boxShadow="sm" position="sticky" top={0} zIndex="sticky">
             <Flex alignItems="center" justifyContent="space-between" maxW="100%" mx="auto">
@@ -97,7 +101,7 @@ export const PrivateHeader = () => {
                             <MenuItem
                                 icon={<Box as="span" className="material-icons">logout</Box>}
                                 _hover={{ bg: 'red.50' }}
-                                onClick={logout}
+                                onClick={handleLogout}
                                 color="red.600"
                             >
                                 Déconnexion

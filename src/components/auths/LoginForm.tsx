@@ -113,9 +113,9 @@ export const LoginForm = () => {
                     )}
 
                     <Text textAlign="center" mt={4} color={COLORS.text}>
-                        Pas de compte ?{' '}
-                        <Link href="/auth/register" color={COLORS.link} fontWeight="semibold" textDecoration="underline">
-                            Créer un compte
+                        Mot de passe oublié ?{' '}
+                        <Link href="/auth/password-reset" color={COLORS.link} fontWeight="semibold" textDecoration="underline">
+                            Réinitialiser votre mot de passe
                         </Link>
                     </Text>
                 </VStack>

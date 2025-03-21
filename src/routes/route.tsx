@@ -74,7 +74,7 @@ export const routes = [
     ),
     children: [
       { path: 'dashboard', element: lazyLoad(Dashboard) },
-      { path: 'profil', element: lazyLoad(Profile) },
+      { path: 'profile', element: lazyLoad(Profile) },
       { path: 'parametres', element: lazyLoad(Settings) },
       { path: 'veille-concurentielle', element: lazyLoad(VeilleConcurrentielle) },
       { path: 'analyse-de-marche', element: lazyLoad(AnalyseMarche) },

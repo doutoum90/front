@@ -16,7 +16,7 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
   });
 
   const refreshTokenMutation = useMutation({
-    mutationFn: (refreshToken: string) => authService.refreshToken(refreshToken),
+    mutationFn: () => authService.refreshToken(),
     onSuccess: (data) => {
 
       queryClient.invalidateQueries({ queryKey: ['user'] });
@@ -38,10 +38,10 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
       }
 
       try {
-        await authService.verifyToken(accessToken!);
+        await authService.verifyToken();
       } catch (error) {
         if (refreshToken) {
-          await refreshTokenMutation.mutateAsync(refreshToken);
+          await refreshTokenMutation.mutateAsync();
         } else {
           console.error('Token verification error:', error);
           logout();
@@ -105,9 +105,7 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
 
       if (response.status === 401) {
         try {
-          const refreshToken = localStorage.getItem('refresh_token');
-          if (!refreshToken) throw new Error('Aucun refresh token disponible');
-          const { access_token: newToken } = await refreshTokenMutation.mutateAsync(refreshToken);
+          const { access_token: newToken } = await refreshTokenMutation.mutateAsync();
           newConfig.headers = { ...newConfig.headers, Authorization: `Bearer ${newToken}` };
           return originalFetch(url, newConfig);
         } catch (error) {
@@ -133,8 +131,8 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
     getTrialStatus,
     register,
     resetPassword,
-    refreshAccessToken: async (refreshToken: string) => {
-      const { access_token } = await refreshTokenMutation.mutateAsync(refreshToken);
+    refreshAccessToken: async () => {
+      const { access_token } = await refreshTokenMutation.mutateAsync();
       return access_token;
     },
     refreshUser,

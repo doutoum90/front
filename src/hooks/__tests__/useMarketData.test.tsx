@@ -85,7 +85,7 @@ describe('useMarketData', () => {
 
         await waitFor(
             () => {
-                expect(api.apiFetch).toHaveBeenCalledWith('/api/market/trends?period=1a');
+                expect(api.apiFetch).toHaveBeenCalledWith('api/veille/competitors/trends?period=1a');
             },
             { timeout: 1000 }
         );

@@ -1,29 +1,18 @@
-import axios from 'axios';
 import { Regulation, Report } from '../types';
+import { apiFetch } from './api';
 
-const getAuthHeaders = () => ({
-  headers: { Authorization: `Bearer ${localStorage.getItem('refresh_token')}` },
-});
+export const regulationsService = {
+  fetchRegulations: () => apiFetch('/api/regulations') as Promise<Regulation[]>,
 
-// Récupérer les réglementations
-export const fetchRegulations = async (): Promise<Regulation[]> => {
-  const response = await axios.get('/api/regulations', getAuthHeaders());
-  return response.data;
-};
+  fetchReports: () => apiFetch('/api/reports') as Promise<Report[]>,
 
-// Récupérer les rapports
-export const fetchReports = async (): Promise<Report[]> => {
-  const response = await axios.get('/api/reports', getAuthHeaders());
-  return response.data;
-};
+  createPersonalizedReport: (reportData: Partial<Report>) => apiFetch('/api/reports', {
+    method: 'POST',
+    body: JSON.stringify(reportData),
+  }) as Promise<void>,
+  downloadReport: (reportId: string) => apiFetch(`/api/reports/${reportId}/download`, {
+    method: 'GET',
+    headers: { 'Accept': 'application/pdf' },
+  }) as Promise<Blob>,
 
-// Télécharger un rapport
-export const downloadReport = async (reportId: string): Promise<void> => {
-  await axios.post(`/api/reports/${reportId}/download`, null, getAuthHeaders());
-};
-
-// Créer un rapport personnalisé
-export const createPersonalizedReport = async (reportData: Partial<Report>): Promise<Report> => {
-  const response = await axios.post('/api/reports/request', reportData, getAuthHeaders());
-  return response.data;
-};
+}

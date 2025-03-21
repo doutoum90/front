@@ -1,4 +1,5 @@
 import { User, UserData } from '../types';
+import { apiFetch } from './api'
 
 interface LoginResponse {
     access_token: string;
@@ -11,44 +12,22 @@ interface RefreshTokenResponse {
     refresh_token?: string;
 }
 
-// Fonction utilitaire pour gérer les erreurs de réponse
-const handleApiError = async (response: Response) => {
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Erreur API');
-    }
-    return response;
-};
 
 // Récupérer les données utilisateur
 export const fetchUser = async (): Promise<User | null> => {
-    const token = localStorage.getItem('access_token');
-    if (!token) return null;
-    return fetch('/api/user', {
-        headers: { Authorization: `Bearer ${token}` },
-    })
-        .then(handleApiError)
-        .then((res) => res.json());
+    return await apiFetch('/api/user');
 };
 
 // Vérifier le token
-export const verifyToken = async (accessToken: string): Promise<void> => {
-    await fetch('/api/auth/verify', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    }).then(handleApiError);
+export const verifyToken = async (): Promise<void> => {
+    await apiFetch('/api/auth/verify');
 };
 
 // Rafraîchir le token
-export const refreshToken = async (refreshToken: string): Promise<RefreshTokenResponse> => {
-    const response = await fetch('/api/auth/refresh', {
+export const refreshToken = async (): Promise<RefreshTokenResponse> => {
+    const data = await apiFetch('/api/auth/refresh', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${refreshToken}`,
-        },
     });
-    await handleApiError(response);
-    const data = await response.json();
     localStorage.setItem('access_token', data.access_token);
     if (data.refresh_token) localStorage.setItem('refresh_token', data.refresh_token);
     return data;
@@ -56,29 +35,25 @@ export const refreshToken = async (refreshToken: string): Promise<RefreshTokenRe
 
 // Connexion
 export const login = async (credentials: { email: string; password: string }): Promise<LoginResponse> => {
-    const response = await fetch('/api/auth/login', {
+    const response = await apiFetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
     });
-    await handleApiError(response);
-    const data = await response.json();
-    localStorage.setItem('access_token', data.access_token);
-    localStorage.setItem('refresh_token', data.refresh_token);
-    return data;
+    localStorage.setItem('access_token', response.access_token);
+    localStorage.setItem('refresh_token', response.refresh_token);
+    return response;
 };
 
 // Inscription
 export const register = async (
     userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert' }
 ): Promise<LoginResponse> => {
-    const response = await fetch('/api/auth/register', {
+    const data = await apiFetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
     });
-    await handleApiError(response);
-    const data = await response.json();
     localStorage.setItem('access_token', data.access_token);
     localStorage.setItem('refresh_token', data.refresh_token);
     return data;
@@ -86,35 +61,25 @@ export const register = async (
 
 // Réinitialisation du mot de passe
 export const resetPassword = async (email: string): Promise<void> => {
-    const response = await fetch('/api/auth/reset-password', {
+    await apiFetch('/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
     });
-    await handleApiError(response);
 };
 
 // Mise à jour de l’abonnement
 export const updateSubscription = async (typeAbonnement: 'Essentiel' | 'PRO' | 'Expert'): Promise<User> => {
-    const accessToken = localStorage.getItem('access_token');
-    const response = await fetch('/api/user/subscription', {
+    return await apiFetch('/api/user/subscription', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ typeAbonnement }),
     });
-    await handleApiError(response);
-    return response.json();
 };
 
 // Statut d’essai
 export const getTrialStatus = async (): Promise<any> => {
-    const accessToken = localStorage.getItem('access_token');
-    const response = await fetch('/api/user/trial-status', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    await handleApiError(response);
-    return response.json();
+    return await apiFetch('/api/user/trial-status');
 };

@@ -1,29 +1,16 @@
-import axios from 'axios';
-import { MarketData, MarketShare } from '../types';
 import { apiFetch } from './api';
-
-const REACT_APP_API_URL = 'http://localhost:3000';
 
 export const VeilleService = {
     refreshToken: localStorage.getItem('refresh_token'),
     fetchMarketTrends: async (period: string) => {
-        const response = await axios.get(`${REACT_APP_API_URL}/api/veille/competitors/trends?period=${period}`, {
-            headers: { Authorization: `Bearer ${VeilleService.refreshToken}` },
-        });
-        return response.data;
+        return await apiFetch(`/api/veille/competitors/trends?period=${period}`);
     },
 
     fetchMarketShare: async () => {
-        const response = await axios.get(`${REACT_APP_API_URL}/api/veille/competitors/share`, {
-            headers: { Authorization: `Bearer ${VeilleService.refreshToken}` },
-        });
-        return response.data;
+        return await apiFetch('/api/veille/competitors/share');
     },
 
     fetchPriceEvolution: async (period: string) => {
-        const response = await axios.get(`${REACT_APP_API_URL}/api/veille/competitors/prices?period=${period}`, {
-            headers: { Authorization: `Bearer ${VeilleService.refreshToken}` },
-        });
-        return response.data;
+        return await apiFetch(`/api/veille/competitors/prices?period=${period}`);
     },
 }

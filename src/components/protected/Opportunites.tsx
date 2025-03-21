@@ -16,90 +16,53 @@ import {
     StatHelpText,
     StatLabel,
     Skeleton,
-    useToast,
     IconButton,
     Badge,
-    useColorModeValue
+    useColorModeValue,
+    Alert,
+    AlertIcon,
+    Heading
 } from '@chakra-ui/react';
-import { FiCheckCircle, FiTrash2, FiInfo } from 'react-icons/fi';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { FiCheckCircle, FiTrash2 } from 'react-icons/fi';
 import { FaChartLine, FaExclamationTriangle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Opportunity, RegulationShort, Block } from '../../types';
+import { useOpportunities } from '../../hooks/useOpportunities';
+import { Block, Opportunity } from '../../types';
 
 const MotionBox = motion(Box);
-
-
-const API_ENDPOINT = '/api/alerts';
-
-const OPPORTUNITES_MOCK: Opportunity[] = [
-    {
-        id: 'zehzejhe',
-        message: 'Accord commercial avec l\'asie	',
-        date: '2024-03-25',
-        source: 'Système',
-        status: 'new'
-    },
-    {
-        id: 'zehzejheerriuere',
-        message: 'Nouvelle aide pour les PME',
-        date: '2024-03-24',
-        source: 'Sécurité',
-        status: 'in_progress'
-    },
-    {
-        id: 'zehzejheriuere',
-        message: 'Augmentations des investissements étrangers',
-        date: '2024-03-23',
-        source: 'Infrastructure',
-        status: 'resolved'
-    },
-];
-
-const REGULATIONS_MOCK: RegulationShort[] = [
-    {
-        id: 'zezeezhzejheriuere',
-        message: 'Nouveau décret sur la réglementation du e-commerce',
-        date: '2025-03-15'
-    },
-    {
-        id: 'reireuizezeezhzejheriuere',
-        message: 'Subvention disponible pour les start-ups technologiques',
-    },
-    {
-        id: 'reireuizezeezhzejerheriuere',
-        message: 'loi sur la protection des données renforcée'
-    }
-]
 
 const BLOCKS_MOCK: Block[] = [
     {
         id: 'zezeezhzejheriurerere',
         message: 'Tendances des opportunités',
         icon: <FaChartLine />,
-        date: '2025-03-15'
+        date: '2025-03-15',
     },
     {
         id: 'reireuizezeezhzejerheerrriuere',
         message: 'Evolution des risques',
         icon: <FaExclamationTriangle />,
-        date: '2025-03-15'
-    }
-]
+        date: '2025-03-15',
+    },
+];
+export const StatusBadge = ({ status }: { status: Opportunity['status'] }) => {
+    const statusColors = {
+        new: 'blue',
+        in_progress: 'orange',
+        resolved: 'green',
+    };
 
-
-
+    return (
+        <Badge colorScheme={statusColors[status]} fontSize="xs">
+            {status.replace('_', ' ')}
+        </Badge>
+    );
+};
 
 const Opportunites = () => {
-    const toast = useToast();
-    const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
-    const [regulations, setRegulations] = useState<RegulationShort[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
-
+    const { opportunities, regulations, handleDelete, handleResolve, loading, error } = useOpportunities();
     const bgColor = useColorModeValue('white', 'gray.800');
     const textColor = useColorModeValue('gray.800', 'white');
     const mutedTextColor = useColorModeValue('gray.500', 'gray.400');
@@ -107,100 +70,18 @@ const Opportunites = () => {
     const tableHeaderColor = useColorModeValue('white', 'gray.800');
     const statBg = useColorModeValue('white', 'gray.700');
     const borderColor = useColorModeValue('gray.200', 'gray.600');
-
-    const fetchOpportunities = async () => {
-        try {
-            const refreshToken = localStorage.getItem('refresh_token');
-            const response = await axios.get(API_ENDPOINT, {
-                headers: { Authorization: `Bearer ${refreshToken}` },
-            });
-            setOpportunities(response.data.length > 0 ? response.data : OPPORTUNITES_MOCK);
-        } catch (error) {
-            setError('Erreur de chargement des données');
-            toast({
-                title: 'Erreur',
-                description: "Impossible de charger les opportunités",
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const fetchRegulations = async () => {
-        try {
-            const refreshToken = localStorage.getItem('refresh_token');
-            const response = await axios.get(API_ENDPOINT, {
-                headers: { Authorization: `Bearer ${refreshToken}` },
-            });
-            setRegulations(response.data.length > 0 ? response.data : REGULATIONS_MOCK);
-        } catch (error) {
-            setError('Erreur de chargement des données');
-        }
-    };
-
-    useEffect(() => {
-        fetchOpportunities();
-        fetchRegulations();
-    }, []);
-
-    const handleDelete = async (id: string) => {
-        try {
-            const refreshToken = localStorage.getItem('refresh_token');
-            await axios.delete(`${API_ENDPOINT}/${id}`, {
-                headers: { Authorization: `Bearer ${refreshToken}` },
-            });
-            toast({
-                title: 'Supprimé',
-                description: "L'opportunité a été supprimée",
-                status: 'success',
-                duration: 2000,
-            });
-            await fetchOpportunities();
-        } catch (error) {
-            toast({
-                title: 'Erreur',
-                description: 'Échec de la suppression',
-                status: 'error',
-                duration: 3000,
-            });
-        }
-    };
-
-    const handleResolve = (id: string) => {
-        setOpportunities(prev =>
-            prev.map(opp =>
-                opp.id === id ? { ...opp, status: 'resolved' } : opp
-            )
-        );
-    };
+    const positiveColor = useColorModeValue('green.500', 'green.200');
 
     const formatDate = (dateString: string) => {
         return format(parseISO(dateString), 'd MMMM yyyy', { locale: fr });
     };
 
-    const StatusBadge = ({ status }: { status: Opportunity['status'] }) => {
-        const statusColors = {
-            new: 'blue',
-            in_progress: 'orange',
-            resolved: 'green',
-        };
-
-        return (
-            <Badge colorScheme={statusColors[status]} fontSize="xs">
-                {status.replace('_', ' ')}
-            </Badge>
-        );
-    };
-
     if (error) {
         return (
-            <Box textAlign="center" py={10}>
-                <FiInfo size={40} />
-                <Text mt={4}>{error}</Text>
-            </Box>
+            <Alert status="error" variant="subtle" flexDirection="column" alignItems="center">
+                <AlertIcon boxSize="40px" mr={0} />
+                <Heading mt={4} mb={1} fontSize="lg">{error}</Heading>
+            </Alert>
         );
     }
 
@@ -227,7 +108,7 @@ const Opportunites = () => {
                             >
                                 <Box flex={1}>
                                     <Text fontWeight="medium" color={textColor}>
-                                        📌{regulation.message}
+                                        📌 {regulation.message}
                                     </Text>
                                     {regulation.date && (
                                         <Text fontSize="sm" color={mutedTextColor}>
@@ -241,7 +122,7 @@ const Opportunites = () => {
                 </Box>
 
                 {/* Section Statistiques */}
-                <Stack direction={['column', 'row']} spacing={12}>
+                <Stack direction={{ base: 'column', md: 'row' }} spacing={12}>
                     {BLOCKS_MOCK.map((block) => (
                         <MotionBox
                             key={block.id}
@@ -258,7 +139,7 @@ const Opportunites = () => {
                                 <StatLabel fontSize="md" color={textColor}>
                                     {block.icon} {block.message}
                                 </StatLabel>
-                                <StatHelpText color={useColorModeValue('green.500', 'green.200')}>
+                                <StatHelpText color={positiveColor}>
                                     +15% ce mois-ci
                                 </StatHelpText>
                             </Stat>
@@ -290,7 +171,7 @@ const Opportunites = () => {
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {isLoading ? (
+                                {loading ? (
                                     <Tr>
                                         <Td colSpan={5}>
                                             <Skeleton height={20} />

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@chakra-ui/react';
-import * as regulationService from '../services/regulationService';
+import { regulationsService } from '../services/regulationService';
 import { Regulation, Report } from '../types';
 import { useDebounce } from './useDebounce';
 
@@ -16,7 +16,7 @@ export const useRegulations = () => {
     error: regulationsFetchError,
   } = useQuery<Regulation[], Error>({
     queryKey: ['regulations'],
-    queryFn: regulationService.fetchRegulations,
+    queryFn: regulationsService.fetchRegulations,
     staleTime: 5 * 60 * 1000,
   });
 
@@ -27,7 +27,7 @@ export const useRegulations = () => {
     error: reportsFetchError,
   } = useQuery<Report[], Error>({
     queryKey: ['reports'],
-    queryFn: regulationService.fetchReports,
+    queryFn: regulationsService.fetchReports,
     staleTime: 5 * 60 * 1000,
   });
 
@@ -44,7 +44,7 @@ export const useRegulations = () => {
   const debouncedReport = useDebounce(report, 300);
 
   const createReportMutation = useMutation({
-    mutationFn: (reportData: Partial<Report>) => regulationService.createPersonalizedReport(reportData),
+    mutationFn: (reportData: Partial<Report>) => regulationsService.createPersonalizedReport(reportData),
     onSuccess: (newReport) => {
       queryClient.setQueryData(['reports'], (old: Report[] | undefined) => (old ? [...old, newReport] : [newReport]));
       toast({ title: 'Rapport créé', status: 'success' });
@@ -68,7 +68,7 @@ export const useRegulations = () => {
   });
 
   const downloadReportMutation = useMutation({
-    mutationFn: (reportId: string) => regulationService.downloadReport(reportId),
+    mutationFn: (reportId: string) => regulationsService.downloadReport(reportId),
     onSuccess: (_, reportId) => toast({ title: `Téléchargement du rapport ${reportId}`, status: 'success' }),
     onError: () =>
       toast({
