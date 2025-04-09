@@ -9,7 +9,7 @@ const MotionBox = motion(Box);
 
 export const Contact = () => {
     const [message, setMessage] = useState('');
-    const [responseMessage, setResponseMessage] = useState('');
+    const [, setResponseMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const toast = useToast();
 
