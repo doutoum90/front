@@ -16,6 +16,7 @@ export interface UserData {
     confirmPassword?: string;
     dateOfBirth?: string;
     profession?: string;
+    trialActive?: boolean;
     typeAbonnement?: 'Essentiel' | 'PRO' | 'Expert';
 }
 

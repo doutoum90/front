@@ -36,6 +36,9 @@ const Regulations = lazy(() => import('../components/protected/Regulations'));
 const Opportunites = lazy(() => import('../components/protected/Opportunites'));
 const AnalyseMarche = lazy(() => import('../components/protected/AnalyseMarche'));
 
+const TestDash = lazy(() => import('../components/tests/Dashboard'));
+const Chart = lazy(() => import('../components/tests/ChartComponent'));
+
 
 export const routes = [
   {
@@ -60,6 +63,12 @@ export const routes = [
     children: [
       { path: 'login', element: lazyLoad(LoginForm) },
       { path: 'password-reset', element: lazyLoad(PasswordReset) },
+    ],
+  },
+  {
+    path: 'test',
+    children: [
+      { path: 'dashboard', element: lazyLoad(TestDash) },
     ],
   },
   // Routes privées avec layout commun
