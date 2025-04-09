@@ -97,7 +97,7 @@ export type AuthProviderProps = {
 
 
 export type PrivateRouteProps = {
-    children: any;
+    children: ReactNode;
 };
 
 

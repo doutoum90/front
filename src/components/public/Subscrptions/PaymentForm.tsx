@@ -60,10 +60,7 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
                 },
                 body: JSON.stringify({
                     paymentMethodId: paymentMethod.id,
-                    planId: plan.id,
                     priceID: PRICE_MAP[plan.id as keyof typeof PRICE_MAP],
-                    amount: plan.price * 100,
-                    email: user.email,
                 }),
             });
 

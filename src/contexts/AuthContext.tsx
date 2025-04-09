@@ -18,7 +18,6 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
   const refreshTokenMutation = useMutation({
     mutationFn: () => authService.refreshToken(),
     onSuccess: (data) => {
-
       queryClient.invalidateQueries({ queryKey: ['user'] });
       return data.access_token;
     },

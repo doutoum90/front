@@ -9,12 +9,6 @@ interface NextPayment {
   amount: number;
 }
 
-interface SubscriptionData {
-  status: string;
-  paymentHistory: any[];
-  nextPayment: NextPayment | null;
-}
-
 export const useSubscription = () => {
   const toast = useToast();
   const queryClient = useQueryClient();

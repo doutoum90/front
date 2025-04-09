@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { VStack, FormControl, FormLabel, Input, Button, Alert, AlertIcon, InputGroup, InputRightElement, Box, Text, List, ListItem } from '@chakra-ui/react';
-import { AccountCreationFormProps } from '../../../types';
+import { AccountCreationFormProps, UserData } from '../../../types';
 
 export const AccountCreationForm = ({ onSuccess, showPasswordPolicy = true, ctaText = 'Créer mon compte' }: AccountCreationFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ name: '', lastname: '', email: '', password: '' });
+  const [formData, setFormData] = useState<Partial<UserData>>({ name: '', lastname: '', email: '', password: '', dateOfBirth: '', profession: '' });
   const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.lastname || !formData.email || !formData.password) {
+    if (!formData.name || !formData.lastname || !formData.email || !formData.password || !formData.dateOfBirth || !formData.profession) {
       setError('Veuillez remplir tous les champs');
       return;
     }
@@ -21,7 +21,7 @@ export const AccountCreationForm = ({ onSuccess, showPasswordPolicy = true, ctaT
       return;
     }
 
-    onSuccess(formData);
+    onSuccess(formData as UserData);
   };
 
   return (
@@ -47,6 +47,25 @@ export const AccountCreationForm = ({ onSuccess, showPasswordPolicy = true, ctaT
         <FormControl isRequired>
           <FormLabel>Email</FormLabel>
           <Input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="jean.dupont@email.com" />
+        </FormControl>
+
+        <FormControl isRequired>
+          <FormLabel>Date de Naissance</FormLabel>
+          <Input
+            type="date"
+            value={formData.dateOfBirth}
+            onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+            placeholder="YYYY-MM-DD"
+          />
+        </FormControl>
+
+        <FormControl isRequired>
+          <FormLabel>Profession</FormLabel>
+          <Input
+            value={formData.profession}
+            onChange={(e) => setFormData({ ...formData, profession: e.target.value })}
+            placeholder="Développeur"
+          />
         </FormControl>
 
         <FormControl isRequired>

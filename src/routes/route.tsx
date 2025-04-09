@@ -37,7 +37,6 @@ const Opportunites = lazy(() => import('../components/protected/Opportunites'));
 const AnalyseMarche = lazy(() => import('../components/protected/AnalyseMarche'));
 
 const TestDash = lazy(() => import('../components/tests/Dashboard'));
-const Chart = lazy(() => import('../components/tests/ChartComponent'));
 
 
 export const routes = [

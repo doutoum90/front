@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 export const Formules = () => {
     const navigate = useNavigate();
     const subscribe = (rowName: string) => {
+        console.log('subscribe', rowName);
         navigate('/subscription');
     }
 
