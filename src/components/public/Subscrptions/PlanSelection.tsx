@@ -1,4 +1,3 @@
-// src/components/Subscriptions/PlanSelection.tsx
 import { SimpleGrid, Box, Heading, Text, Button, VStack } from '@chakra-ui/react';
 import { SubscriptionPlan } from '../../../types';
 
