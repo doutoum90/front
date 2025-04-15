@@ -8,7 +8,7 @@ const Dashboard = () => {
     useEffect(() => {
         const loadData = async () => {
             const result = await fetchScrapedData('https://concurrent.com');
-            setData(result);
+            setData(result.data);
         };
         loadData();
     }, []);

@@ -4,7 +4,6 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Switch,
     Button,
     Flex,
     Avatar,
@@ -14,7 +13,7 @@ import {
     Alert,
     AlertIcon,
 } from '@chakra-ui/react';
-import { FaUserCog, FaShieldAlt, FaBell } from 'react-icons/fa';
+import { FaUserCog, FaShieldAlt} from 'react-icons/fa';
 import { TabPanelLayout } from '../common/TabPanelLayout';
 import { useUserSettings } from '../../hooks/useUserSettings';
 import { ChangeEvent } from 'react';
@@ -147,35 +146,7 @@ export const Settings = () => {
                     </Tooltip>
                 </Flex>
             ),
-        },
-        {
-            label: 'Notifications',
-            icon: FaBell,
-            tooltip: 'Gérer vos préférences de notifications',
-            content: (
-                <Flex direction="column" gap={6}>
-                    <FormControl display="flex" alignItems="center">
-                        <FormLabel mb="0">Notifications Email</FormLabel>
-                        <Switch
-                            isChecked={settings.emailNotifications}
-                            onChange={(e) => setSettings({ ...settings, emailNotifications: e.target.checked })}
-                        />
-                    </FormControl>
-                    <FormControl display="flex" alignItems="center">
-                        <FormLabel mb="0">Notifications Push</FormLabel>
-                        <Switch
-                            isChecked={settings.pushNotifications}
-                            onChange={(e) => setSettings({ ...settings, pushNotifications: e.target.checked })}
-                        />
-                    </FormControl>
-                    <Tooltip label="Enregistrer les préférences" placement="top">
-                        <Button variant="primary" alignSelf="flex-end" isLoading={loading} onClick={() => saveSettings({})}>
-                            Enregistrer
-                        </Button>
-                    </Tooltip>
-                </Flex>
-            ),
-        },
+        }
     ];
 
     return (
