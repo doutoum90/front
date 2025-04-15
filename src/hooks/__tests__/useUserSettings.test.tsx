@@ -31,9 +31,11 @@ describe('useUserSettings', () => {
             name: 'Jean Dupont',
             email: 'jean@example.com',
             password: '',
-            twoFactorAuth: false,
-            emailNotifications: true,
-            pushNotifications: false,
+            lastname: 'Dupont',
+            dateOfBirth: '1990-01-01',
+            profession: 'Développeur',
+            oldPassword: '',
+            confirmPassword: '',
         };
 
         (api.apiFetch as jest.Mock)
@@ -46,15 +48,24 @@ describe('useUserSettings', () => {
 
         expect(result.current.settings).toEqual(mockSettings);
 
-        result.current.setSettings({ ...mockSettings, name: 'Jean Nouveau' });
+        result.current.setSettings({ 
+            ...mockSettings, 
+            name: 'Jean Nouveau', 
+            lastname: 'Dupont', 
+            dateOfBirth: '1990-01-01', 
+            profession: 'Développeur', 
+            oldPassword: '', 
+            confirmPassword: '', 
+            password: '', 
+        });
         result.current.saveSettings({});
 
-        await waitFor(() => expect(api.apiFetch).toHaveBeenCalledWith('/api/user/settings', expect.any(Object)));
+        await waitFor(() => expect(api.apiFetch).toHaveBeenCalledWith('/api/user/update', expect.any(Object)));
     });
 
     it('uploads avatar successfully', async () => {
         (api.apiFetch as jest.Mock)
-            .mockResolvedValueOnce({ avatar: '', name: '', email: '', password: '', twoFactorAuth: false, emailNotifications: false, pushNotifications: false })
+            .mockResolvedValueOnce({ avatar: '', name: '', email: '', password: '', lastname: '', dateOfBirth: '', profession: '', oldPassword: '', confirmPassword: '' })
             .mockResolvedValueOnce({ avatarUrl: 'new-avatar.jpg' });
 
         const { result } = renderHook(() => useUserSettings(), { wrapper });

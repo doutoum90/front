@@ -70,7 +70,23 @@ export const Settings = () => {
                         />
                     </FormControl>
                     <FormControl>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>Prénom</FormLabel>
+                        <Input
+                            value={settings.lastname}
+                            onChange={(e) => setSettings({ ...settings, lastname: e.target.value })}
+                            placeholder="Dupont"
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel>Date de naissance</FormLabel>
+                        <Input
+                            type="date"
+                            value={new Date(settings.dateOfBirth).toISOString().split('T')[0]}
+                            onChange={(e) => setSettings({ ...settings, dateOfBirth: e.target.value })}
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel>Profession</FormLabel>
                         <Input
                             type="email"
                             value={settings.email}
@@ -93,7 +109,16 @@ export const Settings = () => {
             content: (
                 <Flex direction="column" gap={6}>
                     <FormControl>
-                        <FormLabel>Changer le mot de passe</FormLabel>
+                        <FormLabel>Ancien mot de passe</FormLabel>
+                        <Input
+                            type="password"
+                            value={settings.oldPassword}
+                            onChange={(e) => setSettings({ ...settings, oldPassword: e.target.value })}
+                            placeholder="Ancien mot de passe"
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel>Nouveau mot de passe</FormLabel>
                         <Input
                             type="password"
                             value={settings.password}
@@ -101,19 +126,20 @@ export const Settings = () => {
                             placeholder="Nouveau mot de passe"
                         />
                     </FormControl>
-                    <FormControl display="flex" alignItems="center">
-                        <FormLabel mb="0">Authentification à 2 facteurs</FormLabel>
-                        <Switch
-                            isChecked={settings.twoFactorAuth}
-                            onChange={(e) => setSettings({ ...settings, twoFactorAuth: e.target.checked })}
-                            isDisabled
+                    <FormControl>
+                        <FormLabel>Confirmer le nouveau mot de passe</FormLabel>
+                        <Input
+                            type="password"
+                            value={settings.confirmPassword}
+                            onChange={(e) => setSettings({ ...settings, confirmPassword: e.target.value })}
+                            placeholder="Confirmer le nouveau mot de passe"
                         />
                     </FormControl>
                     <Tooltip label="Mettre à jour le mot de passe" placement="top">
                         <Button
                             variant="primary"
                             alignSelf="flex-end"
-                            onClick={() => saveSettings({ password: settings.password })}
+                            onClick={() => saveSettings({ oldPassword: settings.oldPassword, password: settings.password, confirmPassword: settings.confirmPassword })}
                             isLoading={loading}
                         >
                             Mettre à jour

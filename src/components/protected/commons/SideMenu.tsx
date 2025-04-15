@@ -7,7 +7,6 @@ import {
     Flex,
     Text,
     IconButton,
-    useColorMode,
     Center,
     Tooltip,
 } from '@chakra-ui/react';
@@ -16,12 +15,13 @@ import { Menu, MenuButton, MenuList, MenuItem, MenuDivider, Avatar } from '@chak
 import { FiSun, FiMoon } from 'react-icons/fi';
 import { PROTECTED_MENU } from '../../../constantes';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useTheme } from '../../../hooks/useTheme';
 
 export const SideMenu = () => {
     const location = useLocation();
     const { user, logout } = useAuth();
     const navigate = useNavigate();
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode, toggleColorMode, colors } = useTheme();
 
     return (
         <Box
@@ -31,13 +31,15 @@ export const SideMenu = () => {
             left="0"
             width="250px"
             height="100vh"
-            bg="chakra-body-bg"
+            bg={colors.background}
             boxShadow="md"
             p={4}
             zIndex="sticky"
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
+            borderRight="1px"
+            borderColor={colors.border}
         >
             <VStack align="center" spacing={2} width="100%">
                 {PROTECTED_MENU.map((item) => (
@@ -51,8 +53,8 @@ export const SideMenu = () => {
                             width="100%"
                             maxWidth="200px"
                             justifyContent="center"
-                            leftIcon={<Icon as={item.icon || 'span'} />}
-                            _hover={{ bg: location.pathname === item.path ? undefined : 'chakra-subtle-bg' }}
+                            leftIcon={<Icon as={item.icon || 'span'} color={colors.icon} />}
+                            _hover={{ bg: colors.hover }}
                             whiteSpace="pre-line"
                         >
                             {item.name}
@@ -62,7 +64,7 @@ export const SideMenu = () => {
             </VStack>
 
             <Center flexDirection="column" gap={4}>
-                <Divider />
+                <Divider borderColor={colors.border} />
                 <Tooltip label={`Passer au mode ${colorMode === 'light' ? 'sombre' : 'clair'}`} placement="right">
                     <IconButton
                         icon={colorMode === 'light' ? <FiMoon /> : <FiSun />}
@@ -70,40 +72,41 @@ export const SideMenu = () => {
                         aria-label="Toggle theme"
                         variant="ghost"
                         w="full"
-                        _hover={{ bg: 'chakra-subtle-bg' }}
+                        color={colors.icon}
+                        _hover={{ bg: colors.hover }}
                     />
                 </Tooltip>
-                <Divider />
+                <Divider borderColor={colors.border} />
 
                 <Menu>
                     <Center>
                         <MenuButton as={Button} rounded="full" variant="link" cursor="pointer" minW={0}>
                             <Avatar size="md" name={user?.email} bg="brand.500" color="white" />
                         </MenuButton>
-                        <MenuList py={2} minW="200px">
-                            <MenuItem>
+                        <MenuList py={2} minW="200px" bg={colors.background} borderColor={colors.border}>
+                            <MenuItem _hover={{ bg: colors.hover }}>
                                 <Flex direction="column" px={2}>
-                                    <Text fontWeight="semibold">{user?.email}</Text>
-                                    <Text fontSize="sm" color="chakra-subtle-text">
+                                    <Text fontWeight="semibold" color={colors.text}>{user?.email}</Text>
+                                    <Text fontSize="sm" color={colors.subtle}>
                                         Profil
                                     </Text>
                                 </Flex>
                             </MenuItem>
-                            <MenuDivider />
-                            <MenuItem onClick={() => navigate('/espace-membre/profile')}>
-                                <Icon as={() => <span className="material-icons">person</span>} mr={2} />
+                            <MenuDivider borderColor={colors.border} />
+                            <MenuItem onClick={() => navigate('/espace-membre/profile')} _hover={{ bg: colors.hover }}>
+                                <Icon as={() => <span className="material-icons">person</span>} mr={2} color={colors.icon} />
                                 Mon Profil
                             </MenuItem>
-                            <MenuItem onClick={() => navigate('/espace-membre/settings')}>
-                                <Icon as={() => <span className="material-icons">settings</span>} mr={2} />
+                            <MenuItem onClick={() => navigate('/espace-membre/settings')} _hover={{ bg: colors.hover }}>
+                                <Icon as={() => <span className="material-icons">settings</span>} mr={2} color={colors.icon} />
                                 Paramètres
                             </MenuItem>
-                            <MenuItem onClick={() => navigate('/espace-membre/suivi-payment')}>
-                                <Icon as={() => <span className="material-icons">settings</span>} mr={2} />
+                            <MenuItem onClick={() => navigate('/espace-membre/suivi-payment')} _hover={{ bg: colors.hover }}>
+                                <Icon as={() => <span className="material-icons">settings</span>} mr={2} color={colors.icon} />
                                 Suivi Paiement
                             </MenuItem>
-                            <MenuDivider />
-                            <MenuItem onClick={logout} color="red.600">
+                            <MenuDivider borderColor={colors.border} />
+                            <MenuItem onClick={logout} color="red.600" _hover={{ bg: colors.hover }}>
                                 <Icon as={() => <span className="material-icons">logout</span>} mr={2} />
                                 Déconnexion
                             </MenuItem>

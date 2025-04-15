@@ -1,4 +1,4 @@
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaHome, FaChartPie, FaBell, FaFileAlt, FaUser, FaEye, FaCogs, FaGlobeAmericas } from "react-icons/fa"
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaHome, FaChartPie, FaBell, FaFileAlt, FaEye, FaCogs, FaGlobeAmericas } from "react-icons/fa"
 
 export const FAQ = [
     {
@@ -172,21 +172,21 @@ export const FONCTIONNALITES = [
 
 export const FORMULE_TITLES = {
     title: "Choisissez la formule qui accélère votre croissance.",
-    subtitle: "Des solutions adaptées à chaque entreprise, de la veille stratégique à l’analyse avancée.",
-    commentaires: "⭐ Ce qu’ils disent de nous"
+    subtitle: "Des solutions adaptées à chaque entreprise, de la veille stratégique à l'analyse avancée.",
+    commentaires: "⭐ Ce qu'ils disent de nous"
 }
 export const COMMENTAIRES = [
     {
-        nom: " 📢 Claire M. - Dirigeante d’une PME",
+        nom: " 📢 Claire M. - Dirigeante d'une PME",
         commentaire: "Grâce à Intelligentsia, nous avons pu anticiper une évolution réglementaire majeure qui aurait pu impacter notre activité. Un vrai game-changer !"
     },
     {
         nom: " 📢 Julien D. - Responsable Stratégie",
-        commentaire: "Les rapports stratégiques sur demande sont précis et ultra-pertinents. Un outil indispensable pour notre expansion à l’international."
+        commentaire: "Les rapports stratégiques sur demande sont précis et ultra-pertinents. Un outil indispensable pour notre expansion à l'international."
     },
     {
-        nom: " 📢 Sophie L. - Fondatrice d’une startup tech",
-        commentaire: "La veille concurrentielle automatisée nous permet de rester réactifs et de toujours avoir un coup d’avance sur le marché."
+        nom: " 📢 Sophie L. - Fondatrice d'une startup tech",
+        commentaire: "La veille concurrentielle automatisée nous permet de rester réactifs et de toujours avoir un coup d'avance sur le marché."
     }
 ]
 
@@ -263,31 +263,31 @@ export const OTHER_LINKS = [
 
 export const PROTECTED_MENU = [
     {
-        name: 'Accueil',
-        path: '/espace-membre/dashboard',
+        name: "Tableau de bord",
+        path: "/espace-membre/dashboard",
         icon: FaHome
     },
     {
-        name: 'Veille concurentielle',
-        path: '/espace-membre/veille-concurentielle',
-        icon: FaUser
+        name: "Veille Concurrentielle",
+        path: "/espace-membre/veille-concurentielle",
+        icon: FaEye
     },
     {
-        name: 'Analyse de marché',
-        path: '/espace-membre/analyse-de-marche',
-        icon: FaChartPie
+        name: "Analyse de Marché",
+        path: "/espace-membre/analyse-de-marche",
+        icon: FaGlobeAmericas
     },
     {
-        name: 'Surveillance des \n opportunités et risques',
-        path: '/espace-membre/surveillance-des-opportunites-et-risques',
+        name: "Opportunités & Risques",
+        path: "/espace-membre/surveillance-des-opportunites-et-risques",
         icon: FaBell
     },
     {
-        name: 'Rapport sur mesure',
-        path: '/espace-membre/rapport-sur-mesure',
+        name: "Rapports sur Mesure",
+        path: "/espace-membre/rapport-sur-mesure",
         icon: FaFileAlt
     }
-]
+];
 
 export const DASHBOARD_TITLE = "Tableau de bord"
 export const DASHBOARD_DATA = [

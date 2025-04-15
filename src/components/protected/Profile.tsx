@@ -27,7 +27,6 @@ export const Profile = () => {
                         <Avatar size="2xl" alignSelf="center" />
                         <Button
                             leftIcon={<FaEdit />}
-                            colorScheme={styles.buttonColorScheme}
                             onClick={handleEditProfile}
                         >
                             Modifier le profil

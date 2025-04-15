@@ -17,9 +17,9 @@ export const useMarketData = (initialPeriod: string = '30j') => {
   const [selectedPeriod, setSelectedPeriod] = useState(initialPeriod);
   const debouncedPeriod = useDebounce(selectedPeriod, 300); // Debounce de 300ms
   const fetchMarketData = {
-    trends: () => apiFetch(`api/veille/competitors/trends?period=${debouncedPeriod}`),
-    share: () => apiFetch('api/veille/competitors/share'),
-    prices: () => apiFetch(`api/veille/competitors/price-evolution?period=${debouncedPeriod}`),
+    trends: () => apiFetch(`/api/veille/competitors/trends?period=${debouncedPeriod}`),
+    share: () => apiFetch(`/api/veille/competitors/share`),
+    prices: () => apiFetch(`/api/veille/competitors/prices?period=${debouncedPeriod}`),
   };
 
   const queries = useQueries({

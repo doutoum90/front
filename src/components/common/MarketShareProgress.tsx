@@ -12,7 +12,7 @@ export const MarketShareProgress = ({
 }: MarketShareProgressProps) => (
     <>
         {data.map((item, index) => (
-            <Box key={item.company} mb={4}>
+            <Box key={`${item.company}-${index}`} mb={4}>
                 <Flex justify="space-between" mb={2}>
                     <Text>{item.company}</Text>
                     <Text fontWeight="bold">{item.value}%</Text>

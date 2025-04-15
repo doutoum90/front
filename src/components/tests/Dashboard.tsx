@@ -8,7 +8,6 @@ const Dashboard = () => {
     useEffect(() => {
         const loadData = async () => {
             const result = await fetchScrapedData('https://concurrent.com');
-            console.log('eure', result);
             setData(result);
         };
         loadData();

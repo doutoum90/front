@@ -7,11 +7,13 @@ import { apiFetch } from '../services/api';
 interface UserSettings {
     avatar: string;
     name: string;
+    lastname: string;
+    dateOfBirth: string;
+    profession: string;
     email: string;
     password: string;
-    twoFactorAuth: boolean;
-    emailNotifications: boolean;
-    pushNotifications: boolean;
+    oldPassword: string;
+    confirmPassword: string;
 }
 export const useUserSettings = () => {
     const toast = useToast();
@@ -19,18 +21,20 @@ export const useUserSettings = () => {
 
     const { data: initialSettings, isLoading } = useQuery<UserSettings, Error>({
         queryKey: ['userSettings'],
-        queryFn: () => apiFetch('/api/user/settings'),
+        queryFn: () => apiFetch('/api/user/profile'),
         staleTime: 5 * 60 * 1000,
     });
     const [settings, setSettings] = useState<UserSettings>(
         initialSettings || {
             avatar: '',
             name: '',
+            lastname: '',
+            dateOfBirth: '',
+            profession: '',
             email: '',
             password: '',
-            twoFactorAuth: false,
-            emailNotifications: false,
-            pushNotifications: false,
+            oldPassword: '',
+            confirmPassword: '',
         }
     );
 
@@ -45,7 +49,7 @@ export const useUserSettings = () => {
 
     const saveSettingsMutation = useMutation({
         mutationFn: (updates: Partial<UserSettings>) =>
-            apiFetch('/api/user/settings', {
+            apiFetch('/api/user/update', {
                 method: 'PUT',
                 body: JSON.stringify(updates),
             }),

@@ -70,9 +70,7 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
 
   const register = useCallback(
     async (userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert' }) => {
-      console.log('userData', userData);
       const { user } = await authService.register(userData);
-      console.log('user', user);
       queryClient.setQueryData(['user'], user);
     },
     [queryClient]

@@ -14,7 +14,7 @@ export const useProfile = () => {
             })}`
             : '';
 
-    const handleEditProfile = () => navigate('/espace-membre/settings');
+    const handleEditProfile = () => navigate('/espace-membre/parametres');
 
     return {
         user,

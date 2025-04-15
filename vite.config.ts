@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'https://api-proj-976v.onrender.com',
+      '/api': process.env.VITE_API_URL || 'http://localhost:3000',
     },
   },
 });

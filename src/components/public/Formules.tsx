@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom';
 export const Formules = () => {
     const navigate = useNavigate();
     const subscribe = (rowName: string) => {
-        console.log('subscribe', rowName);
-        navigate('/subscription');
+        navigate(`/subscription?plan=${rowName.charAt(0).toUpperCase() + rowName.slice(1)}`);
     }
 
     const computeRow = (row: any, rowName: string) => {

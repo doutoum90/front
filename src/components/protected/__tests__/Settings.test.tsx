@@ -37,9 +37,11 @@ describe('Settings', () => {
             name: 'Jean Dupont',
             email: 'jean@example.com',
             password: '',
-            twoFactorAuth: false,
-            emailNotifications: true,
-            pushNotifications: false,
+            lastname: 'Dupont',
+            dateOfBirth: '1990-01-01',
+            profession: 'Développeur',
+            oldPassword: '',
+            confirmPassword: '',
         });
 
         render(<Settings />, { wrapper });
@@ -58,9 +60,11 @@ describe('Settings', () => {
             name: 'Jean Dupont',
             email: 'jean@example.com',
             password: '',
-            twoFactorAuth: false,
-            emailNotifications: true,
-            pushNotifications: false,
+            lastname: 'Dupont',
+            dateOfBirth: '1990-01-01',
+            profession: 'Développeur',
+            oldPassword: '',
+            confirmPassword: '',
         });
 
         render(<Settings />, { wrapper });

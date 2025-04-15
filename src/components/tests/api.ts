@@ -1,8 +1,9 @@
-// api.ts
-import axios from 'axios';
 
+import apiFetch from '../../services/api';
 
 export const fetchScrapedData = async (url: string) => {
-  const response = await axios.post(`${process.env.VITE_API_URL}/scraping`, { url });
-  return response.data;
+  return await apiFetch('/scraping', {
+    method: 'POST',
+    data: JSON.stringify({ url }),
+  });
 };
