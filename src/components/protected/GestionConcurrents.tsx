@@ -82,15 +82,33 @@ const GestionConcurrents = () => {
 
     const handleAddDataSource = async (competitorId: string) => {
         try {
-            if (!newDataSource.url) throw new Error("L'URL de la source est requise");
+            if (!competitorId) {
+                throw new Error('ID du concurrent manquant');
+            }
+            if (!newDataSource.url) {
+                throw new Error("L'URL de la source est requise");
+            }
+            if (!newDataSource.type) {
+                throw new Error('Le type de source est requis');
+            }
+
             if (mode === 'add') {
                 const addedCompetitor: Competitor = await MarketWatchService.addDataSource(competitorId, newDataSource);
+                if (!addedCompetitor || !Array.isArray(addedCompetitor.dataSources)) {
+                    throw new Error('Erreur lors de l\'ajout de la source');
+                }
                 const updatedCompetitors = competitors.map(competitor =>
                     competitor.id === competitorId ? addedCompetitor : competitor
                 );
                 setCompetitors(updatedCompetitors);
             } else {
-                const updatedCompetitor: Competitor = await MarketWatchService.updateDataSource(competitorId, newDataSource.id || '', newDataSource);
+                if (!newDataSource.id) {
+                    throw new Error('ID de la source manquant pour la modification');
+                }
+                const updatedCompetitor: Competitor = await MarketWatchService.updateDataSource(competitorId, newDataSource.id, newDataSource);
+                if (!updatedCompetitor || !Array.isArray(updatedCompetitor.dataSources)) {
+                    throw new Error('Erreur lors de la modification de la source');
+                }
                 const updatedCompetitors = competitors.map(competitor =>
                     competitor.id === competitorId ? updatedCompetitor : competitor
                 );
@@ -111,12 +129,13 @@ const GestionConcurrents = () => {
                 duration: 3000,
                 isClosable: true,
             });
-        } catch (error) {
+        } catch (error: any) {
+            console.error('Erreur lors de la manipulation de la source:', error);
             toast({
                 title: 'Erreur',
-                description: mode === 'add' ? 'Erreur lors de l\'ajout de la source' : 'Erreur lors de la modification de la source',
+                description: error.message || (mode === 'add' ? 'Erreur lors de l\'ajout de la source' : 'Erreur lors de la modification de la source'),
                 status: 'error',
-                duration: 3000,
+                duration: 5000,
                 isClosable: true,
             });
         }
@@ -124,10 +143,29 @@ const GestionConcurrents = () => {
 
     const handleDeleteDataSource = async (competitorId: string, dataSourceId: string) => {
         try {
+            if (!competitorId || !dataSourceId) {
+                throw new Error('ID du concurrent ou de la source manquant');
+            }
+
+            const competitor = competitors.find(c => c.id === competitorId);
+            if (!competitor || !Array.isArray(competitor.dataSources)) {
+                throw new Error('Concurrent non trouvé ou données sources invalides');
+            }
+
+            const dataSource = competitor.dataSources.find(ds => ds.id === dataSourceId);
+            if (!dataSource) {
+                throw new Error('Source de données non trouvée');
+            }
+
             const updatedCompetitor: Competitor = await MarketWatchService.removeDataSource(competitorId, dataSourceId);
+            if (!updatedCompetitor) {
+                throw new Error('Erreur lors de la suppression de la source');
+            }
+
             setCompetitors(competitors.map(competitor =>
                 competitor.id === competitorId ? updatedCompetitor : competitor
             ));
+
             toast({
                 title: 'Succès',
                 description: 'Source supprimée avec succès',
@@ -135,19 +173,31 @@ const GestionConcurrents = () => {
                 duration: 3000,
                 isClosable: true,
             });
-        } catch (error) {
+        } catch (error: any) {
+            console.error('Erreur lors de la suppression de la source:', error);
             toast({
                 title: 'Erreur',
-                description: 'Erreur lors de la suppression de la source',
+                description: error.message || 'Erreur lors de la suppression de la source',
                 status: 'error',
-                duration: 3000,
+                duration: 5000,
                 isClosable: true,
             });
         }
     };
 
     const loadToEditDataSource = (competitorId: string, dataSourceId: string) => {
-        const dataSource = competitors.find(competitor => competitor.id === competitorId)?.dataSources.find(source => source.id === dataSourceId);
+        const competitor = competitors.find(c => c.id === competitorId);
+        if (!competitor || !Array.isArray(competitor.dataSources)) {
+            toast({
+                title: 'Erreur',
+                description: 'Impossible de charger la source de données',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+            return;
+        }
+        const dataSource = competitor.dataSources.find(source => source.id === dataSourceId);
         if (dataSource) {
             setNewDataSource(dataSource);
             setMode('edit');
@@ -157,8 +207,18 @@ const GestionConcurrents = () => {
 
     const handleDeleteCompetitor = async (competitorId: string) => {
         try {
+            if (!competitorId) {
+                throw new Error('ID du concurrent manquant');
+            }
+
+            const competitor = competitors.find(c => c.id === competitorId);
+            if (!competitor) {
+                throw new Error('Concurrent non trouvé');
+            }
+
             await MarketWatchService.deleteCompetitor(competitorId);
             setCompetitors(competitors.filter(c => c.id !== competitorId));
+
             toast({
                 title: 'Succès',
                 description: 'Concurrent supprimé avec succès',
@@ -166,12 +226,13 @@ const GestionConcurrents = () => {
                 duration: 3000,
                 isClosable: true,
             });
-        } catch (error) {
+        } catch (error: any) {
+            console.error('Erreur lors de la suppression du concurrent:', error);
             toast({
                 title: 'Erreur',
-                description: 'Erreur lors de la suppression du concurrent',
+                description: error.message || 'Erreur lors de la suppression du concurrent',
                 status: 'error',
-                duration: 3000,
+                duration: 5000,
                 isClosable: true,
             });
         }
@@ -179,8 +240,20 @@ const GestionConcurrents = () => {
 
     useEffect(() => {
         const fetchCompetitors = async () => {
-            const competitors = await MarketWatchService.getAllCompetitors();
-            setCompetitors(competitors);
+            try {
+                const competitors = await MarketWatchService.getAllCompetitors();
+                setCompetitors(competitors || []);
+            } catch (error) {
+                console.error('Erreur lors de la récupération des concurrents:', error);
+                toast({
+                    title: 'Erreur',
+                    description: 'Impossible de charger la liste des concurrents',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
+                setCompetitors([]);
+            }
         };
         fetchCompetitors();
     }, []);
@@ -333,7 +406,7 @@ const GestionConcurrents = () => {
                     </Box>
 
                     {/* Table des sources */}
-                    {competitor.dataSources?.length > 0 && (
+                    {Array.isArray(competitor.dataSources) && competitor.dataSources?.length > 0 && (
                         <Table variant="simple">
                             <Thead>
                                 <Tr>
@@ -345,7 +418,7 @@ const GestionConcurrents = () => {
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {competitor.dataSources.map((source: DataSource) => (
+                                {Array.isArray(competitor.dataSources) && competitor.dataSources.map((source: DataSource) => (
                                     <Tr key={source.id}>
                                         <Td>{source.type}</Td>
                                         <Td>
