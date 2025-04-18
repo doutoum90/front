@@ -85,7 +85,7 @@ export interface AuthContextType {
     getTrialStatus: () => Promise<any>;
     register: (userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert' }) => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
-    refreshAccessToken: (refreshToken: string) => Promise<string>; // Doit retourner une Promise<string>
+    refreshAccessToken: (refreshToken: string) => Promise<string>;
     refreshUser: () => Promise<void>;
 };
 

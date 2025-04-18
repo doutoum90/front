@@ -36,11 +36,10 @@ const SubscriptionFlow = () => {
     const handleAccountCreation = async (data: UserData) => {
         setStepData({ ...stepData, userData: data });
         if (planFromUrl) {
-            // Si le plan est dans l'URL, on passe directement au paiement
             const plan: SubscriptionPlan = {
                 id: '',
                 name: planFromUrl,
-                price: 0, // À ajuster selon votre logique
+                price: 0,
                 features: []
             };
             await handleSelectPlan(plan, false);

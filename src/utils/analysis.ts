@@ -1,5 +1,3 @@
-// utils/analysis.ts
-
 export const computeMetrics = (competitors: any) => {
     const metrics = ['traffic', 'engagement', 'growth'];
     const maxValues = metrics.reduce((acc: any, metric: any) => ({

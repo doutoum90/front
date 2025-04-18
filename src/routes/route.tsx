@@ -11,7 +11,7 @@ const lazyLoad = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
     <Component />
   </Suspense>
 );
-// Composants publics
+
 const Home = lazy(() => import('../components/public/Home'));
 const About = lazy(() => import('../components/public/About'));
 const Actions = lazy(() => import('../components/public/Actions'));
@@ -24,7 +24,7 @@ const TermsOfService = lazy(() => import('../components/public/TermsOfService'))
 
 const LoginForm = lazy(() => import('../components/auths/LoginForm'));
 const PasswordReset = lazy(() => import('../components/auths/PasswordReset'));
-// Composants privés
+
 const Dashboard = lazy(() => import('../components/protected/Dashboard'));
 const Profile = lazy(() => import('../components/protected/Profile'));
 const Settings = lazy(() => import('../components/protected/Setting'));

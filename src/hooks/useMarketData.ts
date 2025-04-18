@@ -15,7 +15,7 @@ type QueryResult<T> = {
 export const useMarketData = (initialPeriod: string = '30j') => {
   const toast = useToast();
   const [selectedPeriod, setSelectedPeriod] = useState(initialPeriod);
-  const debouncedPeriod = useDebounce(selectedPeriod, 300); // Debounce de 300ms
+  const debouncedPeriod = useDebounce(selectedPeriod, 300);
   const fetchMarketData = {
     trends: () => apiFetch(`/api/veille/competitors/trends?period=${debouncedPeriod}`),
     share: () => apiFetch(`/api/veille/competitors/share`),
@@ -42,7 +42,6 @@ export const useMarketData = (initialPeriod: string = '30j') => {
     ],
   }) as [QueryResult<MarketData[]>, QueryResult<MarketShare[]>, QueryResult<MarketData[]>];
 
-  // Gestion des erreurs dans useEffect
   useEffect(() => {
     const error = queries.find(q => q.error)?.error;
     if (error) {

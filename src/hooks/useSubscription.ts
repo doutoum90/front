@@ -13,7 +13,7 @@ export const useSubscription = () => {
   const toast = useToast();
   const queryClient = useQueryClient();
   const [newPlan, setNewPlan] = useState('Essentiel');
-  const debouncedNewPlan = useDebounce(newPlan, 300); // Debounce pour éviter des mises à jour trop rapides
+  const debouncedNewPlan = useDebounce(newPlan, 300);
 
   const fetchStatus = () => apiFetch('/api/payments/status');
   const fetchHistory = () => apiFetch('/api/payments/history');
@@ -24,7 +24,7 @@ export const useSubscription = () => {
       {
         queryKey: ['subscriptionStatus'],
         queryFn: fetchStatus,
-        staleTime: 5 * 60 * 1000, // 5 minutes
+        staleTime: 5 * 60 * 1000,
       },
       {
         queryKey: ['paymentHistory'],
@@ -85,7 +85,6 @@ export const useSubscription = () => {
 
   const error = statusQuery.error || historyQuery.error || nextPaymentQuery.error;
 
-  // Gestion centralisée des erreurs
   if (error) {
     toast({
       title: 'Erreur',

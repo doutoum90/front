@@ -87,8 +87,8 @@ const theme = extendTheme({
     brand: {
       50: '#E6FFFA',
       100: '#B2F5EA',
-      500: '#319795', // teal.500
-      600: '#2C7A7B', // teal.600
+      500: '#319795',
+      600: '#2C7A7B',
     },
   },
   components: {

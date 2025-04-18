@@ -13,17 +13,14 @@ interface RefreshTokenResponse {
 }
 
 
-// Récupérer les données utilisateur
 export const fetchUser = async (): Promise<User | null> => {
     return await apiFetch('/api/user');
 };
 
-// Vérifier le token
 export const verifyToken = async (): Promise<void> => {
     await apiFetch('/api/auth/verify');
 };
 
-// Rafraîchir le token
 export const refreshToken = async (): Promise<RefreshTokenResponse> => {
     const data = await apiFetch('/api/auth/refresh', {
         method: 'POST',
@@ -33,7 +30,6 @@ export const refreshToken = async (): Promise<RefreshTokenResponse> => {
     return data;
 };
 
-// Connexion
 export const login = async (credentials: { email: string; password: string }): Promise<LoginResponse> => {
     const response = await apiFetch('/api/auth/login', {
         method: 'POST',
@@ -45,7 +41,6 @@ export const login = async (credentials: { email: string; password: string }): P
     return response;
 };
 
-// Inscription
 export const register = async (
     userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert' }
 ): Promise<LoginResponse> => {
@@ -59,7 +54,6 @@ export const register = async (
     return data;
 };
 
-// Réinitialisation du mot de passe
 export const resetPassword = async (email: string): Promise<void> => {
     await apiFetch('/api/auth/reset-password', {
         method: 'POST',
@@ -68,7 +62,6 @@ export const resetPassword = async (email: string): Promise<void> => {
     });
 };
 
-// Mise à jour de l’abonnement
 export const updateSubscription = async (typeAbonnement: 'Essentiel' | 'PRO' | 'Expert'): Promise<User> => {
     return await apiFetch('/api/user/subscription', {
         method: 'PUT',
@@ -79,7 +72,6 @@ export const updateSubscription = async (typeAbonnement: 'Essentiel' | 'PRO' | '
     });
 };
 
-// Statut d’essai
 export const getTrialStatus = async (): Promise<any> => {
     return await apiFetch('/api/user/trial-status');
 };

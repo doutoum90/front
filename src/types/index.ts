@@ -1,6 +1,5 @@
 import { DataSourceType } from './competitor';
 
-// Types pour les données de marché
 export interface MarketData {
     date: string;
     value: number;
@@ -10,8 +9,6 @@ export interface MarketShare {
     company: string;
     value: number;
 }
-
-// Types pour la gestion des concurrents
 
 export interface CompetitorDataSource {
     id: string;

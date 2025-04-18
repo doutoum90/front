@@ -24,7 +24,7 @@ export const useCompetitors = () => {
     const addCompetitor = useCallback(async (competitor: Partial<Competitor>) => {
         try {
             await competitorsService.addCompetitor(competitor);
-            await fetchCompetitors(); // Re-fetch après ajout
+            await fetchCompetitors();
         } catch (err) {
             console.error('Erreur lors de l\'ajout du concurrent:', err);
             throw err;
@@ -34,7 +34,7 @@ export const useCompetitors = () => {
     const deleteCompetitor = useCallback(async (id: string) => {
         try {
             await competitorsService.deleteCompetitor(id);
-            await fetchCompetitors(); // Re-fetch après suppression
+            await fetchCompetitors();
         } catch (err) {
             console.error('Erreur lors de la suppression du concurrent:', err);
             throw err;
