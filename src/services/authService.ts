@@ -12,17 +12,19 @@ interface RefreshTokenResponse {
     refresh_token?: string;
 }
 
+const AUTH_API_ENDPOINTS = '/api/auth';
+const USER_API_ENDPOINTS = '/api/user';
 
 export const fetchUser = async (): Promise<User | null> => {
-    return await apiFetch('/api/user');
+    return await apiFetch(`${USER_API_ENDPOINTS}`);
 };
 
 export const verifyToken = async (): Promise<void> => {
-    await apiFetch('/api/auth/verify');
+    await apiFetch(`${AUTH_API_ENDPOINTS}/verify`);
 };
 
 export const refreshToken = async (): Promise<RefreshTokenResponse> => {
-    const data = await apiFetch('/api/auth/refresh', {
+    const data = await apiFetch(`${AUTH_API_ENDPOINTS}/refresh`, {
         method: 'POST',
     });
     localStorage.setItem('access_token', data.access_token);
@@ -31,7 +33,7 @@ export const refreshToken = async (): Promise<RefreshTokenResponse> => {
 };
 
 export const login = async (credentials: { email: string; password: string }): Promise<LoginResponse> => {
-    const response = await apiFetch('/api/auth/login', {
+    const response = await apiFetch(`${AUTH_API_ENDPOINTS}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -44,7 +46,7 @@ export const login = async (credentials: { email: string; password: string }): P
 export const register = async (
     userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert' }
 ): Promise<LoginResponse> => {
-    const data = await apiFetch('/api/auth/register', {
+    const data = await apiFetch(`${AUTH_API_ENDPOINTS}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
@@ -55,7 +57,7 @@ export const register = async (
 };
 
 export const resetPassword = async (email: string): Promise<void> => {
-    await apiFetch('/api/auth/reset-password', {
+    await apiFetch(`${AUTH_API_ENDPOINTS}/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -63,7 +65,7 @@ export const resetPassword = async (email: string): Promise<void> => {
 };
 
 export const updateSubscription = async (typeAbonnement: 'Essentiel' | 'PRO' | 'Expert'): Promise<User> => {
-    return await apiFetch('/api/user/subscription', {
+    return await apiFetch(`${USER_API_ENDPOINTS}/subscription`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -73,5 +75,5 @@ export const updateSubscription = async (typeAbonnement: 'Essentiel' | 'PRO' | '
 };
 
 export const getTrialStatus = async (): Promise<any> => {
-    return await apiFetch('/api/user/trial-status');
+    return await apiFetch(`${USER_API_ENDPOINTS}/trial-status`);
 };

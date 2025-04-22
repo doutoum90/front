@@ -1,4 +1,4 @@
-import { apiFetch } from "./api";
+import { apiFetch } from './api';
 
 export const MarketWatchService = {
     refreshToken: localStorage.getItem('refresh_token'),

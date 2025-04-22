@@ -9,9 +9,11 @@ import {
   VStack,
   HStack
 } from "@chakra-ui/react";
-import { FAQ, FAQ_TITLES } from "../../constantes";
+import { useFaq } from "../../hooks/useFaq";
 
 export const Faq = () => {
+  const { titles, faqItems } = useFaq();
+
   return (
     <HStack
       spacing={0}
@@ -26,16 +28,15 @@ export const Faq = () => {
         marginX="auto"
       >
         <Text fontSize="lg" color="gray.600" textAlign="center">
-          {FAQ_TITLES.title}
+          {titles.title}
         </Text>
 
         <Text fontSize="lg" color="gray.600" textAlign="center">
-          {FAQ_TITLES.subtitle}
+          {titles.subtitle}
         </Text>
 
         <Accordion allowToggle width="100%">
-
-          {FAQ.map((faq, index) => (
+          {faqItems.map((faq, index) => (
             <AccordionItem border="none" mb={4} key={index}>
               <AccordionButton
                 _hover={{ bg: 'teal.50' }}

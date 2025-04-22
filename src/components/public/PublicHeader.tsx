@@ -1,10 +1,8 @@
 import { Flex, Button, Box, HStack, VStack, Image } from "@chakra-ui/react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { PUBLIC_MENU } from "../../constantes";
-export const PublicHeader = () => {
+import { usePublicHeader } from "../../hooks/usePublicHeader";
 
-    const navigate = useNavigate();
-    const location = useLocation();
+export const PublicHeader = () => {
+    const { menuItems, isActiveRoute, handleNavigate, handleLogoClick, handleClientSpace } = usePublicHeader();
 
     return (
         <Box maxW="100%" m={0} p={0}>
@@ -19,7 +17,7 @@ export const PublicHeader = () => {
                     alignItems="flex-start"
                     pr={4}
                 >
-                    <Image src="/logo-sm.jpg" alt="logo" cursor="pointer" onClick={() => navigate('/')} />
+                    <Image src="/logo-sm.jpg" alt="logo" cursor="pointer" onClick={handleLogoClick} />
                 </VStack>
                 <VStack
                     width="70%"
@@ -30,7 +28,7 @@ export const PublicHeader = () => {
                 >
                     <Flex width="100%" justifyContent="flex-end" pt={8} pr={8}>
                         <Button
-                            onClick={() => navigate('/auth/login')}
+                            onClick={handleClientSpace}
                             mr={8}
                             variant="outline"
                             color="#7cb3cf"
@@ -51,19 +49,19 @@ export const PublicHeader = () => {
                         </Button>
                     </Flex>
                     <Flex width="100%" justify="flex-start" pl={8} mb={-8}>
-                        {PUBLIC_MENU.map((btn, index) => (
+                        {menuItems.map((btn, index) => (
                             <Button
                                 key={index}
-                                variant={location.pathname === btn.link ? 'solid' : 'ghost'}
-                                color={location.pathname === btn.link ? 'blue.800' : 'white'}
-                                bg={location.pathname === btn.link ? 'gray.200' : '#7cb3cf'}
+                                variant={isActiveRoute(btn.link) ? 'solid' : 'ghost'}
+                                color={isActiveRoute(btn.link) ? 'blue.800' : 'white'}
+                                bg={isActiveRoute(btn.link) ? 'gray.200' : '#7cb3cf'}
                                 _hover={{
-                                    bg: location.pathname === btn.link ? 'blue.700' : 'blue.50'
+                                    bg: isActiveRoute(btn.link) ? 'blue.700' : 'blue.50'
                                 }}
                                 size="lg"
-                                onClick={() => navigate(btn.link)}
+                                onClick={() => handleNavigate(btn.link)}
                                 mr={4}
-                                borderBottom={location.pathname === btn.link ? '2px solid' : 'none'}
+                                borderBottom={isActiveRoute(btn.link) ? '2px solid' : 'none'}
                                 borderColor="white"
                             >
                                 {btn.label}
@@ -72,10 +70,8 @@ export const PublicHeader = () => {
                     </Flex>
                 </VStack>
             </HStack>
-
-
         </Box>
-    )
-}
+    );
+};
 
 export default PublicHeader;

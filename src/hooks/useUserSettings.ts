@@ -15,13 +15,16 @@ interface UserSettings {
     oldPassword: string;
     confirmPassword: string;
 }
+
+const USER_API_ENDPOINTS = '/api/user';
+
 export const useUserSettings = () => {
     const toast = useToast();
     const queryClient = useQueryClient();
 
     const { data: initialSettings, isLoading } = useQuery<UserSettings, Error>({
         queryKey: ['userSettings'],
-        queryFn: () => apiFetch('/api/user/profile'),
+        queryFn: () => apiFetch(`${USER_API_ENDPOINTS}/profile`),
         staleTime: 5 * 60 * 1000,
     });
     const [settings, setSettings] = useState<UserSettings>(
@@ -49,7 +52,7 @@ export const useUserSettings = () => {
 
     const saveSettingsMutation = useMutation({
         mutationFn: (updates: Partial<UserSettings>) =>
-            apiFetch('/api/user/update', {
+            apiFetch(`${USER_API_ENDPOINTS}/update`, {
                 method: 'PUT',
                 body: JSON.stringify(updates),
             }),
@@ -69,7 +72,7 @@ export const useUserSettings = () => {
         mutationFn: (file: File) => {
             const formData = new FormData();
             formData.append('avatar', file);
-            return apiFetch('/api/user/avatar', {
+            return apiFetch(`${USER_API_ENDPOINTS}/avatar`, {
                 method: 'POST',
                 body: formData,
             });

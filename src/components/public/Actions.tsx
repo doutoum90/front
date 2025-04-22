@@ -1,7 +1,9 @@
 import { Text, Box, VStack, Divider, HStack } from '@chakra-ui/react';
-import { ACTIONS, CONCLUSION } from '../../constantes';
+import { useActions } from '../../hooks/useActions';
 
 export const Actions = () => {
+  const { actions, conclusion } = useActions();
+
   return (
     <HStack
       spacing={0}
@@ -15,7 +17,7 @@ export const Actions = () => {
         maxWidth="container.xl"
         marginX="auto"
       >
-        {ACTIONS.map((action, index) => (
+        {actions.map((action, index) => (
           <Box key={index}>
             <Text fontWeight="bold" fontSize="xl" textAlign="left" color="gray.800" mb={2}>
               {action.title}
@@ -27,7 +29,7 @@ export const Actions = () => {
           </Box>
         ))}
         <Text fontSize="xl" fontWeight="bold" textAlign="center" mt={12}>
-          {CONCLUSION}
+          {conclusion}
         </Text>
       </VStack>
     </HStack>

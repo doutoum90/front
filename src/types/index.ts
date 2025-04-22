@@ -1,4 +1,6 @@
 import { DataSourceType } from './competitor';
+import { IconType } from 'react-icons';
+import { ReactNode } from 'react';
 
 export interface MarketData {
     date: string;
@@ -36,4 +38,10 @@ export interface Competitor {
 
 export type { DataSourceType as DataSourceTypeEnum };
 
-export * from './competitor'; 
+export * from './competitor';
+
+export interface Section {
+    title: string;
+    icon: IconType;
+    content: ReactNode;
+} 

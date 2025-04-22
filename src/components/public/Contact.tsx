@@ -1,46 +1,14 @@
-import { Heading, Text, Box, Button, Textarea, HStack, VStack, useToast, GridItem, Grid, Flex, Icon, Input, FormControl, FormLabel } from "@chakra-ui/react"
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaPaperPlane, FaLinkedin, FaFacebook } from 'react-icons/fa';
-import { FaTwitter } from "react-icons/fa";
-import { useState } from "react"
+import { Heading, Text, Box, Button, Textarea, HStack, VStack, GridItem, Grid, Flex, Icon, Input, FormControl, FormLabel } from '@chakra-ui/react'
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaPaperPlane, FaLinkedin, FaFacebook, FaTwitter } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { MAIL } from "../../constantes";
+import { MAIL } from '../../constantes';
+import { useContactForm } from '../../hooks/useContactForm';
+
 const MotionBox = motion(Box);
 
-
 export const Contact = () => {
-    const [message, setMessage] = useState('');
-    const [, setResponseMessage] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const toast = useToast();
+    const { formData, isSubmitting, handleInputChange, handleSubmit } = useContactForm();
 
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/api/support/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message })
-            });
-
-            if (response.ok) {
-                setResponseMessage('Votre message a été envoyé avec succès.');
-                setMessage('');
-                toast({
-                    title: 'Message envoyé',
-                    description: 'Votre message a été envoyé avec succès.',
-                    status: 'success',
-                    duration: 5000,
-                    isClosable: true,
-                })
-                setIsSubmitting(false);
-            } else {
-                setResponseMessage('Erreur lors de l\'envoi du message.');
-            }
-        } catch (error) {
-            setResponseMessage('Erreur lors de l\'envoi du message.');
-        }
-    };
     return (
         <Flex
             minH="100vh"
@@ -81,6 +49,9 @@ export const Contact = () => {
                                     <FormControl isRequired>
                                         <FormLabel>Votre nom</FormLabel>
                                         <Input
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleInputChange}
                                             placeholder="Jean Dupont"
                                             focusBorderColor="teal.500"
                                             size="lg"
@@ -90,7 +61,10 @@ export const Contact = () => {
                                     <FormControl isRequired>
                                         <FormLabel>Adresse email</FormLabel>
                                         <Input
+                                            name="email"
                                             type="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
                                             placeholder="contact@entreprise.fr"
                                             focusBorderColor="teal.500"
                                             size="lg"
@@ -100,6 +74,9 @@ export const Contact = () => {
                                     <FormControl isRequired>
                                         <FormLabel>Sujet</FormLabel>
                                         <Input
+                                            name="subject"
+                                            value={formData.subject}
+                                            onChange={handleInputChange}
                                             placeholder="Demande de renseignement"
                                             focusBorderColor="teal.500"
                                             size="lg"
@@ -109,6 +86,9 @@ export const Contact = () => {
                                     <FormControl isRequired>
                                         <FormLabel>Message</FormLabel>
                                         <Textarea
+                                            name="message"
+                                            value={formData.message}
+                                            onChange={handleInputChange}
                                             placeholder="Décrivez votre demande..."
                                             focusBorderColor="teal.500"
                                             size="lg"

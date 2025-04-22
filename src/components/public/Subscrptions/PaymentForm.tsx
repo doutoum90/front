@@ -18,6 +18,8 @@ import {
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { PaymentFormProps } from '../../../types';
 import { PRICE_MAP } from '../../../constantes';
+import { apiFetch } from '../../../services/api';
+
 export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
     const stripe = useStripe();
     const elements = useElements();
@@ -52,7 +54,7 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
             const accessToken = localStorage.getItem('access_token');
             if (!accessToken) throw new Error('Aucun token d\'accès disponible, veuillez vous reconnecter');
 
-            const response = await fetch('/api/payments/subscribe', {
+            const response = await apiFetch('/api/payments/subscribe', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

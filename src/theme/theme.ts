@@ -11,20 +11,20 @@ const theme = extendTheme({
     xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   },
   styles: {
-    global: (props: any) => ({
+    global: ({ colorMode }: { colorMode: string }) => ({
       'html, #root': {
         fontSize: 'md',
         height: '100%',
         transition: 'background-color 0.3s ease, color 0.3s ease',
       },
       body: {
-        bg: props.colorMode === 'dark' ? 'gray.900' : '#D8E8EE',
-        color: props.colorMode === 'dark' ? 'gray.200' : 'gray.800',
+        bg: colorMode === 'dark' ? 'gray.900' : '#D8E8EE',
+        color: colorMode === 'dark' ? 'gray.200' : 'gray.800',
         overflowX: 'hidden',
         fontFamily: 'N27, sans-serif',
         fontSize: 'md',
         height: '100%',
-        backgroundImage: props.colorMode === 'light' ?
+        backgroundImage: colorMode === 'light' ?
           'radial-gradient(208.77% 95.91% at -3.54% 105.56%, rgba(0, 102, 255, 0.25) 0%, rgba(217, 217, 217, 0.00) 100%)' : undefined,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',

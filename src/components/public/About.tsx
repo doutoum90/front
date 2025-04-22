@@ -1,7 +1,9 @@
 import { Text, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box, VStack, HStack } from '@chakra-ui/react';
-import { PARAGRAPHS, ABOUT_TITLES } from '../../constantes';
+import { useAbout } from '../../hooks/useAbout';
 
 export const About = () => {
+  const { titles, paragraphs } = useAbout();
+
   return (
     <HStack
       spacing={0}
@@ -16,15 +18,15 @@ export const About = () => {
         marginX="auto"
       >
         <Text fontSize="lg" color="gray.600" textAlign="center">
-          {ABOUT_TITLES.title}
+          {titles.title}
         </Text>
 
         <Text fontSize="lg" color="gray.600" textAlign="center">
-          {ABOUT_TITLES.subtitle}
+          {titles.subtitle}
         </Text>
 
         <Accordion allowToggle w="100%">
-          {PARAGRAPHS.map((paragraph, index ) => (
+          {paragraphs.map((paragraph, index) => (
             <AccordionItem border="none" mb={4} key={index}>
               <AccordionButton
                 _hover={{ bg: 'teal.50' }}

@@ -12,14 +12,16 @@ type QueryResult<T> = {
   isError: boolean
 }
 
+const VEILLE_API_ENDPOINTS = '/api/veille/competitors';
+
 export const useMarketData = (initialPeriod: string = '30j') => {
   const toast = useToast();
   const [selectedPeriod, setSelectedPeriod] = useState(initialPeriod);
   const debouncedPeriod = useDebounce(selectedPeriod, 300);
   const fetchMarketData = {
-    trends: () => apiFetch(`/api/veille/competitors/trends?period=${debouncedPeriod}`),
-    share: () => apiFetch(`/api/veille/competitors/share`),
-    prices: () => apiFetch(`/api/veille/competitors/prices?period=${debouncedPeriod}`),
+    trends: () => apiFetch(`${VEILLE_API_ENDPOINTS}/trends?period=${debouncedPeriod}`),
+    share: () => apiFetch(`${VEILLE_API_ENDPOINTS}/share`),
+    prices: () => apiFetch(`${VEILLE_API_ENDPOINTS}/prices?period=${debouncedPeriod}`),
   };
 
   const queries = useQueries({

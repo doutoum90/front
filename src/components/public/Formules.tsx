@@ -1,99 +1,97 @@
 import { Heading, Text, Button, VStack, Table, Thead, Tr, Th, Tbody, Td, Box, HStack } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
-import { FONCTIONNALITES, FORMULE_TITLES, COMMENTAIRES, SUBSCRIBE_BUTTON, FONCTIONNALITES_HEADER } from '../../constantes';
-import { useNavigate } from 'react-router-dom';
+import { useFormules } from '../../hooks/useFormules';
 
 export const Formules = () => {
-    const navigate = useNavigate();
-    const subscribe = (rowName: string) => {
-        navigate(`/subscription?plan=${rowName.charAt(0).toUpperCase() + rowName.slice(1)}`);
-    }
+    const { titles, features, comments, headers, subscribeButton, computeRow, handleGlobalSubscribe } = useFormules();
 
-    const computeRow = (row: any, rowName: string) => {
-        if (row.type === 'btn') {
-            return <Td textAlign="center" py={6}>
+    const renderCell = (rowData: any) => {
+        if (rowData.type === 'button') {
+            return (
                 <Button
-                    variant="ghost"
-                    color="white"
-                    bg="#7cb3cf"
-                    size="lg"
-                    onClick={() => subscribe(rowName)}>
-                    {SUBSCRIBE_BUTTON}
+                    variant='ghost'
+                    color='white'
+                    bg='#7cb3cf'
+                    size='lg'
+                    onClick={rowData.onClick}>
+                    {rowData.label}
                 </Button>
-            </Td>
-        } else if (row.type === 'text') {
-            return <Td textAlign="center">{row[rowName]}</Td>
-        } else if (row.type === 'check') {
-            return <Td textAlign="center"><CheckIcon color={row[rowName] ? "green.500" : "red.500"} /></Td>
+            );
+        } else if (rowData.type === 'text') {
+            return rowData.content;
+        } else if (rowData.type === 'check') {
+            return <CheckIcon color={rowData.value ? 'green.500' : 'red.500'} />;
         }
-    }
-    return (<>
+    };
+
+    return (
         <HStack
             spacing={0}
-            width="100%"
-            maxWidth="100vw"
+            width='100%'
+            maxWidth='100vw'
             pt={12}
             px={{ base: 4, md: 8 }}
         >
             <VStack
-                width="100%"
-                maxWidth="container.xl"
-                marginX="auto"
+                width='100%'
+                maxWidth='container.xl'
+                marginX='auto'
             >
-                <Text size="xl" color="teal.600" mb={4}>
-                    {FORMULE_TITLES.title}
+                <Text size='xl' color='teal.600' mb={4}>
+                    {titles.title}
                 </Text>
-                <Text size="xl" color="teal.600" mb={4}>
-                    {FORMULE_TITLES.subtitle}
+                <Text size='xl' color='teal.600' mb={4}>
+                    {titles.subtitle}
                 </Text>
-                <Table variant="simple" size="lg">
+                <Table variant='simple' size='lg'>
                     <Thead>
                         <Tr>
-                            {FONCTIONNALITES_HEADER.map((header, index) => (
-                                <Th bg="gray.200" fontSize="xl" borderRightWidth="1px" borderColor="whiteAlpha.300" key={index}>
+                            {headers.map((header, index) => (
+                                <Th bg='gray.200' fontSize='xl' borderRightWidth='1px' borderColor='whiteAlpha.300' key={index}>
                                     {header}
                                 </Th>
                             ))}
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {FONCTIONNALITES.map((fonctionnalite, index) => (
+                        {features.map((feature, index) => (
                             <Tr key={index}>
-                                <Td fontWeight="semibold">{fonctionnalite.nom}</Td>
-                                {computeRow(fonctionnalite, 'essentiel')}
-                                {computeRow(fonctionnalite, 'pro')}
-                                {computeRow(fonctionnalite, 'expert')}
+                                <Td fontWeight='semibold'>{feature.nom}</Td>
+                                <Td textAlign='center'>{renderCell(computeRow(feature, 'essentiel'))}</Td>
+                                <Td textAlign='center'>{renderCell(computeRow(feature, 'pro'))}</Td>
+                                <Td textAlign='center'>{renderCell(computeRow(feature, 'expert'))}</Td>
                             </Tr>
                         ))}
                     </Tbody>
                 </Table>
                 <Box>
-                    <Heading as="h3" size="md" color="gray.800" mb={4}>
-                        {FORMULE_TITLES.commentaires}
+                    <Heading as='h3' size='md' color='gray.800' mb={4}>
+                        {titles.commentaires}
                     </Heading>
-                    {COMMENTAIRES.map((commentaire, index) => (
-                        <Text color="gray.600" lineHeight="tall" key={index}>
+                    {comments.map((commentaire, index) => (
+                        <Text color='gray.600' lineHeight='tall' key={index}>
                             {commentaire.nom} <br />
                             {commentaire.commentaire}
                         </Text>
                     ))}
-                    <Button ml={"auto"} bg="#3d84a8"
-                        color="white"
-                        borderRadius="2xl"
-                        mx="auto"
-                        size="lg"
+                    <Button 
+                        ml='auto'
+                        bg='#3d84a8'
+                        color='white'
+                        borderRadius='2xl'
+                        mx='auto'
+                        size='lg'
                         px={4}
                         py={6}
                         _hover={{ transform: 'scale(1.05)' }}
-                        transition="all 0.2s"
-                        onClick={() => navigate('/subscription')}
+                        transition='all 0.2s'
+                        onClick={handleGlobalSubscribe}
                     >
-                        {SUBSCRIBE_BUTTON}
+                        {subscribeButton}
                     </Button>
                 </Box>
             </VStack>
         </HStack>
-    </>
     );
 };
 

@@ -4,6 +4,8 @@ import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '../services/api';
 import { useDebounce } from './useDebounce';
 
+const PAYMENT_API_ENDPOINTS = '/api/payments';
+
 interface NextPayment {
   nextPaymentDate: number;
   amount: number;
@@ -15,9 +17,9 @@ export const useSubscription = () => {
   const [newPlan, setNewPlan] = useState('Essentiel');
   const debouncedNewPlan = useDebounce(newPlan, 300);
 
-  const fetchStatus = () => apiFetch('/api/payments/status');
-  const fetchHistory = () => apiFetch('/api/payments/history');
-  const fetchNextPayment = () => apiFetch('/api/payments/next-payment');
+  const fetchStatus = () => apiFetch(`${PAYMENT_API_ENDPOINTS}/status`);
+  const fetchHistory = () => apiFetch(`${PAYMENT_API_ENDPOINTS}/history`);
+  const fetchNextPayment = () => apiFetch(`${PAYMENT_API_ENDPOINTS}/next-payment`);
 
   const queries = useQueries({
     queries: [
@@ -43,7 +45,7 @@ export const useSubscription = () => {
 
   const updatePlanMutation = useMutation({
     mutationFn: (newPriceId: string) =>
-      apiFetch('/api/payments/upgrade-downgrade', {
+      apiFetch(`${PAYMENT_API_ENDPOINTS}/upgrade-downgrade`, {
         method: 'POST',
         body: JSON.stringify({ newPriceId }),
       }),
@@ -61,7 +63,7 @@ export const useSubscription = () => {
 
   const cancelSubscriptionMutation = useMutation({
     mutationFn: () =>
-      apiFetch('/api/payments/cancel', {
+      apiFetch(`${PAYMENT_API_ENDPOINTS}/cancel`, {
         method: 'POST',
       }),
     onSuccess: () => {
