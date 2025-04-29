@@ -6,7 +6,7 @@ export const PublicFooter = () => {
     const { menuItems, address, phone, email, socialMedia, copyright, otherLinks, handleEmailClick } = usePublicFooter();
 
     return (
-        <Box bg='gray.800' color='white' mt={16}>
+        <Box bg="#2f6783" color="#ffffff" mt={16}> {/* Dark blue background, white text */}
             <Flex
                 direction='column'
                 maxW='container.xl'
@@ -14,15 +14,13 @@ export const PublicFooter = () => {
                 px={{ base: 4, md: 8 }}
                 py={12}
             >
-                {/* Main Footer Content */}
                 <Grid
                     templateColumns={{ base: '1fr', md: 'repeat(4, 1fr)' }}
                     gap={8}
                     mb={12}
                 >
-                    {/* Company Info */}
                     <GridItem>
-                        <Heading size='lg' mb={4} color='teal.300'>
+                        <Heading size='lg' mb={4} color="#7cb3cf"> {/* Muted blue for heading */}
                             Intelligentsia
                         </Heading>
                         <Text fontSize='sm' lineHeight='tall'>
@@ -30,23 +28,21 @@ export const PublicFooter = () => {
                         </Text>
                     </GridItem>
 
-                    {/* Quick Links */}
                     <GridItem>
-                        <Heading size='md' mb={4} color='teal.300'>
+                        <Heading size='md' mb={4} color="#7cb3cf"> {/* Muted blue for heading */}
                             Navigation
                         </Heading>
                         <Flex direction='column'>
                             {menuItems.map((btn, index) => (
-                                <Link href={btn.link} _hover={{ color: 'teal.400', textDecoration: 'underline' }} mb={2} key={index}>
+                                <Link href={btn.link} _hover={{ color: '#569ec2' }} mb={2} key={index}> {/* Light blue on hover */}
                                     {btn.label}
                                 </Link>
                             ))}
                         </Flex>
                     </GridItem>
 
-                    {/* Contact Info */}
                     <GridItem>
-                        <Heading size='md' mb={4} color='teal.300'>
+                        <Heading size='md' mb={4} color="#7cb3cf"> {/* Muted blue for heading */}
                             Contact
                         </Heading>
                         <Flex direction='column' gap={3}>
@@ -60,42 +56,39 @@ export const PublicFooter = () => {
                             </Flex>
                             <Flex align='center'>
                                 <Icon as={FaEnvelope} mr={3} />
-                                <Link onClick={() => handleEmailClick(email)} _hover={{ color: 'teal.400', cursor: 'pointer' }}>
+                                <Link onClick={() => handleEmailClick(email)} _hover={{ color: '#569ec2', cursor: 'pointer' }}> {/* Light blue on hover */}
                                     {email}
                                 </Link>
                             </Flex>
                         </Flex>
                     </GridItem>
 
-                    {/* Newsletter */}
                     <GridItem>
-                        {/* Social Media */}
                         <Flex mt={6} gap={4}>
                             {socialMedia.map((social, index) => (
                                 <Link href={social.link} key={index}>
-                                    <Icon as={social.icon} boxSize={6} _hover={{ color: 'teal.400', cursor: 'pointer' }} />
+                                    <Icon as={social.icon} boxSize={6} _hover={{ color: '#569ec2', cursor: 'pointer' }} /> {/* Light blue on hover */}
                                 </Link>
                             ))}
                         </Flex>
                     </GridItem>
                 </Grid>
 
-                {/* Copyright & Legal */}
                 <Flex
                     borderTop='1px solid'
-                    borderColor='gray.700'
+                    borderColor="#3d84a8" // Primary blue for border
                     pt={8}
                     justify='space-between'
                     direction={{ base: 'column', md: 'row' }}
                     align='center'
                     gap={4}
                 >
-                    <Text fontSize='sm' color='gray.400'>
+                    <Text fontSize='sm' color="#e6e6e6"> {/* Light gray for copyright text */}
                         {copyright}
                     </Text>
                     <Flex gap={6}>
                         {otherLinks.map((link, index) => (
-                            <Link href={link.link} fontSize='sm' _hover={{ color: 'teal.400' }} key={index}>
+                            <Link href={link.link} fontSize='sm' _hover={{ color: '#569ec2' }} key={index}> {/* Light blue on hover */}
                                 {link.label}
                             </Link>
                         ))}

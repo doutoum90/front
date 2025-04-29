@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '../services/api';
@@ -73,7 +73,7 @@ export const useSubscription = () => {
     onError: (err: any) =>
       toast({
         title: 'Erreur',
-        description: err instanceof Error ? err.message : 'Échec de l’annulation',
+        description: err instanceof Error ? err.message : "Échec de l'annulation",
         status: 'error',
       }),
   });
@@ -87,14 +87,16 @@ export const useSubscription = () => {
 
   const error = statusQuery.error || historyQuery.error || nextPaymentQuery.error;
 
-  if (error) {
-    toast({
-      title: 'Erreur',
-      description: error instanceof Error ? error.message : 'Erreur inattendue lors du chargement',
-      status: 'error',
-      isClosable: true,
-    });
-  }
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: 'Erreur',
+        description: error instanceof Error ? error.message : 'Erreur inattendue lors du chargement',
+        status: 'error',
+        isClosable: true,
+      });
+    }
+  }, [error, toast]);
 
   return {
     status: (statusQuery.data as { status: string } | undefined)?.status || 'loading',
@@ -108,3 +110,5 @@ export const useSubscription = () => {
     cancelSubscription: () => cancelSubscriptionMutation.mutate(),
   };
 };
+
+console.log(localStorage.getItem('access_token'));

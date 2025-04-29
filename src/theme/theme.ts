@@ -1,4 +1,5 @@
 import { extendTheme, ThemeConfig } from '@chakra-ui/react';
+import { COLORS } from './colors';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -18,14 +19,14 @@ const theme = extendTheme({
         transition: 'background-color 0.3s ease, color 0.3s ease',
       },
       body: {
-        bg: colorMode === 'dark' ? 'gray.900' : '#D8E8EE',
-        color: colorMode === 'dark' ? 'gray.200' : 'gray.800',
+        bg: colorMode === 'dark' ? COLORS.DARK.BACKGROUND : COLORS.LIGHT.BACKGROUND,
+        color: colorMode === 'dark' ? COLORS.DARK.TEXT : COLORS.LIGHT.TEXT,
         overflowX: 'hidden',
         fontFamily: 'N27, sans-serif',
         fontSize: 'md',
         height: '100%',
         backgroundImage: colorMode === 'light' ?
-          'radial-gradient(208.77% 95.91% at -3.54% 105.56%, rgba(0, 102, 255, 0.25) 0%, rgba(217, 217, 217, 0.00) 100%)' : undefined,
+          `radial-gradient(208.77% 95.91% at -3.54% 105.56%, rgba(61, 132, 168, 0.25) 0%, rgba(217, 217, 217, 0.00) 100%)` : undefined,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
@@ -53,42 +54,45 @@ const theme = extendTheme({
   colors: {
     app: {
       pageBg: {
-        light: 'gray.50',
-        dark: 'gray.800',
+        light: COLORS.LIGHT.BACKGROUND,
+        dark: COLORS.DARK.BACKGROUND,
       },
       cardBg: {
-        light: 'white',
-        dark: 'gray.700',
+        light: COLORS.LIGHT.BACKGROUND,
+        dark: COLORS.DARK.BACKGROUND,
       },
       textPrimary: {
-        light: 'gray.800',
-        dark: 'white',
+        light: COLORS.LIGHT.TEXT,
+        dark: COLORS.DARK.TEXT,
       },
       textSecondary: {
-        light: 'gray.600',
-        dark: 'gray.300',
+        light: COLORS.LIGHT.TEXT_SECONDARY,
+        dark: COLORS.DARK.TEXT_SECONDARY,
       },
-      button: 'teal',
-      progress: 'teal',
-      badge: 'teal',
-      formBg: { light: 'white', dark: 'gray.700' },
-      heading: 'teal.600',
-      text: 'gray.600',
-      link: 'teal.600',
-      focusBorder: 'teal.500',
-      spinner: 'blue.500',
+      button: COLORS.PRIMARY,
+      progress: COLORS.PRIMARY,
+      badge: COLORS.PRIMARY,
+      formBg: { 
+        light: COLORS.LIGHT.BACKGROUND, 
+        dark: COLORS.DARK.BACKGROUND 
+      },
+      heading: COLORS.PRIMARY_DARK,
+      text: COLORS.PRIMARY_LIGHT,
+      link: COLORS.PRIMARY,
+      focusBorder: COLORS.PRIMARY,
+      spinner: COLORS.PRIMARY,
     },
-    black: '#000',
-    white: '#fff',
-    gray_disabled: '#7C818D',
+    black: COLORS.BLACK,
+    white: COLORS.WHITE,
+    gray_disabled: COLORS.GRAY_DISABLED,
     blue: {
-      600: '#0D1726',
+      600: COLORS.PRIMARY_DARK,
     },
     brand: {
-      50: '#E6FFFA',
-      100: '#B2F5EA',
-      500: '#319795',
-      600: '#2C7A7B',
+      50: COLORS.GRAY_LIGHT,
+      100: COLORS.ACCENT,
+      500: COLORS.PRIMARY,
+      600: COLORS.PRIMARY_DARK,
     },
   },
   components: {
@@ -99,20 +103,20 @@ const theme = extendTheme({
       },
       variants: {
         primary: () => ({
-          bg: 'brand.500',
-          color: 'white',
-          _hover: { bg: 'brand.600' },
-          _disabled: { bg: 'gray_disabled', opacity: 0.6 },
+          bg: COLORS.PRIMARY,
+          color: COLORS.WHITE,
+          _hover: { bg: COLORS.PRIMARY_DARK },
+          _disabled: { bg: COLORS.GRAY_DISABLED, opacity: 0.6 },
         }),
         ghost: ({ colorMode }: { colorMode: string }) => ({
-          color: colorMode === 'dark' ? 'gray.200' : 'gray.700',
-          _hover: { bg: colorMode === 'dark' ? 'gray.700' : 'gray.100' },
+          color: colorMode === 'dark' ? COLORS.WHITE : COLORS.PRIMARY_DARK,
+          _hover: { bg: colorMode === 'dark' ? COLORS.PRIMARY_DARK : COLORS.GRAY_LIGHT },
         }),
       },
     },
     Card: {
       baseStyle: ({ colorMode }: { colorMode: string }) => ({
-        bg: colorMode === 'dark' ? 'gray.700' : 'white',
+        bg: colorMode === 'dark' ? COLORS.DARK.BACKGROUND : COLORS.LIGHT.BACKGROUND,
         borderRadius: 'xl',
         boxShadow: 'md',
         p: 6,
@@ -121,15 +125,15 @@ const theme = extendTheme({
     },
     Heading: {
       baseStyle: ({ colorMode }: { colorMode: string }) => ({
-        color: colorMode === 'dark' ? 'brand.50' : 'brand.600',
+        color: colorMode === 'dark' ? COLORS.WHITE : COLORS.PRIMARY_DARK,
       }),
     },
     Input: {
       baseStyle: ({ colorMode }: { colorMode: string }) => ({
         field: {
-          bg: colorMode === 'dark' ? 'gray.700' : 'white',
-          borderColor: colorMode === 'dark' ? 'gray.600' : 'gray.300',
-          color: colorMode === 'dark' ? 'gray.200' : 'gray.800',
+          bg: colorMode === 'dark' ? COLORS.DARK.BACKGROUND : COLORS.LIGHT.BACKGROUND,
+          borderColor: colorMode === 'dark' ? COLORS.DARK.BORDER : COLORS.LIGHT.BORDER,
+          color: colorMode === 'dark' ? COLORS.DARK.TEXT : COLORS.LIGHT.TEXT,
         },
       }),
     },

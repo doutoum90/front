@@ -21,7 +21,7 @@ export const PublicHeader = () => {
                 </VStack>
                 <VStack
                     width="70%"
-                    bg="#3d84a8"
+                    bg="#3d84a8" // Primary blue (already matches palette)
                     justifyContent="center"
                     pr={0}
                     mr={0}
@@ -31,17 +31,17 @@ export const PublicHeader = () => {
                             onClick={handleClientSpace}
                             mr={8}
                             variant="outline"
-                            color="#7cb3cf"
-                            bg='white'
-                            borderColor="blue.200"
+                            color="#7cb3cf" // Muted blue (already matches palette)
+                            bg="#ffffff" // White (already matches palette)
+                            borderColor="#569ec2" // Light blue
                             borderRadius="xl"
                             size="lg"
                             _hover={{
-                                bg: "blue.50",
+                                bg: "#e6e6e6", // Light gray on hover
                                 transform: "scale(1.05)"
                             }}
                             _active={{
-                                bg: "blue.100"
+                                bg: "#569ec2" // Light blue when active
                             }}
                             transition="all 0.2s"
                         >
@@ -53,16 +53,16 @@ export const PublicHeader = () => {
                             <Button
                                 key={index}
                                 variant={isActiveRoute(btn.link) ? 'solid' : 'ghost'}
-                                color={isActiveRoute(btn.link) ? 'blue.800' : 'white'}
-                                bg={isActiveRoute(btn.link) ? 'gray.200' : '#7cb3cf'}
+                                color={isActiveRoute(btn.link) ? '#2f6783' : '#ffffff'} // Dark blue for active, white for inactive
+                                bg={isActiveRoute(btn.link) ? '#e6e6e6' : '#7cb3cf'} // Light gray for active, muted blue for inactive
                                 _hover={{
-                                    bg: isActiveRoute(btn.link) ? 'blue.700' : 'blue.50'
+                                    bg: isActiveRoute(btn.link) ? '#569ec2' : '#e6e6e6' // Light blue for active hover, light gray for inactive hover
                                 }}
                                 size="lg"
                                 onClick={() => handleNavigate(btn.link)}
                                 mr={4}
                                 borderBottom={isActiveRoute(btn.link) ? '2px solid' : 'none'}
-                                borderColor="white"
+                                borderColor="#ffffff" // White border for active
                             >
                                 {btn.label}
                             </Button>
