@@ -66,11 +66,6 @@ export const PaymentForm = ({ user, plan, onSuccess }: PaymentFormProps) => {
                 }),
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Échec du paiement');
-            }
-
             toast({
                 title: 'Paiement réussi',
                 description: `Abonnement ${plan.name} activé avec succès`,

@@ -1,24 +1,25 @@
 import { createContext, useContext, useEffect, useCallback } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { AuthContextType, AuthProviderProps, User, UserData } from '../types';
-import * as authService from '../services/authService';
+import { AuthAdminContextType, AuthAdminProviderProps, AdminUser } from '../types';
+import * as authAdminService from '../services/authAdminService'
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess, onLogout: onExternalLogout }: AuthProviderProps) => {
+export const AuthAdminContext = createContext<AuthAdminContextType | undefined>(undefined);
+
+export const AuthAdminProvider = ({ children, onLoginSuccess: onExternalLoginSuccess, onLogout: onExternalLogout }: AuthAdminProviderProps) => {
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading } = useQuery<User | null, Error>({
-    queryKey: ['user'],
-    queryFn: authService.fetchUser,
+  const { data: adminUser, isLoading } = useQuery<AdminUser | null, Error>({
+    queryKey: ['adminUser'],
+    queryFn: authAdminService.fetchAdminUser,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
   const refreshTokenMutation = useMutation({
-    mutationFn: () => authService.refreshToken(),
+    mutationFn: () => authAdminService.refreshToken(),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['adminUser'] });
       return data.access_token;
     },
     onError: () => {
@@ -29,15 +30,15 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
 
   useEffect(() => {
     const verifyToken = async () => {
-      const accessToken = localStorage.getItem('access_token');
-      const refreshToken = localStorage.getItem('refresh_token');
+      const accessToken = localStorage.getItem('admin_access_token');
+      const refreshToken = localStorage.getItem('admin_refresh_token');
 
       if (!accessToken && !refreshToken) {
         return;
       }
 
       try {
-        await authService.verifyToken();
+        await authAdminService.verifyToken();
       } catch (error) {
         if (refreshToken) {
           await refreshTokenMutation.mutateAsync();
@@ -54,47 +55,23 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
 
   const login = useCallback(
     async (credentials: { email: string; password: string }) => {
-      const { user } = await authService.login(credentials);
-      queryClient.setQueryData(['user'], user);
+      const { adminUser } = await authAdminService.login(credentials);
+      queryClient.setQueryData(['adminUser'], adminUser);
       onExternalLoginSuccess();
     },
     [queryClient, onExternalLoginSuccess]
   );
 
   const logout = useCallback(() => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    queryClient.setQueryData(['user'], null);
+    localStorage.removeItem('admin_access_token');
+    localStorage.removeItem('admin_refresh_token');
+    queryClient.setQueryData(['adminUser'], null);
     onExternalLogout();
   }, [queryClient, onExternalLogout]);
 
-  const register = useCallback(
-    async (userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert' }) => {
-      const { user } = await authService.register(userData);
-      queryClient.setQueryData(['user'], user);
-    },
-    [queryClient]
-  );
-
-  const resetPassword = useCallback(async (email: string) => {
-    await authService.resetPassword(email);
-  }, []);
-
   const refreshUser = useCallback(async () => {
-    queryClient.invalidateQueries({ queryKey: ['user'] });
+    queryClient.invalidateQueries({ queryKey: ['adminUser'] });
   }, [queryClient]);
-
-  const updateSubscription = useCallback(
-    async (typeAbonnement: 'Essentiel' | 'PRO' | 'Expert') => {
-      const updatedUser = await authService.updateSubscription(typeAbonnement);
-      queryClient.setQueryData(['user'], updatedUser);
-    },
-    [queryClient]
-  );
-
-  const getTrialStatus = useCallback(async () => {
-    return authService.getTrialStatus();
-  }, []);
 
   useEffect(() => {
     const originalFetch = window.fetch;
@@ -136,15 +113,11 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
     };
   }, [refreshTokenMutation, logout, onExternalLogout]);
 
-  const value: AuthContextType = {
-    user,
+  const value: AuthAdminContextType = {
+    adminUser: adminUser ?? null,
     isLoading,
     login,
     logout,
-    updateSubscription,
-    getTrialStatus,
-    register,
-    resetPassword,
     refreshAccessToken: async () => {
       const { access_token } = await refreshTokenMutation.mutateAsync();
       return access_token;
@@ -152,11 +125,11 @@ export const AuthProvider = ({ children, onLoginSuccess: onExternalLoginSuccess,
     refreshUser,
   };
 
-  return <AuthContext.Provider value={value}>{isLoading ? <div>Loading...</div> : children}</AuthContext.Provider>;
+  return <AuthAdminContext.Provider value={value}>{isLoading ? <div>Loading...</div> : children}</AuthAdminContext.Provider>;
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within an AuthProvider');
+export const useAuthAdmin = () => {
+  const context = useContext(AuthAdminContext);
+  if (!context) throw new Error('useAuthAdmin must be used within an AuthAdminProvider');
   return context;
 };

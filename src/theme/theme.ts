@@ -6,8 +6,23 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 };
 
+// Ajout des poids de police manquants
+const fontWeights = {
+  hairline: 100,
+  thin: 200,
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+  extrabold: 800,
+  black: 900,
+};
+
 const theme = extendTheme({
   config,
+  // Ajout des fontWeights manquants
+  fontWeights,
   shadows: {
     xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   },
@@ -25,8 +40,9 @@ const theme = extendTheme({
         fontFamily: 'N27, sans-serif',
         fontSize: 'md',
         height: '100%',
-        backgroundImage: colorMode === 'light' ?
-          `radial-gradient(208.77% 95.91% at -3.54% 105.56%, rgba(61, 132, 168, 0.25) 0%, rgba(217, 217, 217, 0.00) 100%)` : undefined,
+        backgroundImage: colorMode === 'light' 
+          ? `radial-gradient(208.77% 95.91% at -3.54% 105.56%, rgba(61, 132, 168, 0.25) 0%, rgba(217, 217, 217, 0.00) 100%)`
+          : undefined,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
@@ -39,6 +55,7 @@ const theme = extendTheme({
     heading: `'N27', sans-serif`,
     body: `'N27', sans-serif`,
   },
+  // Configuration des tailles de police corrigée
   fontSizes: {
     xs: '0.75rem',
     sm: '0.875rem',
@@ -98,7 +115,7 @@ const theme = extendTheme({
   components: {
     Button: {
       baseStyle: {
-        fontWeight: 'semibold',
+        fontWeight: 'semibold', // Utilise maintenant la configuration fontWeights
         borderRadius: 'md',
       },
       variants: {
@@ -106,11 +123,19 @@ const theme = extendTheme({
           bg: COLORS.PRIMARY,
           color: COLORS.WHITE,
           _hover: { bg: COLORS.PRIMARY_DARK },
-          _disabled: { bg: COLORS.GRAY_DISABLED, opacity: 0.6 },
+          _disabled: { 
+            bg: COLORS.GRAY_DISABLED, 
+            opacity: 0.6,
+            cursor: 'not-allowed',
+          },
         }),
         ghost: ({ colorMode }: { colorMode: string }) => ({
           color: colorMode === 'dark' ? COLORS.WHITE : COLORS.PRIMARY_DARK,
-          _hover: { bg: colorMode === 'dark' ? COLORS.PRIMARY_DARK : COLORS.GRAY_LIGHT },
+          _hover: { 
+            bg: colorMode === 'dark' 
+              ? COLORS.PRIMARY_DARK 
+              : COLORS.GRAY_LIGHT,
+          },
         }),
       },
     },
@@ -126,14 +151,21 @@ const theme = extendTheme({
     Heading: {
       baseStyle: ({ colorMode }: { colorMode: string }) => ({
         color: colorMode === 'dark' ? COLORS.WHITE : COLORS.PRIMARY_DARK,
+        fontWeight: 'bold', // Utilise la configuration fontWeights
       }),
     },
     Input: {
       baseStyle: ({ colorMode }: { colorMode: string }) => ({
         field: {
           bg: colorMode === 'dark' ? COLORS.DARK.BACKGROUND : COLORS.LIGHT.BACKGROUND,
-          borderColor: colorMode === 'dark' ? COLORS.DARK.BORDER : COLORS.LIGHT.BORDER,
+          borderColor: colorMode === 'dark' 
+            ? COLORS.DARK.BORDER 
+            : COLORS.LIGHT.BORDER,
           color: colorMode === 'dark' ? COLORS.DARK.TEXT : COLORS.LIGHT.TEXT,
+          _focus: {
+            borderColor: COLORS.PRIMARY,
+            boxShadow: `0 0 0 1px ${COLORS.PRIMARY}`,
+          },
         },
       }),
     },

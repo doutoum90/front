@@ -5,6 +5,7 @@ import { PrivateRoute } from './PrivateRoute';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { PrivateLayout } from '../layouts/PrivateLayout';
+import ProtectedAdminRoute from '../components/admin/ProtectedRoute';
 
 const lazyLoad = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
   <Suspense fallback={<LoadingSpinner />}>
@@ -36,8 +37,11 @@ const Regulations = lazy(() => import('../components/protected/Regulations'));
 const Opportunites = lazy(() => import('../components/protected/Opportunites'));
 const AnalyseMarche = lazy(() => import('../components/protected/AnalyseMarche'));
 
-const TestDash = lazy(() => import('../components/tests/Dashboard'));
+const EditStaticPage = lazy(() => import('../components/admin/EditStaticPage'));
+const StaticPages = lazy(() => import('../components/admin/StaticPages'));
 
+const Login = lazy(() => import('../components/admin/Login'));
+const Register = lazy(() => import('../components/admin/Register'));
 
 export const routes = [
   {
@@ -64,13 +68,7 @@ export const routes = [
       { path: 'password-reset', element: lazyLoad(PasswordReset) },
     ],
   },
-  {
-    path: 'test',
-    children: [
-      { path: 'dashboard', element: lazyLoad(TestDash) },
-    ],
-  },
-  // Routes privées avec layout commun
+  // Routes privées
   {
     path: 'espace-membre',
     element: (
@@ -88,10 +86,32 @@ export const routes = [
       { path: 'analyse-de-marche', element: lazyLoad(AnalyseMarche) },
       { path: 'surveillance-des-opportunites-et-risques', element: lazyLoad(Opportunites) },
       { path: 'rapport-sur-mesure', element: lazyLoad(Regulations) },
-
       { path: 'payments', element: lazyLoad(Payments) },
       { path: 'suivi-payment', element: lazyLoad(SuiviPayment) },
     ],
+  },
+  // Routes admin
+  {
+    path: 'admin-login',
+    element: <AuthLayout><Outlet /></AuthLayout>,
+    children: [
+      { path: 'login', element: lazyLoad(Login) },
+      { path: 'register', element: lazyLoad(Register) },
+    ]
+  },
+  {
+    path: 'admin',
+    element: (
+      <ProtectedAdminRoute>
+        <PrivateLayout>
+          <Outlet />
+        </PrivateLayout>
+      </ProtectedAdminRoute>
+    ),
+    children: [
+      {path: 'static-pages', element: lazyLoad(StaticPages)},
+      {path: 'static-pages/:id', element: lazyLoad(EditStaticPage)},
+    ]
   },
   // Gestion des erreurs et redirections
   { path: '404', element: <div>Page non trouvée</div> },

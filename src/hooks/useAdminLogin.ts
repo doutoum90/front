@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuthAdmin } from '../contexts/AuthAdminContext';
 
-export const useLogin = () => {
-    const { login } = useAuth();
+export const useAdminLogin = () => {
+    const { login } = useAuthAdmin();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -16,7 +16,7 @@ export const useLogin = () => {
             setIsFetching(true);
             setError('');
             await login({ email, password });
-            navigate('/espace-membre/dashboard'); 
+            navigate('/admin/static-pages'); 
         } catch {
             setError('Identifiants incorrects ou problème de connexion');
         } finally {

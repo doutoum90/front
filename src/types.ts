@@ -82,7 +82,7 @@ export interface AuthContextType {
     login: (credentials: { email: string; password: string }) => Promise<void>;
     logout: () => void;
     updateSubscription: (typeAbonnement: 'Essentiel' | 'PRO' | 'Expert') => Promise<void>;
-    getTrialStatus: () => Promise<any>;
+    getTrialStatus: () => Promise<{ trialActive: boolean }>;
     register: (userData: UserData & { typeAbonnement: 'Essentiel' | 'PRO' | 'Expert' }) => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
     refreshAccessToken: (refreshToken: string) => Promise<string>;
@@ -114,7 +114,7 @@ export interface FormData {
 }
 
 export interface AddCompetitorFormProps {
-    onAdd: (competitor: any) => void;
+    onAdd: (competitor: Competitor) => void;
 }
 
 export interface Opportunity {
@@ -202,3 +202,24 @@ export interface Section {
     icon: IconType;
     content: React.ReactNode;
 }
+
+export interface AdminUser {
+    id: string;
+    email: string;
+    role: string;
+}
+
+export interface AuthAdminContextType {
+    adminUser: AdminUser | null;
+    isLoading: boolean;
+    login: (credentials: { email: string; password: string }) => Promise<void>;
+    logout: () => void;
+    refreshAccessToken: () => Promise<string>;
+    refreshUser: () => Promise<void>;
+}
+
+export interface AuthAdminProviderProps {
+    children: React.ReactNode;
+    onLoginSuccess: () => void;
+    onLogout: () => void;
+} 
