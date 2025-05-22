@@ -7,6 +7,10 @@ export const login = async (credentials: { email: string; password: string }) =>
   const response = await axios.post(`${API_URL}/admin/auth/login`, credentials);
   return response.data;
 };
+export const registerAdminUser = async (credentials: { email: string; password: string, firstName: string, lastName:string }) => {
+  const response = await axios.post(`${API_URL}/admin/auth/register`, credentials);
+  return response.data;
+};
 
 export const fetchAdminUser = async (): Promise<AdminUser | null> => {
   const response = await axios.get(`${API_URL}/admin/auth/me`);
